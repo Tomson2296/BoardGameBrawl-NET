@@ -1,0 +1,19 @@
+{
+  "dependencies": {
+    "secrets1": {
+      "type": "secrets"
+    },
+    "mssql1": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:IdentityAppDBConnection"
+    },
+    "mssql2": {
+      "type": "mssql",
+      "connectionId": "ConnectionStrings:MainAppDBConnection"
+    },
+    "sqlite1": {
+      "ignored": "true",
+      "type": "sqlite"
+    }
+  }
+}

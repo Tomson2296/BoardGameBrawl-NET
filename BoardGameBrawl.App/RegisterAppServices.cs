@@ -6,7 +6,6 @@ using BoardGameBrawl.Persistence;
 using BoardGameBrawl.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using BoardGameBrawl.Identity.Managers;
 
 namespace BoardGameBrawl.App
 {
@@ -15,6 +14,8 @@ namespace BoardGameBrawl.App
         public static WebApplicationBuilder RegisterServices(this WebApplicationBuilder builder)
         {
             var configuration = builder.Configuration;
+
+            builder.Services.AddHttpContextAccessor();
 
             // Add services to the container.
             builder.Services.AddRazorPages();
@@ -39,15 +40,18 @@ namespace BoardGameBrawl.App
 
                 options.User.RequireUniqueEmail = true;
 
+                options.Lockout.AllowedForNewUsers = false;
                 options.Lockout.MaxFailedAccessAttempts = 5;
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromSeconds(120);
             })
+                .AddEntityFrameworkStores<IdentityAppDBContext>()
+                .AddUserStore<ApplicationUserStore>()
+                .AddRoleStore<ApplicationRoleStore>()
                 .AddDefaultTokenProviders()
-                .AddDefaultUI()
-                .AddEntityFrameworkStores<IdentityAppDBContext>();
+                .AddDefaultUI();
 
             builder.Services.RegisterCustomIdentityServices();
-                
+
             builder.Services.AddAuthentication()
                 .AddGoogle(options =>
                 {
@@ -70,7 +74,7 @@ namespace BoardGameBrawl.App
                     options.LogoutPath = "/Identity/Account/Logout";
                 });
 
-            builder.Services.RegisterInfraServices(configuration);
+            builder.Services.RegisterInfraServices();
 
             return builder;
         }

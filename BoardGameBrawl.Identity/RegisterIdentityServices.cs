@@ -1,11 +1,9 @@
 ﻿using BoardGameBrawl.Identity.Entities;
-using BoardGameBrawl.Identity.Managers;
 using BoardGameBrawl.Identity.Services;
 using BoardGameBrawl.Identity.Stores;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using System;
 using System.Collections.Generic;
@@ -20,23 +18,22 @@ namespace BoardGameBrawl.Identity
         public static Task<IServiceCollection> RegisterCustomIdentityServices(this IServiceCollection services)
         {
             // Register Custom Identity Services
-
-            services.TryAddScoped<ILookupNormalizer, ApplicationLookupNormalizer>();
+            services.AddScoped<ILookupNormalizer, ApplicationLookupNormalizer>();
 
             // Register Custom Identity Stores
-
-            services.TryAddScoped<IUserStore<ApplicationUser>, ApplicationUserStore>();
-            services.TryAddScoped<IUserEmailStore<ApplicationUser>, ApplicationUserEmailStore>();
-            services.TryAddScoped<IUserClaimStore<ApplicationUser>, ApplicationUserClaimStore>();
-            services.TryAddScoped<IUserPasswordStore<ApplicationUser>, ApplicationUserPasswordStore>();
-            services.TryAddScoped<IUserRoleStore<ApplicationUser>, ApplicationUserRoleStore>();
-            services.TryAddScoped<IUserSecurityStampStore<ApplicationUser>, ApplicationUserSecurityStampStore>();
-            services.TryAddScoped<IUserConfirmation<ApplicationUser>, ApplicationUserConfirmationStore>();
-            services.TryAddScoped<IUserLoginStore<ApplicationUser>, ApplicationUserLoginStore>();
-            services.TryAddScoped<IUserLockoutStore<ApplicationUser>, ApplicationUserLockoutStore>();
-
-            services.TryAddScoped<IRoleStore<ApplicationRole>, ApplicationRoleStore>();
-            services.TryAddScoped<IRoleClaimStore<ApplicationRole>, ApplicationRoleClaimStore>();
+            services.AddScoped<ApplicationUserStore>();
+            services.AddScoped<ApplicationRoleStore>();
+           
+            //services.AddScoped<ApplicationUserRoleStore>();
+            //services.AddScoped<ApplicationUserClaimStore>();
+            //services.AddScoped<ApplicationUserConfirmationStore>();
+            //services.AddScoped<ApplicationUserEmailStore>();
+            //services.AddScoped<ApplicationUserLockoutStore>();
+            //services.AddScoped<ApplicationUserLoginStore>();
+            //services.AddScoped<ApplicationUserPasswordStore>();
+            //services.AddScoped<ApplicationUserSecurityStampStore>();
+           
+            //services.AddScoped<ApplicationRoleClaimStore>();
 
             return Task.FromResult(services);   
         }

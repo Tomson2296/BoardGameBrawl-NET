@@ -11,13 +11,13 @@ using System.Threading.Tasks;
 
 namespace BoardGameBrawl.Infrastructure.EmailSender
 {
-    public class MailKitEmailSender : IEmailSender
+    public class MailKitEmailSender : IMailKitEmailSender
     {
         private readonly IConfiguration _configuration;
 
         public MailKitEmailSender(IConfiguration configuration) 
         {
-            _configuration = configuration;
+            _configuration ??= configuration;
         }
 
         public async Task SendEmailAsync(string to, string subject, string message)

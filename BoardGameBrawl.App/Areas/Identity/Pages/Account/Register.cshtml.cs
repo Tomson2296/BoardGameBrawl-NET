@@ -8,8 +8,11 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using BoardGameBrawl.Identity;
 using BoardGameBrawl.Identity.Entities;
 using BoardGameBrawl.Identity.Managers;
+using BoardGameBrawl.Identity.Stores;
+using BoardGameBrawl.Infrastructure.EmailSender;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -25,24 +28,22 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IUserStore<ApplicationUser>  _userStore;
-        private readonly IUserEmailStore<ApplicationUser> _emailStore;
+        private readonly ApplicationUserStore _userStore;
         private readonly ILogger<RegisterModel> _logger;
-        private readonly IEmailSender _emailSender;
+        private readonly IMailKitEmailSender _emailSender;
 
         public RegisterModel(
+            SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
-            IUserStore<ApplicationUser>  userStore,
-            SignInManager<ApplicationUser>  signInManager,
+            ApplicationUserStore userStore,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IMailKitEmailSender emailSender)
         {
+            _signInManager = signInManager;
             _userManager = userManager;
             _userStore = userStore;
-            _emailStore = GetEmailStore();
-            _signInManager = signInManager;
-            _logger = logger;
             _emailSender = emailSender;
+            _logger = logger;
         }
 
         [BindProperty]
@@ -87,7 +88,7 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
                 var user = CreateUser();
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                await _userStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
@@ -126,7 +127,7 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private ApplicationUser  CreateUser()
+        private ApplicationUser CreateUser()
         {
             try
             {
@@ -138,15 +139,6 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
                     $"Ensure that '{nameof(ApplicationUser )}' is not an abstract class and has a parameterless constructor, or alternatively " +
                     $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
             }
-        }
-
-        private IUserEmailStore<ApplicationUser>  GetEmailStore()
-        {
-            if (!_userManager.SupportsUserEmail)
-            {
-                throw new NotSupportedException("The default UI requires a user store with email support.");
-            }
-            return (IUserEmailStore<ApplicationUser> )_userStore;
         }
     }
 }

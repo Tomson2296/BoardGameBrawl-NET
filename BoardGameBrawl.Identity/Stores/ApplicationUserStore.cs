@@ -5,14 +5,89 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace BoardGameBrawl.Identity.Stores
 {
-    public class ApplicationUserStore(IdentityAppDBContext context) : IUserStore<ApplicationUser>
+    public class ApplicationUserStore : IUserStore<ApplicationUser>,
+        IUserEmailStore<ApplicationUser>, IUserClaimStore<ApplicationUser>, IUserConfirmation<ApplicationUser>,
+        IUserLockoutStore<ApplicationUser>, IUserLoginStore<ApplicationUser>, IUserPasswordStore<ApplicationUser>,
+        IUserRoleStore<ApplicationUser>, IUserSecurityStampStore<ApplicationUser>
     {
-        private readonly IdentityAppDBContext _context = context;
+        private readonly IdentityAppDBContext _context;
+        public ApplicationUserStore(IdentityAppDBContext context)
+        {
+            _context = context;
+        }
+
+        public async Task AddClaimsAsync(ApplicationUser user, IEnumerable<Claim> claims,
+              CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+            ArgumentNullException.ThrowIfNull(claims);
+
+            foreach (var claim in claims)
+            {
+                var claimInDb = await _context.UserClaims.FirstOrDefaultAsync(uc => uc.UserId == user.Id &&
+                    uc.ClaimType!.Equals(claim.Type) && uc.ClaimValue!.Equals(claim.Value), cancellationToken);
+
+                if (claimInDb == null)
+                {
+                    var instance = new ApplicationUserClaim()
+                    {
+                        UserId = user.Id,
+                        ClaimType = claim.Type,
+                        ClaimValue = claim.Value
+                    };
+
+                    await _context.UserClaims.AddAsync(instance, cancellationToken);
+                }
+            }
+
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task AddLoginAsync(ApplicationUser user, UserLoginInfo login,
+            CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+            ArgumentNullException.ThrowIfNull(login);
+
+            var userLoginInDB = await _context.UserLogins.FindAsync(login.LoginProvider, login.ProviderKey, cancellationToken);
+
+            if (userLoginInDB == null)
+            {
+                var newUserLoginCredentials = new ApplicationUserLogin()
+                {
+                    LoginProvider = login.LoginProvider,
+                    ProviderKey = login.ProviderKey,
+                    ProviderDisplayName = login.ProviderDisplayName
+                };
+
+                await _context.UserLogins.AddAsync(newUserLoginCredentials, cancellationToken);
+                await _context.SaveChangesAsync(cancellationToken);
+            }
+        }
+
+        public async Task AddToRoleAsync(ApplicationUser user, string roleName,
+             CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(roleName);
+
+            var roleEntity = await _context.Roles.FirstOrDefaultAsync(r => r.Name!.Equals(roleName), cancellationToken);
+
+            if (roleEntity != null)
+            {
+                var newUserRole = new ApplicationUserRole() { UserId = user.Id, RoleId = roleEntity.Id };
+                await _context.UserRoles.AddAsync(newUserRole, cancellationToken);
+            }
+        }
 
         public async Task<IdentityResult> CreateAsync(ApplicationUser user,
              CancellationToken cancellationToken = default)
@@ -61,6 +136,15 @@ namespace BoardGameBrawl.Identity.Stores
             GC.SuppressFinalize(this);
         }
 
+        public async Task<ApplicationUser?> FindByEmailAsync(string normalizedEmail,
+           CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(normalizedEmail);
+
+            return await _context.Users.SingleOrDefaultAsync(u => u.NormalizedEmail!.Equals(normalizedEmail), cancellationToken);
+        }
+
         public async Task<ApplicationUser?> FindByIdAsync(string? userId,
             CancellationToken cancellationToken = default)
         {
@@ -75,6 +159,22 @@ namespace BoardGameBrawl.Identity.Stores
             return await _context.Users.SingleOrDefaultAsync(u => u.Id.Equals(Guid.Parse(userId)), cancellationToken);
         }
 
+        public async Task<ApplicationUser?> FindByLoginAsync(string loginProvider, string providerKey,
+            CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(loginProvider);
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(providerKey);
+
+            var query = from userLogin in _context.UserLogins
+                        where userLogin.LoginProvider.Equals(loginProvider)
+                        where userLogin.ProviderKey.Equals(providerKey)
+                        join user in _context.Users on userLogin.UserId equals user.Id
+                        select user;
+
+            return await query.SingleOrDefaultAsync(cancellationToken);
+        }
+
         public async Task<ApplicationUser?> FindByNameAsync(string normalizedUserName,
             CancellationToken cancellationToken = default)
         {
@@ -84,6 +184,85 @@ namespace BoardGameBrawl.Identity.Stores
             return await _context.Users.SingleOrDefaultAsync(u => u.NormalizedUserName!.Equals(normalizedUserName), cancellationToken);
         }
 
+        public async Task<int> GetAccessFailedCountAsync(ApplicationUser user,
+            CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+
+            return await Task.FromResult(user.AccessFailedCount);
+        }
+
+        public async Task<IList<Claim>> GetClaimsAsync(ApplicationUser user,
+              CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+
+            return await _context.UserClaims
+                .Where(uc => uc.UserId == user.Id)
+                .Select(s => s.ToClaim())
+                .ToListAsync(cancellationToken);
+        }
+
+        public async Task<string?> GetEmailAsync(ApplicationUser user,
+            CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+
+            return await Task.FromResult(user.Email);
+        }
+
+        public async Task<bool> GetEmailConfirmedAsync(ApplicationUser user,
+           CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+
+            return await Task.FromResult(user.EmailConfirmed);
+        }
+
+        public async Task<bool> GetLockoutEnabledAsync(ApplicationUser user,
+            CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+
+            return await Task.FromResult(user.LockoutEnabled);
+        }
+
+        public async Task<DateTimeOffset?> GetLockoutEndDateAsync(ApplicationUser user,
+            CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+
+            return await Task.FromResult(user.LockoutEnd);
+        }
+
+        public async Task<IList<UserLoginInfo>> GetLoginsAsync(ApplicationUser user,
+             CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+
+            var appUserLogin = await _context.UserLogins
+                .Where(ul => ul.UserId == user.Id)
+                .ToListAsync(cancellationToken);
+
+            return await Task.FromResult((IList<UserLoginInfo>)appUserLogin);
+        }
+
+        public async Task<string?> GetNormalizedEmailAsync(ApplicationUser user,
+           CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+
+            return await Task.FromResult(user.NormalizedEmail);
+        }
+
         public async Task<string?> GetNormalizedUserNameAsync(ApplicationUser user,
            CancellationToken cancellationToken = default)
         {
@@ -91,6 +270,38 @@ namespace BoardGameBrawl.Identity.Stores
             ArgumentNullException.ThrowIfNull(user);
 
             return await Task.FromResult(user.NormalizedUserName);
+        }
+
+        public async Task<string?> GetPasswordHashAsync(ApplicationUser user,
+             CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+
+            return await Task.FromResult(user.PasswordHash);
+        }
+
+        public async Task<IList<string>> GetRolesAsync(ApplicationUser user,
+            CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+
+            var query = from userRole in _context.UserRoles
+                        where userRole.UserId.Equals(user.Id)
+                        join role in _context.Roles on userRole.RoleId equals role.Id
+                        select role.Name;
+
+            return await query.ToListAsync(cancellationToken);
+        }
+
+        public async Task<string?> GetSecurityStampAsync(ApplicationUser user,
+            CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+
+            return await Task.FromResult(user.SecurityStamp);
         }
 
         public async Task<string> GetUserIdAsync(ApplicationUser user,
@@ -111,6 +322,219 @@ namespace BoardGameBrawl.Identity.Stores
             return await Task.FromResult(user.UserName);
         }
 
+        public async Task<IList<ApplicationUser>> GetUsersForClaimAsync(Claim claim,
+           CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(claim);
+
+            var users = from user in _context.Users
+                        where _context.UserClaims.Any(c => c.ClaimType == claim.Type && c.ClaimValue == claim.Value)
+                        select user;
+            return await users.ToListAsync(cancellationToken);
+        }
+
+        public async Task<IList<ApplicationUser>> GetUsersInRoleAsync(string roleName,
+            CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(roleName);
+
+            var query = from user in _context.Users
+                        join role in _context.Roles on user.Id equals role.Id
+                        where role.Name == roleName
+                        select user;
+
+            return await query.ToListAsync(cancellationToken);
+        }
+
+        public async Task<bool> HasPasswordAsync(ApplicationUser user,
+           CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+
+            return await Task.FromResult(!string.IsNullOrWhiteSpace(user.PasswordHash));
+        }
+
+        public async Task<int> IncrementAccessFailedCountAsync(ApplicationUser user,
+            CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+            user.AccessFailedCount += 1;
+            return await Task.FromResult(user.AccessFailedCount);
+        }
+
+        public async Task<bool> IsConfirmedAsync(UserManager<ApplicationUser> manager, ApplicationUser user)
+        {
+            ArgumentNullException.ThrowIfNull(manager);
+            ArgumentNullException.ThrowIfNull(user);
+
+            return await Task.FromResult<bool>(await manager.IsEmailConfirmedAsync(user));
+        }
+
+        public async Task<bool> IsInRoleAsync(ApplicationUser user, string roleName,
+           CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(roleName);
+
+            var role = await _context.Roles.FirstOrDefaultAsync(r => r.Name!.Equals(roleName), cancellationToken);
+
+            if (role != null)
+            {
+                var userId = user.Id;
+                var roleId = role.Id;
+                return await _context.UserRoles.AnyAsync(ur => ur.RoleId.Equals(roleId) && ur.UserId.Equals(userId), cancellationToken);
+            }
+            return false;
+        }
+
+        public async Task RemoveClaimsAsync(ApplicationUser user, IEnumerable<Claim> claims,
+            CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+            ArgumentNullException.ThrowIfNull(claims);
+
+            foreach (var claim in claims)
+            {
+                var claimDb =
+                    await _context.UserClaims.SingleOrDefaultAsync(
+                            uc => uc.ClaimType == claim.Type && uc.ClaimValue == claim.Value && uc.UserId == user.Id, cancellationToken);
+
+                if (claimDb != null)
+                {
+                    _context.UserClaims.Remove(claimDb);
+                }
+
+            }
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task RemoveFromRoleAsync(ApplicationUser user, string roleName, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(roleName);
+
+            var role = await _context.Roles.FirstOrDefaultAsync(r => r.Name == roleName, cancellationToken);
+            var userRole = await _context.UserRoles.FirstOrDefaultAsync(r => r.UserId == user.Id && r.RoleId == role!.Id, cancellationToken);
+
+            _context.UserRoles.Remove(userRole!);
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task RemoveLoginAsync(ApplicationUser user, string loginProvider, string providerKey,
+            CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(loginProvider);
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(providerKey);
+
+            var userLoginInDB = await _context.UserLogins.FindAsync(loginProvider, providerKey, cancellationToken);
+
+            if (userLoginInDB != null)
+            {
+                _context.UserLogins.Remove(userLoginInDB);
+                await _context.SaveChangesAsync(cancellationToken);
+            }
+        }
+
+        public async Task ReplaceClaimAsync(ApplicationUser user, Claim claim, Claim newClaim,
+             CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+            ArgumentNullException.ThrowIfNull(claim);
+            ArgumentNullException.ThrowIfNull(newClaim);
+
+            var instance = await _context.UserClaims.SingleOrDefaultAsync(
+                            uc => uc.ClaimType!.Equals(claim.Type) && uc.ClaimValue!.Equals(claim.Value) && uc.UserId == user.Id,
+                            cancellationToken);
+
+            if (instance != null)
+            {
+                var newInstace = new ApplicationUserClaim()
+                {
+                    UserId = user.Id,
+                    ClaimType = newClaim.Type,
+                    ClaimValue = newClaim.Value
+                };
+
+                _context.UserClaims.Remove(instance);
+
+                await _context.UserClaims.AddAsync(newInstace, cancellationToken);
+                await _context.SaveChangesAsync(cancellationToken);
+            }
+        }
+
+        public async Task ResetAccessFailedCountAsync(ApplicationUser user,
+            CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+            user.AccessFailedCount = 0;
+            await Task.FromResult<object>(null!);
+        }
+
+        public async Task SetEmailAsync(ApplicationUser user, string? email,
+              CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(email);
+
+            user.Email = email;
+            await Task.FromResult<object>(null!);
+        }
+
+        public async Task SetEmailConfirmedAsync(ApplicationUser user, bool confirmed,
+           CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+
+            user.EmailConfirmed = confirmed;
+            await Task.FromResult<object>(null!);
+        }
+
+        public async Task SetLockoutEnabledAsync(ApplicationUser user, bool enabled,
+            CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+            ArgumentNullException.ThrowIfNull(enabled);
+
+            user.LockoutEnabled = enabled;
+            await Task.FromResult<object>(null!);
+        }
+
+        public async Task SetLockoutEndDateAsync(ApplicationUser user, DateTimeOffset? lockoutEnd,
+            CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+            ArgumentNullException.ThrowIfNull(lockoutEnd);
+
+            user.LockoutEnd = lockoutEnd;
+            await Task.FromResult<object>(null!);
+        }
+
+        public async Task SetNormalizedEmailAsync(ApplicationUser user, string? normalizedEmail,
+             CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(normalizedEmail);
+
+            user.NormalizedEmail = normalizedEmail;
+            await Task.FromResult<object>(null!);
+        }
+
         public async Task SetNormalizedUserNameAsync(ApplicationUser user, string? normalizedName,
              CancellationToken cancellationToken = default)
         {
@@ -119,6 +543,28 @@ namespace BoardGameBrawl.Identity.Stores
             ArgumentNullException.ThrowIfNullOrWhiteSpace(normalizedName);
 
             user.NormalizedUserName = normalizedName;
+            await Task.FromResult<object>(null!);
+        }
+
+        public async Task SetPasswordHashAsync(ApplicationUser user, string? passwordHash,
+           CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(passwordHash);
+
+            user.PasswordHash = passwordHash;
+            await Task.FromResult<object>(null!);
+        }
+
+        public async Task SetSecurityStampAsync(ApplicationUser user, string stamp,
+           CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(stamp);
+
+            user.SecurityStamp = stamp;
             await Task.FromResult<object>(null!);
         }
 

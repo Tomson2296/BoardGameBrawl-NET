@@ -1,6 +1,7 @@
 ﻿using BoardGameBrawl.Infrastructure.EmailSender;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,9 @@ namespace BoardGameBrawl.Infrastructure
 {
     public static class RegisterInfrastructureServices
     {
-        public static Task<IServiceCollection> RegisterInfraServices(this IServiceCollection services, IConfiguration configuration)
+        public static Task<IServiceCollection> RegisterInfraServices(this IServiceCollection services)
         {
-            services.AddTransient<IEmailSender, MailKitEmailSender>();
+            services.TryAddTransient<IMailKitEmailSender, MailKitEmailSender>();
 
             return Task.FromResult(services);
         }

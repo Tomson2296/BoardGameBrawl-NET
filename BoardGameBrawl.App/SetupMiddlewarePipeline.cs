@@ -15,6 +15,8 @@
 
             app.UseDeveloperExceptionPage();
 
+            app.UseStatusCodePagesWithReExecute("{\0}");
+
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();

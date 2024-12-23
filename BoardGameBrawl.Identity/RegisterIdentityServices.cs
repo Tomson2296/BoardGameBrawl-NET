@@ -38,11 +38,6 @@ namespace BoardGameBrawl.Identity
             services.TryAddScoped<IRoleStore<ApplicationRole>, ApplicationRoleStore>();
             services.TryAddScoped<IRoleClaimStore<ApplicationRole>, ApplicationRoleClaimStore>();
 
-            // Register Custom Identity Managers
-
-            services.TryAddScoped<UserManager<ApplicationUser>, ApplicationUserManager>();
-            services.TryAddScoped<RoleManager<ApplicationRole>, ApplicationRoleManager>();
-           
             return Task.FromResult(services);   
         }
     }

@@ -22,7 +22,7 @@ namespace BoardGameBrawl.Identity.Managers
             ApplicationLookupNormalizer keyNormalizer, 
             IdentityErrorDescriber errors,
             IServiceProvider services, 
-            ILogger<UserManager<ApplicationUser>> logger) : 
+            ILogger<ApplicationUserManager> logger) : 
             base(store, optionsAccessor, passwordHasher, userValidators, passwordValidators, keyNormalizer, errors, services, logger)
         {
         }

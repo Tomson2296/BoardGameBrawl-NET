@@ -1,5 +1,6 @@
-﻿using BoardGameBrawl.Infrastructure.EmailSender;
-using Microsoft.Extensions.Configuration;
+﻿using BoardGameBrawl.Identity;
+using BoardGameBrawl.Infrastructure.DatabaseSeed;
+using BoardGameBrawl.Infrastructure.EmailSender;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
@@ -15,6 +16,8 @@ namespace BoardGameBrawl.Infrastructure
         public static Task<IServiceCollection> RegisterInfraServices(this IServiceCollection services)
         {
             services.TryAddTransient<IMailKitEmailSender, MailKitEmailSender>();
+
+            services.TryAddTransient<IDatabaseSeed<IdentityAppDBContext>, ApplicationUserDatabaseSeed>();
 
             return Task.FromResult(services);
         }

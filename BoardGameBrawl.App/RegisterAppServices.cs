@@ -6,6 +6,7 @@ using BoardGameBrawl.Persistence;
 using BoardGameBrawl.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using BoardGameBrawl.Identity.Services;
 
 namespace BoardGameBrawl.App
 {
@@ -28,6 +29,8 @@ namespace BoardGameBrawl.App
                              options.UseSqlServer(configuration.GetConnectionString("IdentityAppDBConnection"),
                              b => b.MigrationsAssembly(typeof(IdentityAppDBContext).Assembly.FullName)));
 
+            builder.Services.RegisterCustomIdentityServices();
+
             builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = true;
@@ -47,10 +50,9 @@ namespace BoardGameBrawl.App
                 .AddEntityFrameworkStores<IdentityAppDBContext>()
                 .AddUserStore<ApplicationUserStore>()
                 .AddRoleStore<ApplicationRoleStore>()
+                .AddClaimsPrincipalFactory<ApplicationUserClaimsPrincipalFactory>()
                 .AddDefaultTokenProviders()
                 .AddDefaultUI();
-
-            builder.Services.RegisterCustomIdentityServices();
 
             builder.Services.AddAuthentication()
                 .AddGoogle(options =>

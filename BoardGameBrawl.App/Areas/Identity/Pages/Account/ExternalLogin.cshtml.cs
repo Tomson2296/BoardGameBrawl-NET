@@ -17,6 +17,8 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using BoardGameBrawl.Identity.Managers;
 using BoardGameBrawl.Identity.Entities;
+using BoardGameBrawl.Identity.Stores;
+using BoardGameBrawl.Infrastructure.EmailSender;
 
 namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
 {
@@ -25,22 +27,20 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IUserStore<ApplicationUser> _userStore;
-        private readonly IUserEmailStore<ApplicationUser> _emailStore;
-        private readonly IEmailSender _emailSender;
+        private readonly ApplicationUserStore _userStore;
         private readonly ILogger<ExternalLoginModel> _logger;
+        private readonly IMailKitEmailSender _emailSender;
 
         public ExternalLoginModel(
             SignInManager<ApplicationUser>  signInManager,
             UserManager<ApplicationUser> userManager,
-            IUserStore<ApplicationUser>  userStore,
+            ApplicationUserStore userStore,
             ILogger<ExternalLoginModel> logger,
-            IEmailSender emailSender)
+            IMailKitEmailSender emailSender)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _userStore = userStore;
-            _emailStore = GetEmailStore();
             _logger = logger;
             _emailSender = emailSender;
         }
@@ -88,7 +88,7 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
             }
 
             // Sign in the user with this external login provider if the user already has a login.
-            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
+            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: true, bypassTwoFactor: true);
             if (result.Succeeded)
             {
                 _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
@@ -130,7 +130,7 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
                 var user = CreateUser();
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                await _userStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
 
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
@@ -187,13 +187,13 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
             }
         }
 
-        private IUserEmailStore<ApplicationUser>  GetEmailStore()
-        {
-            if (!_userManager.SupportsUserEmail)
-            {
-                throw new NotSupportedException("The default UI requires a user store with email support.");
-            }
-            return (IUserEmailStore<ApplicationUser> )_userStore;
-        }
+        //private IUserEmailStore<ApplicationUser>  GetEmailStore()
+        //{
+        //    if (!_userManager.SupportsUserEmail)
+        //    {
+        //        throw new NotSupportedException("The default UI requires a user store with email support.");
+        //    }
+        //    return (IUserEmailStore<ApplicationUser> )_userStore;
+        //}
     }
 }

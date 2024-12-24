@@ -11,7 +11,7 @@ namespace BoardGameBrawl.Identity.EntityConfiguration
             entity.Property(e => e.UserCreatedDate)
                 .HasColumnName("CreationDate")
                 .ValueGeneratedOnAdd()
-                .HasDefaultValueSql("GETDATE()");
+                .HasDefaultValueSql("getdate()");
 
             // Each User can have many UserClaims
             entity.HasMany(e => e.UserClaims)

@@ -22,6 +22,150 @@ namespace BoardGameBrawl.Identity.Stores
             _context = context;
         }
 
+        // custom ApplicationUser methods //
+
+        public async Task<string?> GetFirstNameAsync(ApplicationUser user,
+           CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+
+            return await Task.FromResult(user.FirstName);
+        }
+
+        public async Task<string?> GetLastNameAsync(ApplicationUser user,
+           CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+
+            return await Task.FromResult(user.LastName);
+        }
+
+        public async Task<string?> GetBGGUsernameAsync(ApplicationUser user,
+           CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+
+            return await Task.FromResult(user.BGGUsername);
+        }
+
+        public async Task<string?> GetUserDescriptionAsync(ApplicationUser user,
+           CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+
+            return await Task.FromResult(user.UserDescription);
+        }
+
+        public async Task<DateOnly?> GetUserCreatedDateAsync(ApplicationUser user,
+           CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+
+            return await Task.FromResult(user.UserCreatedDate);
+        }
+
+        public async Task<DateOnly?> GetUserLastLoginAsync(ApplicationUser user,
+         CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+
+            return await Task.FromResult(user.UserLastLogin);
+        }
+
+        public async Task<byte[]?> GetUserAvatarAsync(ApplicationUser user,
+           CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+
+            return await Task.FromResult(user.UserAvatar);
+        }
+
+        public async Task SetFirstNamelAsync(ApplicationUser user, string? firstName,
+              CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(firstName);
+
+            user.FirstName = firstName;
+            await Task.FromResult<object>(null!);
+        }
+
+        public async Task SetLastNameAsync(ApplicationUser user, string? lastName,
+              CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(lastName);
+
+            user.LastName = lastName;
+            await Task.FromResult<object>(null!);
+        }
+
+        public async Task SetBGGUsernameAsync(ApplicationUser user, string? BGGUsername,
+              CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(BGGUsername);
+
+            user.BGGUsername = BGGUsername;
+            await Task.FromResult<object>(null!);
+        }
+
+        public async Task SetUserDescriptionAsync(ApplicationUser user, string? UserDescription,
+              CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+            ArgumentNullException.ThrowIfNullOrWhiteSpace(UserDescription);
+
+            user.UserDescription = UserDescription;
+            await Task.FromResult<object>(null!);
+        }
+
+        public async Task SetUserCreatedDateAsync(ApplicationUser user, DateOnly UserCreatedDate,
+             CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+            ArgumentNullException.ThrowIfNull(UserCreatedDate);
+
+            user.UserCreatedDate = UserCreatedDate;
+            await Task.FromResult<object>(null!);
+        }
+
+        public async Task SetUserLastLoginAsync(ApplicationUser user, DateOnly? UserLastLogin,
+                     CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+            ArgumentNullException.ThrowIfNull(UserLastLogin);
+
+            user.UserLastLogin = UserLastLogin;
+            await Task.FromResult<object>(null!);
+        }
+
+        public async Task SetUserAvatarAsync(ApplicationUser user, byte[]? UserAvatar,
+                     CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+            ArgumentNullException.ThrowIfNull(UserAvatar);
+
+            user.UserAvatar = UserAvatar;
+            await Task.FromResult<object>(null!);
+        }
+
+        // 
+        
         public async Task AddClaimsAsync(ApplicationUser user, IEnumerable<Claim> claims,
               CancellationToken cancellationToken = default)
         {

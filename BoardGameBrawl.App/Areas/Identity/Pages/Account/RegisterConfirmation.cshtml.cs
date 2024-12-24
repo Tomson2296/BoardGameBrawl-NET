@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BoardGameBrawl.Identity.Entities;
 using BoardGameBrawl.Identity.Managers;
+using BoardGameBrawl.Infrastructure.EmailSender;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -18,9 +19,9 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
     public class RegisterConfirmationModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IEmailSender _sender;
+        private readonly IMailKitEmailSender _sender;
 
-        public RegisterConfirmationModel(UserManager<ApplicationUser> userManager, IEmailSender sender)
+        public RegisterConfirmationModel(UserManager<ApplicationUser> userManager, IMailKitEmailSender sender)
         {
             _userManager = userManager;
             _sender = sender;
@@ -47,6 +48,7 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
             }
 
             Email = email;
+           
             // Once you add a real email sender, you should remove this code that lets you confirm the account
             DisplayConfirmAccountLink = true;
             if (DisplayConfirmAccountLink)

@@ -1,4 +1,4 @@
-﻿using BoardGameBrawl.Domain.Entities;
+﻿using BoardGameBrawl.Domain.Entities.Match_Related;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Newtonsoft.Json;
 using System;

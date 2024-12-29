@@ -5,30 +5,34 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace BoardGameBrawl.Infrastructure.DatabaseSeed
 {
-    public class ApplicationUserDatabaseSeed : IDatabaseSeed<IdentityAppDBContext>
+    public class ApplicationUserDatabaseSeed 
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly IdentityAppDBContext _context;
 
         public ApplicationUserDatabaseSeed(
             UserManager<ApplicationUser> userManager,
-            RoleManager<ApplicationRole> roleManager)
+            RoleManager<ApplicationRole> roleManager,
+            IdentityAppDBContext context)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _context = context;
         }
 
-        public async Task SeedDatabaseAsync(IdentityAppDBContext context)
+        public async Task SeedDatabaseAsync()
         {
-            await context.Database.EnsureCreatedAsync();
+            await _context.Database.EnsureCreatedAsync();
 
-            if (await context.Users.AnyAsync(u => u.UserName!.Equals("admin")))
+            if (await _context.Users.AnyAsync(u => u.UserName!.Equals("admin")))
             {
                 return;
             }
@@ -46,7 +50,7 @@ namespace BoardGameBrawl.Infrastructure.DatabaseSeed
             await _userManager.CreateAsync(admin);
             await _userManager.AddPasswordAsync(admin, "Admin123!");
 
-            if (await context.Roles.AnyAsync(r => r.Name!.Equals("Administrator")))
+            if (await _context.Roles.AnyAsync(r => r.Name!.Equals("Administrator")))
             {
                 return;
             }
@@ -139,7 +143,7 @@ namespace BoardGameBrawl.Infrastructure.DatabaseSeed
                 }
             }
 
-            await context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
     }
 }

@@ -1,4 +1,8 @@
-﻿using BoardGameBrawl.Domain.Entities;
+﻿using BoardGameBrawl.Domain.Entities.Boardgame_Related;
+using BoardGameBrawl.Domain.Entities.Group_Related;
+using BoardGameBrawl.Domain.Entities.Match_Related;
+using BoardGameBrawl.Domain.Entities.Player_Related;
+using BoardGameBrawl.Domain.Entities.Tournament_Related;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

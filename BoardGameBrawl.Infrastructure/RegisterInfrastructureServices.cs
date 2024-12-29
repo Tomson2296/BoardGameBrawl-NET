@@ -17,7 +17,9 @@ namespace BoardGameBrawl.Infrastructure
         {
             services.TryAddTransient<IMailKitEmailSender, MailKitEmailSender>();
 
-            services.TryAddTransient<IDatabaseSeed<IdentityAppDBContext>, ApplicationUserDatabaseSeed>();
+            services.TryAddTransient<ApplicationUserDatabaseSeed>();
+
+            services.TryAddTransient<BoardgamesDatabaseSeed>();
 
             return Task.FromResult(services);
         }

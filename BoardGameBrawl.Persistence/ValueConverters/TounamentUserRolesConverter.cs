@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace BoardGameBrawl.Persistence.ValueConverters
 {
-    internal class TournamentProgressTypeConverter : ValueConverter<TournnamentProgress, string>
+    internal class TounrnamentUserRolesConverter : ValueConverter<TournamentUserRoles, string>
     {
-        public TournamentProgressTypeConverter() : base(
+        public TounrnamentUserRolesConverter() : base(
         v => JsonConvert.SerializeObject(v),
-        v => JsonConvert.DeserializeObject<TournnamentProgress>(v))
+        v => JsonConvert.DeserializeObject<TournamentUserRoles>(v))
         { }
     }
 }

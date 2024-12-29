@@ -14,11 +14,11 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration
     {
         public void Configure(EntityTypeBuilder<UserRatings> entity)
         {
-            entity.HasKey(e => new { e.AppUserId, e.BoardgameId });
+            entity.HasKey(e => new { e.PlayerId, e.BoardgameId });
 
-            entity.HasOne(e => e.User)
+            entity.HasOne(e => e.Player)
                .WithMany(u => u.UserRatings)
-               .HasForeignKey(e => e.AppUserId);
+               .HasForeignKey(e => e.PlayerId);
 
             entity.HasOne(e => e.Boardgame)
                 .WithMany(b => b.UserRatings)

@@ -13,15 +13,15 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration
     {
         public void Configure(EntityTypeBuilder<GroupParticipants> entity)
         {
-            entity.HasKey(e => new { e.GroupId, e.UserId });
+            entity.HasKey(e => new { e.GroupId, e.PlayerId });
 
             entity.HasOne(e => e.Group)
                .WithMany(g => g.GroupParticipants)
                .HasForeignKey(e => e.GroupId);
 
-            entity.HasOne(e => e.User)
+            entity.HasOne(e => e.Player)
                 .WithMany(u => u.GroupParticipants)
-                .HasForeignKey(e => e.UserId);
+                .HasForeignKey(e => e.PlayerId);
 
             //entity.HasQueryFilter(e => !e.IsSoftDeleted);
 

@@ -9,9 +9,9 @@ namespace BoardGameBrawl.Domain.Entities
 {
     public class UserRatings
     {
-        public Guid? AppUserId { get; set; }
+        public Guid? PlayerId { get; set; }
 
-        public AppUser? User { get; set; }
+        public Player? Player { get; set; }
 
         public Guid? BoardgameId { get; set; }
 

@@ -13,9 +13,9 @@ namespace BoardGameBrawl.Domain.Entities
 
         public Group? Group { get; set; }
 
-        public Guid? UserId { get; set; }
+        public Guid? PlayerId { get; set; }
 
-        public AppUser? User { get; set; }
+        public Player? Player { get; set; }
 
         //public bool IsSoftDeleted { get; set; } = false;
 

@@ -28,6 +28,7 @@ namespace BoardGameBrawl.Domain.Entities
 
         public Guid? BoardgameId { get; set; }
 
+        
         //public MatchResult MatchResult { get; set; }
     }
 

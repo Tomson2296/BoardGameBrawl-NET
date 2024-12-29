@@ -41,7 +41,7 @@ namespace BoardGameBrawl.Persistence
 
         public DbSet<BoardgameMechanicTag> BoardgameMechanicTags { get; set; }
 
-        public DbSet<AppUser> AppUsers { get; set; }
+        public DbSet<Player> Players { get; set; }
 
         public DbSet<Group> Groups { get; set; }
 

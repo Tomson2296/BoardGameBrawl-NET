@@ -1,11 +1,6 @@
 ﻿using BoardGameBrawl.Domain.Entities.Boardgame_Related;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BoardGameBrawl.Persistence.EntityConfiguration.Boardgame_Related
 {
@@ -22,8 +17,6 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Boardgame_Related
             entity.HasOne(e => e.BoardgameMechanic)
                 .WithMany(m => m.BoardgameMechanicTags)
                 .HasForeignKey(e => e.MechanicId);
-
-            //entity.HasQueryFilter(e => !e.IsSoftDeleted);
 
             entity.ToTable("BoardgameMechanicTags");
         }

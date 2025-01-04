@@ -6,7 +6,7 @@
 
         public Boardgame? Boardgame { get; set; }
 
-        public int? CategoryId { get; set; }
+        public Guid? CategoryId { get; set; }
 
         public BoardgameCategory? BoardgameCategory { get; set; }
     }

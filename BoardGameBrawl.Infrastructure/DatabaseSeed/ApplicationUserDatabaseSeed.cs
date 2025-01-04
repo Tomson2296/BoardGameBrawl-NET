@@ -98,7 +98,7 @@ namespace BoardGameBrawl.Infrastructure.DatabaseSeed
             {
                 while (!reader.EndOfStream)
                 {
-                    string line = reader.ReadLine();
+                    string? line = reader.ReadLine();
                     string[] values = line!.Split(',');
 
                     if (firstLine)

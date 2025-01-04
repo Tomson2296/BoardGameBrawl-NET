@@ -23,8 +23,7 @@ namespace BoardGameBrawl.Persistence.Migrations
                 schema: "dbo",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Category = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsSoftDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -44,7 +43,7 @@ namespace BoardGameBrawl.Persistence.Migrations
                 columns: table => new
                 {
                     BoardgameId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: false),
+                    CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IsSoftDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },

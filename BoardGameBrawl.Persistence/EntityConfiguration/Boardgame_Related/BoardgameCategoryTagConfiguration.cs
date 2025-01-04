@@ -2,11 +2,6 @@
 using BoardGameBrawl.Domain.Entities.Boardgame_Related;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BoardGameBrawl.Persistence.EntityConfiguration.Boardgame_Related
 {
@@ -23,8 +18,6 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Boardgame_Related
             entity.HasOne(e => e.BoardgameCategory)
                 .WithMany(c => c.BoardgameCategoryTags)
                 .HasForeignKey(e => e.CategoryId);
-
-            //entity.HasQueryFilter(e => !e.IsSoftDeleted);
 
             entity.ToTable("BoardgameCategoryTags");
         }

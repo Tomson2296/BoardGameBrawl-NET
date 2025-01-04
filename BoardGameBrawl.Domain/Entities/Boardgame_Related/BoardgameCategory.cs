@@ -1,12 +1,10 @@
 ﻿using BoardGameBrawl.Domain.Common;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BoardGameBrawl.Domain.Entities.Boardgame_Related
 {
     public class BoardgameCategory : BaseEntity
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid(); 
 
         public string? Category { get; set; }
 

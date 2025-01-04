@@ -6,7 +6,7 @@
 
         public Boardgame? Boardgame { get; set; }
 
-        public int? MechanicId { get; set; }
+        public Guid? MechanicId { get; set; }
 
         public BoardgameMechanic? BoardgameMechanic { get; set; }
     }

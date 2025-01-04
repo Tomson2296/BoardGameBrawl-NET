@@ -1,11 +1,6 @@
 ﻿using BoardGameBrawl.Domain.Entities.Boardgame_Related;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BoardGameBrawl.Persistence.EntityConfiguration.Boardgame_Related
 {
@@ -25,9 +20,6 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Boardgame_Related
             entity.HasIndex(e => e.BGGId)
                 .HasDatabaseName("BGGIdIndex")
                 .IsUnique();
-
-            entity.Property(e => e.ImageFilePath)
-                .HasMaxLength(512);
 
             entity.Property(e => e.Description)
                 .HasMaxLength(2048);

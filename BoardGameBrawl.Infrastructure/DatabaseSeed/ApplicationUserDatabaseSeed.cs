@@ -2,37 +2,31 @@
 using BoardGameBrawl.Identity.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BoardGameBrawl.Infrastructure.DatabaseSeed
 {
-    public class ApplicationUserDatabaseSeed 
+    public class ApplicationUserDatabaseSeed
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
-        private readonly IdentityAppDBContext _context;
+        private readonly IdentityAppDBContext _DBContext;
 
         public ApplicationUserDatabaseSeed(
-            UserManager<ApplicationUser> userManager,
-            RoleManager<ApplicationRole> roleManager,
-            IdentityAppDBContext context)
+            UserManager<ApplicationUser> _userManager,
+            RoleManager<ApplicationRole> _roleManager,
+            IdentityAppDBContext dBContext)
         {
-            _userManager = userManager;
-            _roleManager = roleManager;
-            _context = context;
+            this._userManager = _userManager;
+            this._roleManager = _roleManager;
+            this._DBContext = dBContext;
         }
 
         public async Task SeedDatabaseAsync()
         {
-            await _context.Database.EnsureCreatedAsync();
+            await _DBContext.Database.EnsureCreatedAsync();
 
-            if (await _context.Users.AnyAsync(u => u.UserName!.Equals("admin")))
+            if (await _DBContext.Users.AnyAsync(u => u.UserName!.Equals("admin")))
             {
                 return;
             }
@@ -50,7 +44,7 @@ namespace BoardGameBrawl.Infrastructure.DatabaseSeed
             await _userManager.CreateAsync(admin);
             await _userManager.AddPasswordAsync(admin, "Admin123!");
 
-            if (await _context.Roles.AnyAsync(r => r.Name!.Equals("Administrator")))
+            if (await _DBContext.Roles.AnyAsync(r => r.Name!.Equals("Administrator")))
             {
                 return;
             }
@@ -143,7 +137,7 @@ namespace BoardGameBrawl.Infrastructure.DatabaseSeed
                 }
             }
 
-            await _context.SaveChangesAsync();
+            await _DBContext.SaveChangesAsync();
         }
     }
 }

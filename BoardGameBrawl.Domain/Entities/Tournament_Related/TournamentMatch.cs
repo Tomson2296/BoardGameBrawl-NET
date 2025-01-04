@@ -1,12 +1,4 @@
-﻿#nullable disable
-using BoardGameBrawl;
-using BoardGameBrawl.Domain.Entities.Match_Related;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BoardGameBrawl.Domain.Entities.Match_Related;
 
 namespace BoardGameBrawl.Domain.Entities.Tournament_Related
 {
@@ -24,7 +16,7 @@ namespace BoardGameBrawl.Domain.Entities.Tournament_Related
 
         public int NumberOfPlayers { get; set; }
 
-        public Dictionary<string, MatchUserRoles> Participants { get; set; }
+        public Dictionary<string, MatchUserRoles>? Participants { get; set; }
 
         public Guid? BoardgameId { get; set; }
 

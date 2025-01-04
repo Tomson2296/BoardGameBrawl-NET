@@ -1,5 +1,4 @@
-﻿#nullable disable
-namespace BoardGameBrawl.Domain.Entities.Tournament_Related
+﻿namespace BoardGameBrawl.Domain.Entities.Tournament_Related
 {
     public enum TournnamentProgress
     {

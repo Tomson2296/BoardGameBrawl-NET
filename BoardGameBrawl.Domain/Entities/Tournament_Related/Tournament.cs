@@ -1,12 +1,4 @@
-﻿#nullable disable
-using BoardGameBrawl.Domain.Common;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BoardGameBrawl.Domain.Common;
 
 namespace BoardGameBrawl.Domain.Entities.Tournament_Related
 {
@@ -14,7 +6,7 @@ namespace BoardGameBrawl.Domain.Entities.Tournament_Related
     {
         public Guid Id { get; set; } = Guid.NewGuid();
 
-        public string TournamentName { get; set; }
+        public string? TournamentName { get; set; }
 
         public TournnamentProgress TournnamentProgress { get; set; }
 
@@ -24,19 +16,14 @@ namespace BoardGameBrawl.Domain.Entities.Tournament_Related
 
         public DateTime TournamentDate_Ended { get; set; }
 
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         public short MaxNumberOfPlayers { get; set; }
 
         public Guid BoardgameId { get; set; }
 
-        public Dictionary<string, TournamentUserRoles> TournamentParticipants { get; set; }
+        public Dictionary<string, TournamentUserRoles>? TournamentParticipants { get; set; }
 
-        public ICollection<TournamentMatch> TournamentMatches { get; set; }
-
-
-        //public bool IsSoftDeleted { get; set; } = false;
-
-        //public DateTime DeletedDate { get; set; }
+        public ICollection<TournamentMatch>? TournamentMatches { get; set; }
     }
 }

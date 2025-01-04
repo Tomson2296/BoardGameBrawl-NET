@@ -1,10 +1,4 @@
-﻿using BoardGameBrawl.Domain.Common;
-using BoardGameBrawl.Domain.Entities.Boardgame_Related;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BoardGameBrawl.Domain.Entities.Boardgame_Related;
 
 namespace BoardGameBrawl.Domain.Entities.Player_Related
 {
@@ -19,12 +13,5 @@ namespace BoardGameBrawl.Domain.Entities.Player_Related
         public Boardgame? Boardgame { get; set; }
 
         public short? Rating { get; set; }
-
-        public DateTime? RatingDateTime { get; set; }
-
-
-        //public bool IsSoftDeleted { get; set; } = false;
-
-        //public DateTime DeletedDate { get; set; }
     }
 }

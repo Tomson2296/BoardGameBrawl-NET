@@ -1,10 +1,4 @@
-﻿using BoardGameBrawl.Domain.Common;
-using BoardGameBrawl.Domain.Entities.Group_Related;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using BoardGameBrawl.Domain.Entities.Group_Related;
 
 namespace BoardGameBrawl.Domain.Entities.Player_Related
 {
@@ -18,8 +12,5 @@ namespace BoardGameBrawl.Domain.Entities.Player_Related
 
         public Player? Player { get; set; }
 
-        //public bool IsSoftDeleted { get; set; } = false;
-
-        //public DateTime DeletedDate { get; set; }
     }
 }

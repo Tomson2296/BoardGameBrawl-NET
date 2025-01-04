@@ -19,11 +19,11 @@ namespace BoardGameBrawl.Identity
         {
             // Register Custom Identity Services
             services.AddScoped<ILookupNormalizer, ApplicationLookupNormalizer>();
-            services.AddScoped<ApplicationUserClaimsPrincipalFactory>();
+            services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();
 
             // Register Custom Identity Stores
-            services.AddScoped<ApplicationUserStore>();
-            services.AddScoped<ApplicationRoleStore>();
+            services.AddScoped<IUserStore<ApplicationUser>, ApplicationUserStore>();
+            services.AddScoped<IRoleStore<ApplicationRole>, ApplicationRoleStore>();
            
             //services.AddScoped<ApplicationUserRoleStore>();
             //services.AddScoped<ApplicationUserClaimStore>();

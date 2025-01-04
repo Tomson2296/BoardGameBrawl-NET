@@ -2,12 +2,6 @@
 using BoardGameBrawl.Domain.Entities.Match_Related;
 using BoardGameBrawl.Domain.Entities.Player_Related;
 using BoardGameBrawl.Domain.Entities.Tournament_Related;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BoardGameBrawl.Domain.Entities.Boardgame_Related
 {
@@ -31,16 +25,11 @@ namespace BoardGameBrawl.Domain.Entities.Boardgame_Related
 
         public short MaximumPlayingTime { get; set; }
 
-        public string? ImageFilePath { get; set; }
+        public float BGGWeight { get; set; }
 
         public byte[]? Image { get; set; }
         
         public string? Description { get; set; }
-
-
-        //public bool IsSoftDeleted { get; set; } = false;
-
-        //public DateTime DeletedDate { get; set; }
 
         public ICollection<BoardgameCategoryTag>? BoardgameCategoryTags { get; set; }
 

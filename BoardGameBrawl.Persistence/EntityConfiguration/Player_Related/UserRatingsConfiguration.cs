@@ -27,10 +27,6 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Player_Related
             entity.Property(e => e.Rating)
                .IsRequired();
 
-            entity.Property(e => e.RatingDateTime)
-                .ValueGeneratedOnAdd()
-                .HasDefaultValueSql("GETDATE()");
-
             //entity.HasQueryFilter(e => !e.IsSoftDeleted);
 
             entity.ToTable("UserRatings");

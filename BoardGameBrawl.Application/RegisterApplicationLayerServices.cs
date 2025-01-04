@@ -7,6 +7,7 @@ namespace BoardGameBrawl.Application
         public static Task<IServiceCollection> RegisterApplicationServices(this IServiceCollection services)
         {
 
+
             return Task.FromResult(services);
         }
     }

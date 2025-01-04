@@ -18,7 +18,7 @@ namespace BoardGameBrawl.Identity.Stores
 
         // custom ApplicationUser methods //
 
-        public async Task<string?> GetFirstNameAsync(ApplicationUser user,
+        public async static Task<string?> GetFirstNameAsync(ApplicationUser user,
            CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -27,7 +27,7 @@ namespace BoardGameBrawl.Identity.Stores
             return await Task.FromResult(user.FirstName);
         }
 
-        public async Task<string?> GetLastNameAsync(ApplicationUser user,
+        public async static Task<string?> GetLastNameAsync(ApplicationUser user,
            CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -36,7 +36,7 @@ namespace BoardGameBrawl.Identity.Stores
             return await Task.FromResult(user.LastName);
         }
 
-        public async Task<string?> GetBGGUsernameAsync(ApplicationUser user,
+        public async static Task<string?> GetBGGUsernameAsync(ApplicationUser user,
            CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -45,7 +45,7 @@ namespace BoardGameBrawl.Identity.Stores
             return await Task.FromResult(user.BGGUsername);
         }
 
-        public async Task<string?> GetUserDescriptionAsync(ApplicationUser user,
+        public async static Task<string?> GetUserDescriptionAsync(ApplicationUser user,
            CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -54,7 +54,7 @@ namespace BoardGameBrawl.Identity.Stores
             return await Task.FromResult(user.UserDescription);
         }
 
-        public async Task<DateOnly?> GetUserCreatedDateAsync(ApplicationUser user,
+        public async static Task<DateOnly?> GetUserCreatedDateAsync(ApplicationUser user,
            CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -63,7 +63,7 @@ namespace BoardGameBrawl.Identity.Stores
             return await Task.FromResult(user.UserCreatedDate);
         }
 
-        public async Task<DateOnly?> GetUserLastLoginAsync(ApplicationUser user,
+        public async static Task<DateOnly?> GetUserLastLoginAsync(ApplicationUser user,
          CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -72,7 +72,7 @@ namespace BoardGameBrawl.Identity.Stores
             return await Task.FromResult(user.UserLastLogin);
         }
 
-        public async Task<byte[]?> GetUserAvatarAsync(ApplicationUser user,
+        public async static Task<byte[]?> GetUserAvatarAsync(ApplicationUser user,
            CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -81,51 +81,67 @@ namespace BoardGameBrawl.Identity.Stores
             return await Task.FromResult(user.UserAvatar);
         }
 
-        public async Task SetFirstNamelAsync(ApplicationUser user, string? firstName,
+        public static Task SetFirstNamelAsync(ApplicationUser user, string? firstName,
               CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(user);
-            ArgumentNullException.ThrowIfNullOrWhiteSpace(firstName);
+
+            if (string.IsNullOrWhiteSpace(firstName))
+            {
+                throw new ArgumentException("First name cannot be null or whitespace.", nameof(firstName));
+            }
 
             user.FirstName = firstName;
-            await Task.FromResult<object>(null!);
+            return Task.CompletedTask;
         }
 
-        public async Task SetLastNameAsync(ApplicationUser user, string? lastName,
+        public static Task SetLastNameAsync(ApplicationUser user, string? lastName,
               CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(user);
-            ArgumentNullException.ThrowIfNullOrWhiteSpace(lastName);
+
+            if (string.IsNullOrWhiteSpace(lastName))
+            {
+                throw new ArgumentException("Last name cannot be null or whitespace.", nameof(lastName));
+            }
 
             user.LastName = lastName;
-            await Task.FromResult<object>(null!);
+            return Task.CompletedTask;
         }
 
-        public async Task SetBGGUsernameAsync(ApplicationUser user, string? BGGUsername,
+        public static Task SetBGGUsernameAsync(ApplicationUser user, string? BGGUsername,
               CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(user);
-            ArgumentNullException.ThrowIfNullOrWhiteSpace(BGGUsername);
+
+            if (string.IsNullOrWhiteSpace(BGGUsername))
+            {
+                throw new ArgumentException("BGGUsername cannot be null or whitespace.", nameof(BGGUsername));
+            }
 
             user.BGGUsername = BGGUsername;
-            await Task.FromResult<object>(null!);
+            return Task.CompletedTask;
         }
 
-        public async Task SetUserDescriptionAsync(ApplicationUser user, string? UserDescription,
+        public static Task SetUserDescriptionAsync(ApplicationUser user, string? UserDescription,
               CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(user);
-            ArgumentNullException.ThrowIfNullOrWhiteSpace(UserDescription);
+
+            if (string.IsNullOrWhiteSpace(UserDescription))
+            {
+                throw new ArgumentException("User description cannot be null or whitespace.", nameof(UserDescription));
+            }
 
             user.UserDescription = UserDescription;
-            await Task.FromResult<object>(null!);
+            return Task.CompletedTask;
         }
 
-        public async Task SetUserCreatedDateAsync(ApplicationUser user, DateOnly UserCreatedDate,
+        public static Task SetUserCreatedDateAsync(ApplicationUser user, DateOnly UserCreatedDate,
              CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -133,10 +149,10 @@ namespace BoardGameBrawl.Identity.Stores
             ArgumentNullException.ThrowIfNull(UserCreatedDate);
 
             user.UserCreatedDate = UserCreatedDate;
-            await Task.FromResult<object>(null!);
+            return Task.CompletedTask;
         }
 
-        public async Task SetUserLastLoginAsync(ApplicationUser user, DateOnly? UserLastLogin,
+        public static Task SetUserLastLoginAsync(ApplicationUser user, DateOnly? UserLastLogin,
                      CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -144,10 +160,10 @@ namespace BoardGameBrawl.Identity.Stores
             ArgumentNullException.ThrowIfNull(UserLastLogin);
 
             user.UserLastLogin = UserLastLogin;
-            await Task.FromResult<object>(null!);
+            return Task.CompletedTask;
         }
 
-        public async Task SetUserAvatarAsync(ApplicationUser user, byte[]? UserAvatar,
+        public static Task SetUserAvatarAsync(ApplicationUser user, byte[]? UserAvatar,
                      CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -155,7 +171,7 @@ namespace BoardGameBrawl.Identity.Stores
             ArgumentNullException.ThrowIfNull(UserAvatar);
 
             user.UserAvatar = UserAvatar;
-            await Task.FromResult<object>(null!);
+            return Task.CompletedTask;
         }
 
         // 
@@ -216,7 +232,11 @@ namespace BoardGameBrawl.Identity.Stores
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(user);
-            ArgumentNullException.ThrowIfNullOrWhiteSpace(roleName);
+
+            if (string.IsNullOrWhiteSpace(roleName))
+            {
+                throw new ArgumentException("Role name cannot be null or whitespace.", nameof(roleName));
+            }
 
             var roleEntity = await _context.Roles.FirstOrDefaultAsync(r => r.Name!.Equals(roleName), cancellationToken);
 
@@ -278,7 +298,11 @@ namespace BoardGameBrawl.Identity.Stores
            CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            ArgumentNullException.ThrowIfNullOrWhiteSpace(normalizedEmail);
+
+            if (string.IsNullOrWhiteSpace(normalizedEmail))
+            {
+                throw new ArgumentException("Email cannot be null or whitespace.", nameof(normalizedEmail));
+            }
 
             return await _context.Users.SingleOrDefaultAsync(u => u.NormalizedEmail!.Equals(normalizedEmail), cancellationToken);
         }
@@ -287,7 +311,11 @@ namespace BoardGameBrawl.Identity.Stores
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            ArgumentNullException.ThrowIfNullOrWhiteSpace(userId);
+
+            if (string.IsNullOrWhiteSpace(userId))
+            {
+                throw new ArgumentException("UserId cannot be null or whitespace.", nameof(userId));
+            }
 
             if (!Guid.TryParse(userId, out Guid idGuid))
             {
@@ -301,8 +329,16 @@ namespace BoardGameBrawl.Identity.Stores
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            ArgumentNullException.ThrowIfNullOrWhiteSpace(loginProvider);
-            ArgumentNullException.ThrowIfNullOrWhiteSpace(providerKey);
+
+            if (string.IsNullOrWhiteSpace(loginProvider))
+            {
+                throw new ArgumentException("LoginProvider cannot be null or whitespace.", nameof(loginProvider));
+            }
+
+            if (string.IsNullOrWhiteSpace(providerKey))
+            {
+                throw new ArgumentException("ProviderKey cannot be null or whitespace.", nameof(providerKey));
+            }
 
             var query = from userLogin in _context.UserLogins
                         where userLogin.LoginProvider.Equals(loginProvider)
@@ -317,7 +353,11 @@ namespace BoardGameBrawl.Identity.Stores
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            ArgumentNullException.ThrowIfNullOrWhiteSpace(normalizedUserName);
+            
+            if (string.IsNullOrWhiteSpace(normalizedUserName))
+            {
+                throw new ArgumentException("UserName cannot be null or whitespace.", nameof(normalizedUserName));
+            }
 
             return await _context.Users.SingleOrDefaultAsync(u => u.NormalizedUserName!.Equals(normalizedUserName), cancellationToken);
         }
@@ -509,7 +549,7 @@ namespace BoardGameBrawl.Identity.Stores
             ArgumentNullException.ThrowIfNull(manager);
             ArgumentNullException.ThrowIfNull(user);
 
-            return await Task.FromResult<bool>(await manager.IsEmailConfirmedAsync(user));
+            return await Task.FromResult(await manager.IsEmailConfirmedAsync(user));
         }
 
         public async Task<bool> IsInRoleAsync(ApplicationUser user, string roleName,
@@ -517,7 +557,11 @@ namespace BoardGameBrawl.Identity.Stores
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(user);
-            ArgumentNullException.ThrowIfNullOrWhiteSpace(roleName);
+
+            if (string.IsNullOrWhiteSpace(roleName))
+            {
+                throw new ArgumentException("Role name cannot be null or whitespace.", nameof(roleName));
+            }
 
             var role = await _context.Roles.FirstOrDefaultAsync(r => r.Name!.Equals(roleName), cancellationToken);
 
@@ -556,7 +600,11 @@ namespace BoardGameBrawl.Identity.Stores
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(user);
-            ArgumentNullException.ThrowIfNullOrWhiteSpace(roleName);
+
+            if (string.IsNullOrWhiteSpace(roleName))
+            {
+                throw new ArgumentException("Role name cannot be null or whitespace.", nameof(roleName));
+            }
 
             var role = await _context.Roles.FirstOrDefaultAsync(r => r.Name == roleName, cancellationToken);
             var userRole = await _context.UserRoles.FirstOrDefaultAsync(r => r.UserId == user.Id && r.RoleId == role!.Id, cancellationToken);
@@ -570,8 +618,15 @@ namespace BoardGameBrawl.Identity.Stores
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(user);
-            ArgumentNullException.ThrowIfNullOrWhiteSpace(loginProvider);
-            ArgumentNullException.ThrowIfNullOrWhiteSpace(providerKey);
+
+            if (string.IsNullOrWhiteSpace(loginProvider))
+            {
+                throw new ArgumentException("LoginProvider cannot be null or whitespace.", nameof(loginProvider));
+            }
+            if (string.IsNullOrWhiteSpace(providerKey))
+            {
+                throw new ArgumentException("ProviderKey cannot be null or whitespace.", nameof(providerKey));
+            }
 
             var userLoginInDB = await _context.UserLogins.FindAsync(loginProvider, providerKey, cancellationToken);
 
@@ -610,37 +665,43 @@ namespace BoardGameBrawl.Identity.Stores
             }
         }
 
-        public async Task ResetAccessFailedCountAsync(ApplicationUser user,
+        public Task ResetAccessFailedCountAsync(ApplicationUser user,
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(user);
+
             user.AccessFailedCount = 0;
-            await Task.FromResult<object>(null!);
+            return Task.CompletedTask;
         }
 
-        public async Task SetEmailAsync(ApplicationUser user, string? email,
+        public Task SetEmailAsync(ApplicationUser user, string? email,
               CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(user);
-            ArgumentNullException.ThrowIfNullOrWhiteSpace(email);
+
+            if (string.IsNullOrWhiteSpace(email))
+            {
+                throw new ArgumentException("Email cannot be null or whitespace.", nameof(email));
+            }
 
             user.Email = email;
-            await Task.FromResult<object>(null!);
+            return Task.CompletedTask;
         }
 
-        public async Task SetEmailConfirmedAsync(ApplicationUser user, bool confirmed,
+        public Task SetEmailConfirmedAsync(ApplicationUser user, bool confirmed,
            CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(user);
+            ArgumentNullException.ThrowIfNull(confirmed);
 
             user.EmailConfirmed = confirmed;
-            await Task.FromResult<object>(null!);
+            return Task.CompletedTask;
         }
 
-        public async Task SetLockoutEnabledAsync(ApplicationUser user, bool enabled,
+        public Task SetLockoutEnabledAsync(ApplicationUser user, bool enabled,
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -648,10 +709,10 @@ namespace BoardGameBrawl.Identity.Stores
             ArgumentNullException.ThrowIfNull(enabled);
 
             user.LockoutEnabled = enabled;
-            await Task.FromResult<object>(null!);
+            return Task.CompletedTask;
         }
 
-        public async Task SetLockoutEndDateAsync(ApplicationUser user, DateTimeOffset? lockoutEnd,
+        public Task SetLockoutEndDateAsync(ApplicationUser user, DateTimeOffset? lockoutEnd,
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -659,62 +720,82 @@ namespace BoardGameBrawl.Identity.Stores
             ArgumentNullException.ThrowIfNull(lockoutEnd);
 
             user.LockoutEnd = lockoutEnd;
-            await Task.FromResult<object>(null!);
+            return Task.CompletedTask;
         }
 
-        public async Task SetNormalizedEmailAsync(ApplicationUser user, string? normalizedEmail,
+        public Task SetNormalizedEmailAsync(ApplicationUser user, string? normalizedEmail,
              CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(user);
-            ArgumentNullException.ThrowIfNullOrWhiteSpace(normalizedEmail);
+            
+            if (string.IsNullOrWhiteSpace(normalizedEmail))
+            {
+                throw new ArgumentException("Email cannot be null or whitespace.", nameof(normalizedEmail));
+            }
 
             user.NormalizedEmail = normalizedEmail;
-            await Task.FromResult<object>(null!);
+            return Task.CompletedTask;
         }
 
-        public async Task SetNormalizedUserNameAsync(ApplicationUser user, string? normalizedName,
+        public Task SetNormalizedUserNameAsync(ApplicationUser user, string? normalizedName,
              CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(user);
-            ArgumentNullException.ThrowIfNullOrWhiteSpace(normalizedName);
+            
+            if (string.IsNullOrWhiteSpace(normalizedName))
+            {
+                throw new ArgumentException("Name cannot be null or whitespace.", nameof(normalizedName));
+            }
 
             user.NormalizedUserName = normalizedName;
-            await Task.FromResult<object>(null!);
+            return Task.CompletedTask;
         }
 
-        public async Task SetPasswordHashAsync(ApplicationUser user, string? passwordHash,
+        public Task SetPasswordHashAsync(ApplicationUser user, string? passwordHash,
            CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(user);
-            ArgumentNullException.ThrowIfNullOrWhiteSpace(passwordHash);
+           
+            if (string.IsNullOrWhiteSpace(passwordHash))
+            {
+                throw new ArgumentException("Password hash cannot be null or whitespace.", nameof(passwordHash));
+            }
 
             user.PasswordHash = passwordHash;
-            await Task.FromResult<object>(null!);
+            return Task.CompletedTask;
         }
 
-        public async Task SetSecurityStampAsync(ApplicationUser user, string stamp,
+        public Task SetSecurityStampAsync(ApplicationUser user, string stamp,
            CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(user);
-            ArgumentNullException.ThrowIfNullOrWhiteSpace(stamp);
+            
+            if (string.IsNullOrWhiteSpace(stamp))
+            {
+                throw new ArgumentException("Stamp cannot be null or whitespace.", nameof(stamp));
+            }
 
             user.SecurityStamp = stamp;
-            await Task.FromResult<object>(null!);
+            return Task.CompletedTask;
         }
 
-        public async Task SetUserNameAsync(ApplicationUser user, string? userName,
+        public Task SetUserNameAsync(ApplicationUser user, string? userName,
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(user);
-            ArgumentNullException.ThrowIfNullOrWhiteSpace(userName);
+            
+            if (string.IsNullOrWhiteSpace(userName))
+            {
+                throw new ArgumentException("Username cannot be null or whitespace.", nameof(userName));
+            }
 
             user.UserName = userName;
-            await Task.FromResult<object>(null!);
+            return Task.CompletedTask;
         }
 
         public async Task<IdentityResult> UpdateAsync(ApplicationUser user,

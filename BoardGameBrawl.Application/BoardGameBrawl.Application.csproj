@@ -17,6 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="DTOs\Entities\Boardgame_Related\" />
+    <Folder Include="DTOs\Entities\Player_Related\" />
     <Folder Include="Features\" />
     <Folder Include="Validations\" />
     <Folder Include="Profiles\" />

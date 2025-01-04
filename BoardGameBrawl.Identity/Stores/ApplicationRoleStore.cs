@@ -88,7 +88,11 @@ namespace BoardGameBrawl.Identity.Stores
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            ArgumentNullException.ThrowIfNullOrWhiteSpace(roleId);
+
+            if (string.IsNullOrWhiteSpace(roleId))
+            {
+                throw new ArgumentException("RoleId cannot be null or whitespace.", nameof(roleId));
+            }
 
             if (!Guid.TryParse(roleId, out Guid idGuid))
             {
@@ -102,7 +106,11 @@ namespace BoardGameBrawl.Identity.Stores
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            ArgumentNullException.ThrowIfNullOrWhiteSpace(normalizedRoleName);
+
+            if (string.IsNullOrWhiteSpace(normalizedRoleName))
+            {
+                throw new ArgumentException("Role name cannot be null or whitespace.", nameof(normalizedRoleName));
+            }
 
             return await _context !.Roles.SingleOrDefaultAsync(u => u.NormalizedName!.Equals(normalizedRoleName), cancellationToken);
         }
@@ -162,26 +170,34 @@ namespace BoardGameBrawl.Identity.Stores
             }
         }
 
-        public async Task SetNormalizedRoleNameAsync(ApplicationRole role, string? normalizedName, 
+        public Task SetNormalizedRoleNameAsync(ApplicationRole role, string? normalizedName, 
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(role);
-            ArgumentNullException.ThrowIfNullOrWhiteSpace(normalizedName);
+
+            if (string.IsNullOrWhiteSpace(normalizedName))
+            {
+                throw new ArgumentException("Role name cannot be null or whitespace.", nameof(normalizedName));
+            }
 
             role.NormalizedName = normalizedName;
-            await Task.FromResult<object>(null!);
+            return Task.CompletedTask;
         }
 
-        public async Task SetRoleNameAsync(ApplicationRole role, string? roleName, 
+        public Task SetRoleNameAsync(ApplicationRole role, string? roleName, 
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(role);
-            ArgumentNullException.ThrowIfNullOrWhiteSpace(roleName);
+
+            if (string.IsNullOrWhiteSpace(roleName))
+            {
+                throw new ArgumentException("Role name cannot be null or whitespace.", nameof(roleName));
+            }
 
             role.Name = roleName;
-            await Task.FromResult<object>(null!);
+            return Task.CompletedTask;
         }
 
         public async Task<IdentityResult> UpdateAsync(ApplicationRole role, 

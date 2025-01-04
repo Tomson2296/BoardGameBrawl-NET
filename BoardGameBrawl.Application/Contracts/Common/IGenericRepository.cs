@@ -2,16 +2,16 @@
 {
     public interface IGenericRepository<T> where T : class
     {
-        Task<T> GetAsync(Guid id);
+        Task<T> GetEntity(Guid id, CancellationToken cancellationToken = default);
 
-        Task<ICollection<T>> GetAllAsync();
+        Task<ICollection<T>> GetAllEntities(CancellationToken cancellationToken = default);
 
-        Task<T> AddAsync(T entity);
+        Task<T> AddEntity(T entity, CancellationToken cancellationToken = default);
+        
+        Task<bool> Exists(Guid id, CancellationToken cancellationToken = default);
 
-        Task<bool> Exists(Guid id);
+        Task DeleteEntity(T entity, CancellationToken cancellationToken = default);
 
-        Task DeleteAsync(T entity);
-
-        Task UpdateAsync(T entity);
+        Task UpdateEntity(T entity, CancellationToken cancellationToken = default);
     }
 }

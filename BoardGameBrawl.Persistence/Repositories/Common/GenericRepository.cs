@@ -69,13 +69,13 @@ namespace BoardGameBrawl.Persistence.Repositories.Common
             }
         }
 
-        public async Task UpdateEntity(T entity, CancellationToken cancellationToken = default)
+        public Task UpdateEntity(T entity, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(entity);
 
             _context.Entry(entity).State = EntityState.Modified;
-            await Task.FromResult<object>(null!);
+            return Task.CompletedTask;
         }
     }
 }

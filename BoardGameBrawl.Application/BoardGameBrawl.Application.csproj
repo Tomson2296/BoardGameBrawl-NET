@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Contracts\Entities\Group_Related\" />
     <Folder Include="DTOs\Entities\Boardgame_Related\" />
     <Folder Include="DTOs\Entities\Player_Related\" />
     <Folder Include="Features\" />

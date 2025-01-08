@@ -3,7 +3,7 @@ using BoardGameBrawl.Domain.Entities.Boardgame_Related;
 
 namespace BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related
 {
-    public interface IBoardgameCategoryRepository : IGenericRepository<BoardgameCategory>
+    public interface IBoardgameCategoriesRepository : IGenericRepository<BoardgameCategory>
     {
 
     }

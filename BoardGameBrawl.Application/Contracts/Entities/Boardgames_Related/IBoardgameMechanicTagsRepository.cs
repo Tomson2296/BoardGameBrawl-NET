@@ -3,7 +3,7 @@ using BoardGameBrawl.Domain.Entities.Boardgame_Related;
 
 namespace BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related
 {
-    public interface IBoardgameMechanicsTagsRepository : IGenericRepository<BoardgameMechanicTag>
+    public interface IBoardgameMechanicTagsRepository : IGenericRepository<BoardgameMechanicTag>
     {
         
     }

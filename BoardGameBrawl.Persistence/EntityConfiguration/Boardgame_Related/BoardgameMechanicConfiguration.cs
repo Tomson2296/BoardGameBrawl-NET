@@ -10,7 +10,9 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Boardgame_Related
         {
             entity.HasKey(e => e.Id);
 
-            entity.Property(e => e.Mechanic).HasMaxLength(256).IsRequired();
+            entity.Property(e => e.Mechanic)
+                .HasMaxLength(256)
+                .IsRequired();
 
             entity.ToTable("BoardgameMechanics");
         }

@@ -22,9 +22,9 @@ namespace BoardGameBrawl.Persistence.Repositories.Common
 
         public IBoardgameMechanicsRepository BoardgameMechanicsRepository => throw new NotImplementedException();
 
-        public IBoardgameMechanicsTagsRepository BoardgameMechanicsTagsRepository => throw new NotImplementedException();
+        public IBoardgameMechanicTagsRepository BoardgameMechanicsTagsRepository => throw new NotImplementedException();
 
-        public IBoardgameCategoryRepository BoardgameCategoryRepository => throw new NotImplementedException();
+        public IBoardgameCategoriesRepository BoardgameCategoryRepository => throw new NotImplementedException();
 
         public IBoardgameCategoryTagsRepository BoardgameCategoryTagsRepository => throw new NotImplementedException();
 

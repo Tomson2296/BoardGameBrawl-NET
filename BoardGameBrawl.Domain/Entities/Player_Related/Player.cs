@@ -20,7 +20,7 @@ namespace BoardGameBrawl.Domain.Entities.Player_Related
 
         public byte[]? UserAvatar { get; set; }
 
-        public DateTime? UserLastLogin { get; set; }
+        public DateTime UserLastLogin { get; set; }
 
 
         public ICollection<GroupParticipants>? GroupParticipants { get; set; }

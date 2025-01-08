@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
 {
-    public class BoardgameCategoryRepository : GenericRepository<BoardgameCategory>, IBoardgameCategoryRepository
+    public class BoardgameCategoriesRepository : GenericRepository<BoardgameCategory>, IBoardgameCategoriesRepository
     {
-        public BoardgameCategoryRepository(MainAppDBContext context) : base(context)
+        public BoardgameCategoriesRepository(MainAppDBContext context) : base(context)
         { }
     }
 }

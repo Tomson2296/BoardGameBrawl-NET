@@ -15,12 +15,20 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Group_Related
         {
             entity.HasKey(e => e.Id);
 
-            entity.Property(e => e.GroupName).HasMaxLength(256).IsRequired();
-            entity.HasIndex(e => e.GroupName).HasDatabaseName("GroupNameIndex").IsUnique();
+            entity.Property(e => e.GroupName)
+                .HasMaxLength(256)
+                .IsRequired();
 
-            entity.Property(e => e.GroupDescription).HasMaxLength(512);
+            entity.HasIndex(e => e.GroupName)
+                .HasDatabaseName("GroupNameIndex")
+                .IsUnique();
 
-            //entity.HasQueryFilter(e => !e.IsSoftDeleted);
+            entity.Property(e => e.GroupDescription)
+                .HasMaxLength(512);
+
+            entity.Property(e => e.GroupMiniature)
+               .HasColumnType("varbinary(max)")
+               .IsRequired(false);
 
             entity.ToTable("Groups");
         }

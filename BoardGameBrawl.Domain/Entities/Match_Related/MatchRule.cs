@@ -12,6 +12,6 @@ namespace BoardGameBrawl.Domain.Entities.Match_Related
 
         public RuleType RuleType { get; set; }
 
-        public Guid? BoardgameId { get; set; }
+        public Guid BoardgameId { get; set; }
     }
 }

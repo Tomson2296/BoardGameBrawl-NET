@@ -1,4 +1,5 @@
-﻿using BoardGameBrawl.Domain.Entities.Player_Related;
+﻿
+using BoardGameBrawl.Domain.Entities.Player_Related;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -24,16 +25,24 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Player_Related
                 .IsRequired();
 
             entity.Property(e => e.FirstName)
-                .HasMaxLength(256);
+                .HasMaxLength(256)
+                .IsRequired(false);
 
             entity.Property(e => e.LastName)
-                .HasMaxLength(256);
+                .HasMaxLength(256)
+                .IsRequired(false);
 
             entity.Property(e => e.BGGUsername)
-                .HasMaxLength(256);
+                .HasMaxLength(256)
+                .IsRequired(false);
 
             entity.Property(e => e.UserDescription)
-                .HasMaxLength(512);
+                .HasMaxLength(512)
+                .IsRequired(false);
+
+            entity.Property(e => e.UserAvatar)
+               .HasColumnType("varbinary(max)")
+               .IsRequired(false);
 
             // configure indexes
 

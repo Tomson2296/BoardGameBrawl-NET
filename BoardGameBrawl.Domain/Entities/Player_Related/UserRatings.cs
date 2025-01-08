@@ -12,6 +12,6 @@ namespace BoardGameBrawl.Domain.Entities.Player_Related
 
         public Boardgame? Boardgame { get; set; }
 
-        public short? Rating { get; set; }
+        public short Rating { get; set; }
     }
 }

@@ -59,7 +59,7 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
             return await Task.FromResult(player.UserDescription);
         }
 
-        public async Task<DateTime?> GetUserLastLoginAsync(Player player, CancellationToken cancellationToken = default)
+        public async Task<DateTime> GetUserLastLoginAsync(Player player, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(player);
@@ -157,7 +157,7 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
             return Task.CompletedTask;
         }
 
-        public Task SetUserLastLoginAsync(Player player, DateTime? lastLogin, CancellationToken cancellationToken = default)
+        public Task SetUserLastLoginAsync(Player player, DateTime lastLogin, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(player);

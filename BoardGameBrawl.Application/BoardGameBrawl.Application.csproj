@@ -7,6 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Features\Handlers\**" />
+    <Compile Remove="Features\Requests\**" />
+    <EmbeddedResource Remove="Features\Handlers\**" />
+    <EmbeddedResource Remove="Features\Requests\**" />
+    <None Remove="Features\Handlers\**" />
+    <None Remove="Features\Requests\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="FluentValidation" Version="11.11.0" />
     <PackageReference Include="MediatR" Version="12.4.1" />
@@ -19,10 +28,9 @@
   <ItemGroup>
     <Folder Include="Contracts\Entities\Group_Related\" />
     <Folder Include="DTOs\Entities\Boardgame_Related\" />
-    <Folder Include="DTOs\Entities\Player_Related\" />
-    <Folder Include="Features\" />
+    <Folder Include="Features\Boardgames_Related\" />
+    <Folder Include="Features\Player_Related\Players\Queries\" />
     <Folder Include="Validations\" />
-    <Folder Include="Profiles\" />
   </ItemGroup>
 
 </Project>

@@ -29,7 +29,7 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Player_Related
         public Task<byte[]?> GetUserAvatarAsync(Player player,
           CancellationToken cancellationToken = default);
 
-        public Task<DateTime?> GetUserLastLoginAsync(Player player,
+        public Task<DateTime> GetUserLastLoginAsync(Player player,
           CancellationToken cancellationToken = default);
 
 
@@ -64,7 +64,7 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Player_Related
           CancellationToken cancellationToken = default);
 
         public Task SetUserLastLoginAsync(Player player,
-          DateTime? lastLogin,
+          DateTime lastLogin,
           CancellationToken cancellationToken = default);
 
     }

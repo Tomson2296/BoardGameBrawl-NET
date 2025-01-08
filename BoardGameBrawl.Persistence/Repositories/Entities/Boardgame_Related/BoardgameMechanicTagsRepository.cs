@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
 {
-    public class BoardgameMechanicTagsRepository : GenericRepository<BoardgameMechanicTag>, IBoardgameMechanicsTagsRepository
+    public class BoardgameMechanicTagsRepository : GenericRepository<BoardgameMechanicTag>, IBoardgameMechanicTagsRepository
     {
         public BoardgameMechanicTagsRepository(MainAppDBContext context) : base(context)
         { }

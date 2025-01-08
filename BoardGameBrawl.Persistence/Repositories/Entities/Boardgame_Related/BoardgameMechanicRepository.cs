@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
 {
-    public class BoardgameMechanicRepository : GenericRepository<BoardgameMechanic>, IBoardgameMechanicsRepository
+    public class BoardgameMechanicsRepository : GenericRepository<BoardgameMechanic>, IBoardgameMechanicsRepository
     {
-        public BoardgameMechanicRepository(MainAppDBContext context) : base(context)
+        public BoardgameMechanicsRepository(MainAppDBContext context) : base(context)
         { }
     }
 }

@@ -1,19 +1,23 @@
-﻿using BoardGameBrawl.Application.Contracts.Common;
-using BoardGameBrawl.Application.Responses;
+﻿using AutoMapper;
+using BoardGameBrawl.Application.Contracts.Common;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace BoardGameBrawl.Application.Features.Player_Related.Players.Commands.AddUser
+namespace BoardGameBrawl.Application.Features.Player_Related.Players.Commands.AddPlayer
 {
-    public class AddPlayerCommandHandler : IRequestHandler<AddPlayerCommand, BaseCommandResponse>
+    public class AddPlayerCommandHandler : IRequestHandler<AddPlayerCommand>
     {
-        public Task<BaseCommandResponse> Handle(AddPlayerCommand request, CancellationToken cancellationToken)
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
+
+        public AddPlayerCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            throw new NotImplementedException();
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
+        }
+
+        public async Task Handle(AddPlayerCommand request, CancellationToken cancellationToken)
+        {
+
         }
     }
 }

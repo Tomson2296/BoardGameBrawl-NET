@@ -1,7 +1,12 @@
-﻿using BoardGameBrawl.Application.Contracts.Common;
+﻿#nullable disable
+
+using BoardGameBrawl.Application.Contracts.Common;
 using BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related;
 using BoardGameBrawl.Application.Contracts.Entities.Player_Related;
+using BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related;
+using BoardGameBrawl.Persistence.Repositories.Entities.Player_Related;
 using Microsoft.AspNetCore.Http;
+using System.Net.Http.Headers;
 
 namespace BoardGameBrawl.Persistence.Repositories.Common
 {
@@ -10,33 +15,54 @@ namespace BoardGameBrawl.Persistence.Repositories.Common
         private readonly MainAppDBContext _context;
         private readonly IHttpContextAccessor _contextAccessor;
 
+        private IPlayerRepository _playerRepository;
+
+        private IBoardgameRepository _boardgameRepository;
+        private IBoardgameCategoriesRepository _boardgameCategoriesRepository;
+        private IBoardgameCategoryTagsRepository _boardgameCategoryTagsRepository;
+        private IBoardgameMechanicsRepository _boardgameMechanicsRepository;
+        private IBoardgameMechanicTagsRepository _boardgameMechanicTagsRepository;
+
         public UnitOfWork(MainAppDBContext context, IHttpContextAccessor contextAccessor)
         {
             _context = context;
             _contextAccessor = contextAccessor;
         }
 
-        public IPlayerRepository PlayerRepository => throw new NotImplementedException();
+        // Player-related repositories 
 
-        public IBoardgameRepository BoardgameRepository => throw new NotImplementedException();
-
-        public IBoardgameMechanicsRepository BoardgameMechanicsRepository => throw new NotImplementedException();
-
-        public IBoardgameMechanicTagsRepository BoardgameMechanicsTagsRepository => throw new NotImplementedException();
-
-        public IBoardgameCategoriesRepository BoardgameCategoryRepository => throw new NotImplementedException();
-
-        public IBoardgameCategoryTagsRepository BoardgameCategoryTagsRepository => throw new NotImplementedException();
+        public IPlayerRepository PlayerRepository =>
+            _playerRepository ??= new PlayerRepository(_context);
 
 
-        public Task<bool> CommitChangesAsync()
+        // Boardgame-related repositories
+
+        public IBoardgameRepository BoardgameRepository =>
+            _boardgameRepository ??= new BoardgameRepository(_context);
+
+        public IBoardgameMechanicsRepository BoardgameMechanicsRepository =>
+            _boardgameMechanicsRepository ??= new BoardgameMechanicsRepository(_context);
+
+        public IBoardgameMechanicTagsRepository BoardgameMechanicsTagsRepository =>
+            _boardgameMechanicTagsRepository ??= new BoardgameMechanicTagsRepository(_context);
+
+        public IBoardgameCategoriesRepository BoardgameCategoryRepository =>
+            _boardgameCategoriesRepository ??= new BoardgameCategoriesRepository(_context);
+
+        public IBoardgameCategoryTagsRepository BoardgameCategoryTagsRepository =>
+            _boardgameCategoryTagsRepository ??= new BoardgameCategoryTagsRepository(_context);
+
+
+        public async Task CommitChangesAsync()
         {
-            throw new NotImplementedException();
+            var username = _contextAccessor.HttpContext.User.Identity.Name.ToString();
+            await _context.SaveChangesAsync(username);
         }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            _context.Dispose();
+            GC.SuppressFinalize(this);
         }
     }
 }

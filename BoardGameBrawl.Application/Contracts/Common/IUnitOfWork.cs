@@ -16,6 +16,6 @@ namespace BoardGameBrawl.Application.Contracts.Common
         IBoardgameCategoriesRepository BoardgameCategoryRepository { get; }
         IBoardgameCategoryTagsRepository BoardgameCategoryTagsRepository { get; }
         
-        Task<bool> CommitChangesAsync();
+        Task CommitChangesAsync();
     }
 }

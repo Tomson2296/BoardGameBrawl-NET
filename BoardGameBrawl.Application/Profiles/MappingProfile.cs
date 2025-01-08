@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
+using BoardGameBrawl.Application.DTOs.Entities.Boardgame_Related;
 using BoardGameBrawl.Application.DTOs.Entities.Player_Related;
+using BoardGameBrawl.Domain.Entities.Boardgame_Related;
 using BoardGameBrawl.Domain.Entities.Player_Related;
 
 namespace BoardGameBrawl.Application.Profiles
@@ -8,7 +10,20 @@ namespace BoardGameBrawl.Application.Profiles
     {
         public MappingProfile()
         {
-            CreateMap<AddPlayerDTO, Player>().ReverseMap();
+            CreateMap<PlayerDTO, Player>()
+                .ForMember(dest => dest.GroupParticipants, opt => opt.Ignore())
+                .ForMember(dest => dest.UserRatings, opt => opt.Ignore())
+                .ReverseMap();
+
+            CreateMap<BoardgameDTO, Boardgame>()
+              .ForMember(dest => dest.BoardgameCategoryTags, opt => opt.Ignore())
+              .ForMember(dest => dest.BoardgameMechanicTags, opt => opt.Ignore())
+              .ForMember(dest => dest.BoardgameRules, opt => opt.Ignore())
+              .ForMember(dest => dest.UserRatings, opt => opt.Ignore())
+              .ForMember(dest => dest.Matches, opt => opt.Ignore())
+              .ForMember(dest => dest.Tournaments, opt => opt.Ignore())
+              .ForMember(dest => dest.TournamentMatches, opt => opt.Ignore())
+              .ReverseMap();
         }
     }
 }

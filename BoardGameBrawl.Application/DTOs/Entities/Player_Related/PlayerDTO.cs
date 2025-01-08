@@ -1,8 +1,11 @@
-﻿using BoardGameBrawl.Application.DTOs.Common;
+﻿using AutoMapper;
+using BoardGameBrawl.Application.DTOs.Common;
+using BoardGameBrawl.Domain.Entities.Player_Related;
 
 namespace BoardGameBrawl.Application.DTOs.Entities.Player_Related
 {
-    public class AddPlayerDTO : BaseEntityDTO
+    [AutoMap(typeof(Player))]
+    public class PlayerDTO : BaseEntityDTO
     {
         public string? UserName { get; set; }
 
@@ -17,5 +20,13 @@ namespace BoardGameBrawl.Application.DTOs.Entities.Player_Related
         public string? UserDescription { get; set; }
 
         public byte[]? UserAvatar { get; set; }
+
+        public DateTime CreatedDate { get; set; }
+
+        public string? CreatedBy { get; set; }
+        
+        public DateTime LastModifiedDate { get; set; }
+        
+        public string? LastModifiedBy { get; set; }
     }
 }

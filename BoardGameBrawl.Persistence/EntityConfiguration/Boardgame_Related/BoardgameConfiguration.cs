@@ -11,7 +11,8 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Boardgame_Related
             entity.HasKey(e => e.Id);
 
             entity.Property(e => e.Name)
-                .HasMaxLength(256);
+                .HasMaxLength(256)
+                .IsRequired();
 
             entity.HasIndex(e => e.Name)
                 .HasDatabaseName("BoardgameNameIndex")
@@ -21,8 +22,12 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Boardgame_Related
                 .HasDatabaseName("BGGIdIndex")
                 .IsUnique();
 
+            entity.Property(e => e.Image)
+                .IsRequired();
+
             entity.Property(e => e.Description)
-                .HasMaxLength(2048);
+                .HasMaxLength(2048)
+                .IsRequired();
 
             // Each Boardgame have multiple rules associated with them
 

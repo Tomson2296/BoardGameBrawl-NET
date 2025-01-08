@@ -22,6 +22,10 @@ namespace BoardGameBrawl.App
             // Add services to the container.
             builder.Services.AddRazorPages();
 
+            builder.Services.AddDbContext<MainAppDBContext>(options =>
+                           options.UseSqlServer(configuration.GetConnectionString("MainAppDBConnection"),
+                           b => b.MigrationsAssembly(typeof(MainAppDBContext).Assembly.FullName)));
+
             builder.Services.AddDbContext<IdentityAppDBContext>(options =>
                              options.UseSqlServer(configuration.GetConnectionString("IdentityAppDBConnection"),
                              b => b.MigrationsAssembly(typeof(IdentityAppDBContext).Assembly.FullName)));
@@ -78,7 +82,7 @@ namespace BoardGameBrawl.App
                     options.LogoutPath = "/Identity/Account/Logout";
                 });
 
-            builder.Services.RegisterPersistenceServices(configuration);
+            builder.Services.RegisterPersistenceServices();
 
             builder.Services.RegisterInfraServices();
 

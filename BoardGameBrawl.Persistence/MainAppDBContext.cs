@@ -4,12 +4,7 @@ using BoardGameBrawl.Domain.Entities.Match_Related;
 using BoardGameBrawl.Domain.Entities.Player_Related;
 using BoardGameBrawl.Domain.Entities.Tournament_Related;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BoardGameBrawl.Persistence
 {

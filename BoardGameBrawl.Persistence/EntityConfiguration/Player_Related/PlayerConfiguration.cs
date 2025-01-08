@@ -1,5 +1,4 @@
-﻿
-using BoardGameBrawl.Domain.Entities.Player_Related;
+﻿using BoardGameBrawl.Domain.Entities.Player_Related;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;

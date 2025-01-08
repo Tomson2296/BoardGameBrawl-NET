@@ -29,9 +29,6 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Player_Related
         public Task<byte[]?> GetUserAvatarAsync(Player player,
           CancellationToken cancellationToken = default);
 
-        public Task<DateTime> GetUserLastLoginAsync(Player player,
-          CancellationToken cancellationToken = default);
-
 
         // setter methods //
 
@@ -61,10 +58,6 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Player_Related
 
         public Task SetUserAvatarAsync(Player player,
           byte[]? avatar,
-          CancellationToken cancellationToken = default);
-
-        public Task SetUserLastLoginAsync(Player player,
-          DateTime lastLogin,
           CancellationToken cancellationToken = default);
 
     }

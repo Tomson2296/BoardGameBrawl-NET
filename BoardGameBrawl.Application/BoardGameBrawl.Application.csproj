@@ -27,10 +27,6 @@
 
   <ItemGroup>
     <Folder Include="Contracts\Entities\Group_Related\" />
-    <Folder Include="DTOs\Entities\Boardgame_Related\" />
-    <Folder Include="Features\Boardgames_Related\" />
-    <Folder Include="Features\Player_Related\Players\Queries\" />
-    <Folder Include="Validations\" />
   </ItemGroup>
 
 </Project>

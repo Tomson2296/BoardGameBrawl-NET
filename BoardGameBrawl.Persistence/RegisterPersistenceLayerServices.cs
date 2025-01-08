@@ -14,12 +14,8 @@ namespace BoardGameBrawl.Persistence
 {
     public static class RegisterPersistenceLayerServices
     {
-        public static Task<IServiceCollection> RegisterPersistenceServices(this IServiceCollection services, IConfiguration configuration)
+        public static Task<IServiceCollection> RegisterPersistenceServices(this IServiceCollection services)
         {
-            services.AddDbContext<MainAppDBContext>(options =>
-                           options.UseSqlServer(configuration.GetConnectionString("MainAppDBConnection"),
-                           b => b.MigrationsAssembly(typeof(MainAppDBContext).Assembly.FullName)));
-
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 

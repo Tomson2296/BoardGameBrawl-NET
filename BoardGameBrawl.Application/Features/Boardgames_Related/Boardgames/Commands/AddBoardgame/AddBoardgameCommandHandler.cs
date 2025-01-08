@@ -1,31 +1,37 @@
-﻿#nullable disable
-using AutoMapper;
+﻿using AutoMapper;
 using BoardGameBrawl.Application.Contracts.Common;
 using BoardGameBrawl.Application.Responses;
+using BoardGameBrawl.Application.Validators.Boardgames_Related;
 using BoardGameBrawl.Application.Validators.Player_Related;
+using BoardGameBrawl.Domain.Entities.Boardgame_Related;
 using BoardGameBrawl.Domain.Entities.Player_Related;
 using MediatR;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace BoardGameBrawl.Application.Features.Player_Related.Players.Commands.AddPlayer
+namespace BoardGameBrawl.Application.Features.Boardgames_Related.Boardgames.Commands.AddBoardgame
 {
-    public class AddPlayerCommandHandler : IRequestHandler<AddPlayerCommand, BaseCommandResponse>
+    public class AddBoardgameCommandHandler : IRequestHandler<AddBoardgameCommand, BaseCommandResponse>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public AddPlayerCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public AddBoardgameCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
-        public async Task<BaseCommandResponse> Handle(AddPlayerCommand request, CancellationToken cancellationToken)
+        public async Task<BaseCommandResponse> Handle(AddBoardgameCommand request, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
             var response = new BaseCommandResponse();
-            var validator = new AddPlayerValidator(_unitOfWork.PlayerRepository);
-            var validationResult = await validator.ValidateAsync(request.PlayerDTO);
+            var validator = new AddBoardgameValidator(_unitOfWork.BoardgameRepository);
+            var validationResult = await validator.ValidateAsync(request.BoardgameDTO);
 
             if (validationResult.IsValid == false)
             {
@@ -35,14 +41,14 @@ namespace BoardGameBrawl.Application.Features.Player_Related.Players.Commands.Ad
             }
             else
             {
-                var player = _mapper.Map<Player>(request.PlayerDTO);
+                var boardgame = _mapper.Map<Boardgame>(request.BoardgameDTO);
 
-                await _unitOfWork.PlayerRepository.AddEntity(player);
+                await _unitOfWork.BoardgameRepository.AddEntity(boardgame);
                 await _unitOfWork.CommitChangesAsync();
 
                 response.Success = true;
                 response.Message = "Creation Successful";
-                response.Id = player.Id;
+                response.Id = boardgame.Id;
             }
 
             return response;

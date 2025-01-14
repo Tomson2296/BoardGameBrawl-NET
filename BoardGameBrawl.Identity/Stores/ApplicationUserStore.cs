@@ -6,9 +6,14 @@ using System.Security.Claims;
 namespace BoardGameBrawl.Identity.Stores
 {
     public class ApplicationUserStore : IUserStore<ApplicationUser>,
-        IUserEmailStore<ApplicationUser>, IUserClaimStore<ApplicationUser>, IUserConfirmation<ApplicationUser>,
-        IUserLockoutStore<ApplicationUser>, IUserLoginStore<ApplicationUser>, IUserPasswordStore<ApplicationUser>,
-        IUserRoleStore<ApplicationUser>, IUserSecurityStampStore<ApplicationUser>
+        IUserEmailStore<ApplicationUser>, 
+        IUserClaimStore<ApplicationUser>, 
+        IUserConfirmation<ApplicationUser>,
+        IUserLockoutStore<ApplicationUser>, 
+        IUserLoginStore<ApplicationUser>, 
+        IUserPasswordStore<ApplicationUser>,
+        IUserRoleStore<ApplicationUser>, 
+        IUserSecurityStampStore<ApplicationUser>
     {
         private readonly IdentityAppDBContext _context;
         public ApplicationUserStore(IdentityAppDBContext context)

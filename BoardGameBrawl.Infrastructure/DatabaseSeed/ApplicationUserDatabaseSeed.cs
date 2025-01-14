@@ -12,14 +12,13 @@ namespace BoardGameBrawl.Infrastructure.DatabaseSeed
         private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly IdentityAppDBContext _DBContext;
 
-        public ApplicationUserDatabaseSeed(
-            UserManager<ApplicationUser> _userManager,
-            RoleManager<ApplicationRole> _roleManager,
+        public ApplicationUserDatabaseSeed(UserManager<ApplicationUser> userManager,
+            RoleManager<ApplicationRole> roleManager,
             IdentityAppDBContext dBContext)
         {
-            this._userManager = _userManager;
-            this._roleManager = _roleManager;
-            this._DBContext = dBContext;
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _DBContext = dBContext;
         }
 
         public async Task SeedDatabaseAsync()

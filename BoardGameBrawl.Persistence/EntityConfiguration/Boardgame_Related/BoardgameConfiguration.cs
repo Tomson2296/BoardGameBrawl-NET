@@ -23,6 +23,7 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Boardgame_Related
                 .IsUnique();
 
             entity.Property(e => e.Image)
+                .HasColumnType("varbinary(max)")
                 .IsRequired();
 
             entity.Property(e => e.Description)

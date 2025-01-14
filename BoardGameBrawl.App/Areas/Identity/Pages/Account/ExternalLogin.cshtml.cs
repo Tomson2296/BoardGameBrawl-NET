@@ -27,20 +27,24 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ApplicationUserStore _userStore;
+        private readonly IUserStore<ApplicationUser> _userStore;
+        private readonly IUserEmailStore<ApplicationUser> _userEmailStore;
         private readonly ILogger<ExternalLoginModel> _logger;
         private readonly IMailKitEmailSender _emailSender;
 
         public ExternalLoginModel(
             SignInManager<ApplicationUser>  signInManager,
             UserManager<ApplicationUser> userManager,
-            ApplicationUserStore userStore,
+            IUserStore<ApplicationUser> userStore,
+            IUserEmailStore<ApplicationUser> userEmailStore,
             ILogger<ExternalLoginModel> logger,
-            IMailKitEmailSender emailSender)
+            IMailKitEmailSender emailSender
+            )
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _userStore = userStore;
+            _userEmailStore = userEmailStore;
             _logger = logger;
             _emailSender = emailSender;
         }
@@ -130,7 +134,7 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
                 var user = CreateUser();
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-                await _userStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                await _userEmailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
 
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
@@ -173,7 +177,7 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private ApplicationUser  CreateUser()
+        private ApplicationUser CreateUser()
         {
             try
             {
@@ -186,14 +190,5 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
                     $"override the external login page in /Areas/Identity/Pages/Account/ExternalLogin.cshtml");
             }
         }
-
-        //private IUserEmailStore<ApplicationUser>  GetEmailStore()
-        //{
-        //    if (!_userManager.SupportsUserEmail)
-        //    {
-        //        throw new NotSupportedException("The default UI requires a user store with email support.");
-        //    }
-        //    return (IUserEmailStore<ApplicationUser> )_userStore;
-        //}
     }
 }

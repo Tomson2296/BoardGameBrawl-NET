@@ -3,11 +3,6 @@ using MailKit.Security;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
 using MimeKit.Text;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BoardGameBrawl.Infrastructure.EmailSender
 {
@@ -15,9 +10,9 @@ namespace BoardGameBrawl.Infrastructure.EmailSender
     {
         private readonly IConfiguration _configuration;
 
-        public MailKitEmailSender(IConfiguration configuration) 
+        public MailKitEmailSender(IConfiguration configuration)
         {
-            _configuration ??= configuration;
+            _configuration = configuration;
         }
 
         public async Task SendEmailAsync(string to, string subject, string message)

@@ -30,8 +30,6 @@ namespace BoardGameBrawl.App
                              options.UseSqlServer(configuration.GetConnectionString("IdentityAppDBConnection"),
                              b => b.MigrationsAssembly(typeof(IdentityAppDBContext).Assembly.FullName)));
 
-            builder.Services.RegisterCustomIdentityServices();
-
             builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = true;
@@ -49,8 +47,6 @@ namespace BoardGameBrawl.App
                 options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromSeconds(120);
             })
                 .AddEntityFrameworkStores<IdentityAppDBContext>()
-                .AddUserStore<ApplicationUserStore>()
-                .AddRoleStore<ApplicationRoleStore>()
                 .AddClaimsPrincipalFactory<ApplicationUserClaimsPrincipalFactory>()
                 .AddDefaultTokenProviders()
                 .AddDefaultUI();
@@ -81,6 +77,8 @@ namespace BoardGameBrawl.App
                     options.LoginPath = "/Identity/Account/Login";
                     options.LogoutPath = "/Identity/Account/Logout";
                 });
+
+            builder.Services.RegisterCustomIdentityServices();
 
             builder.Services.RegisterPersistenceServices();
 

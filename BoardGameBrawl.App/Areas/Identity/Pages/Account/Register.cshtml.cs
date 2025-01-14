@@ -28,22 +28,27 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly ApplicationUserStore _userStore;
+        private readonly IUserStore<ApplicationUser> _userStore;
+        private readonly IUserEmailStore<ApplicationUser> _userEmailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IMailKitEmailSender _emailSender;
+        private readonly IPasswordHasher<ApplicationUser> _passwordHasher;
 
-        public RegisterModel(
-            SignInManager<ApplicationUser> signInManager,
+        public RegisterModel(SignInManager<ApplicationUser> signInManager, 
             UserManager<ApplicationUser> userManager,
-            ApplicationUserStore userStore,
-            ILogger<RegisterModel> logger,
-            IMailKitEmailSender emailSender)
+            IUserStore<ApplicationUser> userStore,
+            IUserEmailStore<ApplicationUser> userEmailStore,
+            ILogger<RegisterModel> logger, 
+            IMailKitEmailSender emailSender,
+            IPasswordHasher<ApplicationUser> passwordHasher)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _userStore = userStore;
-            _emailSender = emailSender;
+            _userEmailStore = userEmailStore;
             _logger = logger;
+            _emailSender = emailSender;
+            _passwordHasher = passwordHasher;
         }
 
         [BindProperty]
@@ -55,6 +60,10 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
 
         public class InputModel
         {
+            [Required]
+            [Display(Name = "Username")]
+            public string Username { get; set; }
+
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
@@ -87,9 +96,11 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
 
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-                await _userStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-                var result = await _userManager.CreateAsync(user, Input.Password);
+                await _userStore.SetUserNameAsync(user, Input.Username, CancellationToken.None);
+                await _userEmailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                
+                var hashedpassword = _passwordHasher.HashPassword(user, Input.Password);
+                var result = await _userManager.CreateAsync(user, hashedpassword);
 
                 if (result.Succeeded)
                 {
@@ -131,7 +142,7 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
         {
             try
             {
-                return Activator.CreateInstance<ApplicationUser> ();
+                return Activator.CreateInstance<ApplicationUser>();
             }
             catch
             {

@@ -8,7 +8,7 @@ namespace BoardGameBrawl.Infrastructure.DatabaseSeed
     {
         private readonly IdentityAppDBContext _context;
         private readonly IImageStream _imageStream;
-
+        
         public BoardgamesDatabaseSeed(
             IdentityAppDBContext context, 
             IImageStream imageStream)
@@ -16,7 +16,6 @@ namespace BoardGameBrawl.Infrastructure.DatabaseSeed
             _context = context;
             _imageStream = imageStream;
         }
-
 
         public async Task SeedDatabaseAsync(MainAppDBContext context)
         {

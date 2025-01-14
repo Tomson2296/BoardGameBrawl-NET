@@ -1,4 +1,6 @@
-﻿namespace BoardGameBrawl.App
+﻿using BoardGameBrawl.Infrastructure;
+
+namespace BoardGameBrawl.App
 {
     public static class SetupMiddlewarePipeline
     {
@@ -15,8 +17,6 @@
 
             app.UseDeveloperExceptionPage();
 
-            //app.UseStatusCodePagesWithReExecute("{0}");
-
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();
@@ -27,6 +27,8 @@
             app.UseAuthorization();
 
             app.MapRazorPages();
+
+            //app.SeedSQLDatabases();
 
             return app;
         }

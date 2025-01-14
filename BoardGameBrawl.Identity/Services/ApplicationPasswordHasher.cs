@@ -13,7 +13,9 @@ namespace BoardGameBrawl.Identity.Services
 
         public PasswordVerificationResult VerifyHashedPassword(ApplicationUser user, string hashedPassword, string providedPassword)
         {
-            return BCrypt.Net.BCrypt.Verify(providedPassword, hashedPassword)
+            bool ifSuccessfulHash = BCrypt.Net.BCrypt.Verify(providedPassword, hashedPassword, false, BCrypt.Net.HashType.SHA512);
+            
+            return ifSuccessfulHash
             ? PasswordVerificationResult.Success
             : PasswordVerificationResult.Failed;
         }

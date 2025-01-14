@@ -25,7 +25,6 @@
   <ItemGroup>
     <Folder Include="HttpClient\" />
     <Folder Include="XML_Objects\" />
-    <Folder Include="Resources\" />
   </ItemGroup>
 
   <ItemGroup>

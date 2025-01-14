@@ -13,7 +13,6 @@ namespace BoardGameBrawl.App.Pages
 
         public void OnGet()
         {
-
         }
     }
 }

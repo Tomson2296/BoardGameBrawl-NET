@@ -20,8 +20,8 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IEmailSender _emailSender;
-
-        public ForgotPasswordModel(UserManager<ApplicationUser> userManager, IEmailSender emailSender)
+        public ForgotPasswordModel(UserManager<ApplicationUser> userManager, 
+            IEmailSender emailSender)
         {
             _userManager = userManager;
             _emailSender = emailSender;

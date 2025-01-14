@@ -67,8 +67,6 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
             return await Task.FromResult(player.UserName);
         }
 
-
-
         public Task SetBGGUsernameAsync(Player player, string? BGGUsername, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();

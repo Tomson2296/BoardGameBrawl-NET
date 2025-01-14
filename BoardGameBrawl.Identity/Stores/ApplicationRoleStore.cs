@@ -21,7 +21,7 @@ namespace BoardGameBrawl.Identity.Stores
             ArgumentNullException.ThrowIfNull(role);
             ArgumentNullException.ThrowIfNull(claim);
 
-            var claimInDb = await _context .RoleClaims.FindAsync(claim, cancellationToken);
+            var claimInDb = await _context.RoleClaims.FindAsync(claim, cancellationToken);
 
             if (claimInDb == null)
             {
@@ -32,8 +32,8 @@ namespace BoardGameBrawl.Identity.Stores
                     ClaimValue = claim.Value
                 };
 
-                await _context .RoleClaims.AddAsync(instance, cancellationToken);
-                await _context .SaveChangesAsync(cancellationToken);
+                await _context.RoleClaims.AddAsync(instance, cancellationToken);
+                await _context.SaveChangesAsync(cancellationToken);
             }
         }
 
@@ -43,10 +43,10 @@ namespace BoardGameBrawl.Identity.Stores
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(role);
 
-            if (_context .Roles.Contains(role))
+            if (!_context.Roles.Contains(role))
             {
-                await _context .Roles.AddAsync(role, cancellationToken);
-                var affectedRows = await _context .SaveChangesAsync(cancellationToken);
+                await _context.Roles.AddAsync(role, cancellationToken);
+                var affectedRows = await _context.SaveChangesAsync(cancellationToken);
                 return affectedRows > 0
                         ? IdentityResult.Success
                         : IdentityResult.Failed(new IdentityError() { Description = $"Could not create role {role.Id}." });
@@ -63,7 +63,7 @@ namespace BoardGameBrawl.Identity.Stores
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(role);
 
-            var roleInDB = await _context .Roles.FindAsync(role, cancellationToken);
+            var roleInDB = await _context.Roles.FindAsync(role, cancellationToken);
 
             if (roleInDB == null)
             {
@@ -71,8 +71,8 @@ namespace BoardGameBrawl.Identity.Stores
             }
             else
             {
-                _context .Roles.Remove(roleInDB);
-                var affectedRows = await _context .SaveChangesAsync(cancellationToken);
+                _context.Roles.Remove(roleInDB);
+                var affectedRows = await _context.SaveChangesAsync(cancellationToken);
                 return affectedRows > 0
                 ? IdentityResult.Success
                         : IdentityResult.Failed(new IdentityError() { Description = $"Could not delete role: {role.Id}." });
@@ -99,7 +99,7 @@ namespace BoardGameBrawl.Identity.Stores
                 throw new ArgumentException("Not a valid Guid id", nameof(roleId));
             }
 
-            return await _context !.Roles.SingleOrDefaultAsync(u => u.Id.Equals(Guid.Parse(roleId)), cancellationToken);
+            return await _context!.Roles.SingleOrDefaultAsync(u => u.Id.Equals(Guid.Parse(roleId)), cancellationToken);
         }
 
         public async Task<ApplicationRole?> FindByNameAsync(string normalizedRoleName, 
@@ -112,7 +112,7 @@ namespace BoardGameBrawl.Identity.Stores
                 throw new ArgumentException("Role name cannot be null or whitespace.", nameof(normalizedRoleName));
             }
 
-            return await _context !.Roles.SingleOrDefaultAsync(u => u.NormalizedName!.Equals(normalizedRoleName), cancellationToken);
+            return await _context!.Roles.SingleOrDefaultAsync(u => u.NormalizedName!.Equals(normalizedRoleName), cancellationToken);
         }
 
         public async Task<IList<Claim>> GetClaimsAsync(ApplicationRole role,
@@ -121,7 +121,7 @@ namespace BoardGameBrawl.Identity.Stores
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(role);
 
-            return await _context .RoleClaims.Where(c => c.RoleId == role.Id)
+            return await _context.RoleClaims.Where(c => c.RoleId == role.Id)
                 .Select(c => c.ToClaim())
                 .ToListAsync(cancellationToken);
         }
@@ -160,12 +160,12 @@ namespace BoardGameBrawl.Identity.Stores
             ArgumentNullException.ThrowIfNull(role);
             ArgumentNullException.ThrowIfNull(claim);
 
-            var claimToRemove = await _context .RoleClaims.SingleOrDefaultAsync(c =>
+            var claimToRemove = await _context.RoleClaims.SingleOrDefaultAsync(c =>
                 c.RoleId == role.Id && c.ClaimValue == claim.Value && c.ClaimType == claim.Type, cancellationToken);
 
             if (claimToRemove != default)
             {
-                _context .RoleClaims.Remove(claimToRemove);
+                _context.RoleClaims.Remove(claimToRemove);
                 await _context .SaveChangesAsync(cancellationToken);
             }
         }
@@ -206,8 +206,8 @@ namespace BoardGameBrawl.Identity.Stores
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(role);
 
-            _context .Roles.Update(role);
-            var affectedRows = await _context .SaveChangesAsync(cancellationToken);
+            _context.Roles.Update(role);
+            var affectedRows = await _context.SaveChangesAsync(cancellationToken);
             return affectedRows > 0
             ? IdentityResult.Success
                     : IdentityResult.Failed(new IdentityError() { Description = $"Could not update role: {role.Id}." });

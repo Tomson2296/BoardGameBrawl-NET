@@ -33,4 +33,8 @@
     <ProjectReference Include="..\BoardGameBrawl.Persistence\BoardGameBrawl.Persistence.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Middlewares\" />
+  </ItemGroup>
+
 </Project>

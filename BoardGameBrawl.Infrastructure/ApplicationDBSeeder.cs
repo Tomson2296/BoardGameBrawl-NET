@@ -1,33 +1,23 @@
-﻿using BoardGameBrawl.Identity.Entities;
-using BoardGameBrawl.Infrastructure.DatabaseSeed;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
+﻿using BoardGameBrawl.Infrastructure.DatabaseSeed;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BoardGameBrawl.Infrastructure
 {
     public static class ApplicationDBSeeder
     {
-        public static async Task<IServiceProvider> SeedSQLDatabases(this IServiceProvider services)
+        public static async void SeedSQLDatabases(this IApplicationBuilder app)
         {
-            ArgumentNullException.ThrowIfNull(services, nameof(services));
-
             try
             {
-                await using(var scope = services.CreateAsyncScope())
+                using(var scope = app.ApplicationServices.CreateScope())
                 {
-                    var dbContext = services.GetRequiredService<IdentityDbContext>();
-                    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
-                    var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-
-                    var appUserSeed = services.GetRequiredService<ApplicationUserDatabaseSeed>();
+                    //var dbContext = services.GetRequiredService<IdentityDbContext>();
+                    //var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+                    //var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                    
+                    var serviceProvider = scope.ServiceProvider;
+                    var appUserSeed = serviceProvider.GetRequiredService<ApplicationUserDatabaseSeed>();
                     await appUserSeed.SeedDatabaseAsync();
                 }
             }
@@ -35,8 +25,6 @@ namespace BoardGameBrawl.Infrastructure
             {
                 Console.WriteLine("Error occured during the process of seeding sql database: " + ex.Message);
             }
-
-            return services;
         }
     }
 }

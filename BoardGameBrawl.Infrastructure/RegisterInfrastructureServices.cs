@@ -9,13 +9,13 @@ namespace BoardGameBrawl.Infrastructure
     {
         public static Task<IServiceCollection> RegisterInfraServices(this IServiceCollection services)
         {
-            services.TryAddTransient<IImageStream, ImageStream>();
+            services.AddTransient<IImageStream, ImageStream>();
 
-            services.TryAddScoped<IMailKitEmailSender, MailKitEmailSender>();
+            services.AddScoped<IMailKitEmailSender, MailKitEmailSender>();
 
-            services.TryAddScoped<ApplicationUserDatabaseSeed>();
+            services.AddScoped<ApplicationUserDatabaseSeed>();
 
-            services.TryAddScoped<BoardgamesDatabaseSeed>();
+            services.AddScoped<BoardgamesDatabaseSeed>();
 
             return Task.FromResult(services);
         }

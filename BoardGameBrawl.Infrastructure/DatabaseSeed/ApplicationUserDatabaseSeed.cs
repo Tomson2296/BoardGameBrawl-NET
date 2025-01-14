@@ -50,20 +50,19 @@ namespace BoardGameBrawl.Infrastructure.DatabaseSeed
             else
             {
                 var role1 = Activator.CreateInstance<ApplicationRole>();
-                role1.Name = "Administrator";
+                await _roleManager.SetRoleNameAsync(role1, "Administrator");
+                await _roleManager.CreateAsync(role1);
 
                 var role2 = Activator.CreateInstance<ApplicationRole>();
-                role2.Name = "Moderator";
+                await _roleManager.SetRoleNameAsync(role2, "Moderator");
+                await _roleManager.CreateAsync(role2);
 
                 var role3 = Activator.CreateInstance<ApplicationRole>();
-                role3.Name = "Host";
+                await _roleManager.SetRoleNameAsync(role3, "Host");
+                await _roleManager.CreateAsync(role3);
 
                 var role4 = Activator.CreateInstance<ApplicationRole>();
-                role4.Name = "User";
-
-                await _roleManager.CreateAsync(role1);
-                await _roleManager.CreateAsync(role2);
-                await _roleManager.CreateAsync(role3);
+                await _roleManager.SetRoleNameAsync(role4, "User");
                 await _roleManager.CreateAsync(role4);
 
                 // Add all roles to Admin account

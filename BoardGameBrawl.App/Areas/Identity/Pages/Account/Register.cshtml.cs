@@ -28,6 +28,7 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly IUserStore<ApplicationUser> _userStore;
         private readonly IUserEmailStore<ApplicationUser> _userEmailStore;
         private readonly ILogger<RegisterModel> _logger;
@@ -35,15 +36,17 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
         private readonly IPasswordHasher<ApplicationUser> _passwordHasher;
 
         public RegisterModel(SignInManager<ApplicationUser> signInManager, 
-            UserManager<ApplicationUser> userManager,
-            IUserStore<ApplicationUser> userStore,
-            IUserEmailStore<ApplicationUser> userEmailStore,
+            UserManager<ApplicationUser> userManager, 
+            RoleManager<ApplicationRole> roleManager, 
+            IUserStore<ApplicationUser> userStore, 
+            IUserEmailStore<ApplicationUser> userEmailStore, 
             ILogger<RegisterModel> logger, 
-            IMailKitEmailSender emailSender,
+            IMailKitEmailSender emailSender, 
             IPasswordHasher<ApplicationUser> passwordHasher)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _roleManager = roleManager;
             _userStore = userStore;
             _userEmailStore = userEmailStore;
             _logger = logger;
@@ -94,10 +97,12 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = CreateUser();
+                ApplicationUser user = CreateUser();
+                DateOnly creationDate = DateOnly.FromDateTime(DateTime.UtcNow);
 
                 await _userStore.SetUserNameAsync(user, Input.Username, CancellationToken.None);
                 await _userEmailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                await _userStore.SetUserCreatedDateAsync(user, creationDate, CancellationToken.None);
                 
                 var hashedpassword = _passwordHasher.HashPassword(user, Input.Password);
                 var result = await _userManager.CreateAsync(user, hashedpassword);

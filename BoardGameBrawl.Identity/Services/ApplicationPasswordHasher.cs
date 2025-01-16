@@ -1,23 +1,41 @@
 ﻿using BoardGameBrawl.Identity.Entities;
+using BoardGameBrawl.Identity.Stores;
 using Microsoft.AspNetCore.Identity;
 
 namespace BoardGameBrawl.Identity.Services
 {
-    public class ApplicationPasswordHasher : IPasswordHasher<ApplicationUser>
+    public class ApplicationPasswordHasher : IApplicationPasswordHasher<ApplicationUser>
     {
-        public string HashPassword(ApplicationUser user, string password)
+        private readonly IUserStore<ApplicationUser> _userStore;
+
+        public ApplicationPasswordHasher(IUserStore<ApplicationUser> userStore)
         {
-            string hashedpassword = BCrypt.Net.BCrypt.EnhancedHashPassword(password, BCrypt.Net.HashType.SHA512, 12);
-            return hashedpassword;
+            _userStore = userStore;
         }
 
-        public PasswordVerificationResult VerifyHashedPassword(ApplicationUser user, string hashedPassword, string providedPassword)
+        public string[] HashPasswordExtended(ApplicationUser user, string password)
         {
-            bool ifSuccessfulHash = BCrypt.Net.BCrypt.Verify(providedPassword, hashedPassword, false, BCrypt.Net.HashType.SHA512);
+            string passwordSalt = BCrypt.Net.BCrypt.GenerateSalt();
+            string passwordHash = BCrypt.Net.BCrypt.HashPassword(password, passwordSalt, false, hashType: BCrypt.Net.HashType.SHA512);
+            return new[] { passwordSalt, passwordHash };
+        }
+
+        public async Task<PasswordVerificationResult> VerifyHashedPasswordAsync(ApplicationUser user, string providedPassword)
+        {
+            string? storedHash = await _userStore.GetUserPasswordHash(user);
+            string? storedSalt = await _userStore.GetUserPasswordSalt(user);
+
+            string comparePassword = BCrypt.Net.BCrypt.HashPassword(providedPassword, storedSalt, false, hashType: BCrypt.Net.HashType.SHA512);
+            bool ifSuccessfulHash = ComparePasswords(comparePassword, storedHash);
             
             return ifSuccessfulHash
             ? PasswordVerificationResult.Success
             : PasswordVerificationResult.Failed;
+        }
+        
+        public bool ComparePasswords(string? hashedPassword, string? storedPassword)
+        {
+            return string.Equals(hashedPassword, storedPassword);
         }
     }
 }

@@ -23,6 +23,8 @@ public class ApplicationUser : IdentityUser<Guid>
 
     public byte[]? UserAvatar { get; set; }
 
+    public string? PasswordSalt { get; set; }
+
     public ICollection<ApplicationUserClaim>? UserClaims { get; set; }
 
     public ICollection<ApplicationUserLogin>? UserLogins { get; set; }

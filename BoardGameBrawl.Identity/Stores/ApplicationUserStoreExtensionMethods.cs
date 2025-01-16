@@ -5,7 +5,7 @@ namespace BoardGameBrawl.Identity.Stores
 {
     public static class ApplicationUserStoreExtensionMethods
     {
-        // custom ApplicationUser methods //
+        // custom ApplicationUser getter methods //
         
         public async static Task<string?> GetFirstNameAsync(this IUserStore<ApplicationUser> ApplicationUserStore, 
            ApplicationUser user,
@@ -76,6 +76,28 @@ namespace BoardGameBrawl.Identity.Stores
 
             return await Task.FromResult(user.UserAvatar);
         }
+
+        public async static Task<string?> GetUserPasswordHash(this IUserStore<ApplicationUser> ApplicationUserStore,
+          ApplicationUser user,
+          CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+
+            return await Task.FromResult(user.PasswordHash);
+        }
+
+        public async static Task<string?> GetUserPasswordSalt(this IUserStore<ApplicationUser> ApplicationUserStore,
+           ApplicationUser user,
+           CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+
+            return await Task.FromResult(user.PasswordSalt);
+        }
+
+        // setter methods //
 
         public static Task SetFirstNamelAsync(this IUserStore<ApplicationUser> ApplicationUserStore, 
             ApplicationUser user, string? firstName,
@@ -174,6 +196,38 @@ namespace BoardGameBrawl.Identity.Stores
             ArgumentNullException.ThrowIfNull(UserAvatar);
 
             user.UserAvatar = UserAvatar;
+            return Task.CompletedTask;
+        }
+
+        public static Task SetUserPasswordHashAsync(this IUserStore<ApplicationUser> ApplicationUserStore,
+          ApplicationUser user, string? passwordHash,
+          CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+
+            if (string.IsNullOrWhiteSpace(passwordHash))
+            {
+                throw new ArgumentException("PasswordHash cannot be null or whitespace.", nameof(passwordHash));
+            }
+
+            user.PasswordHash = passwordHash;
+            return Task.CompletedTask;
+        }
+
+        public static Task SetUserPasswordSaltAsync(this IUserStore<ApplicationUser> ApplicationUserStore,
+           ApplicationUser user, string? passwordSalt,
+           CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+
+            if (string.IsNullOrWhiteSpace(passwordSalt))
+            {
+                throw new ArgumentException("PasswordSalt cannot be null or whitespace.", nameof(passwordSalt));
+            }
+
+            user.PasswordSalt = passwordSalt;
             return Task.CompletedTask;
         }
     }

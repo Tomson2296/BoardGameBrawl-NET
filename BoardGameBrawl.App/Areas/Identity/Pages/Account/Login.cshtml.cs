@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using BoardGameBrawl.Identity.Entities;
+using BoardGameBrawl.Identity.Services;
 
 namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
 {
@@ -21,12 +22,12 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<LoginModel> _logger;
-        private readonly IPasswordHasher<ApplicationUser> _passwordHasher;
+        private readonly IApplicationPasswordHasher<ApplicationUser> _passwordHasher;
 
         public LoginModel(SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
             ILogger<LoginModel> logger,
-            IPasswordHasher<ApplicationUser> passwordHasher)
+            IApplicationPasswordHasher<ApplicationUser> passwordHasher)
         {
             _signInManager = signInManager;
             _userManager = userManager; 
@@ -85,45 +86,45 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
-
-                if (result.Succeeded)
+                //Verify if user exists in database
+                ApplicationUser = await _userManager.FindByEmailAsync(Input.Email);
+                if (ApplicationUser == null)
                 {
-                    //verify password using BCrypt verifypassword method
-                    ApplicationUser = await _userManager.GetUserAsync(User);
-                    PasswordVerificationResult isPasswordCorrect = _passwordHasher.VerifyHashedPassword(ApplicationUser, ApplicationUser.PasswordHash, Input.Password);
-
-                    if (isPasswordCorrect == PasswordVerificationResult.Success)
-                    {
-                        _logger.LogInformation("User logged in.");
-                        return LocalRedirect(returnUrl);
-                    }
-                    else
-                    {
-                        ModelState.AddModelError(string.Empty, "Password do not match.");
-                        return Page();
-                    }
+                    ModelState.AddModelError(string.Empty, "User cannot be found.");
+                    return Page();
                 }
+
+                PasswordVerificationResult isPasswordCorrect = await _passwordHasher.VerifyHashedPasswordAsync(ApplicationUser, Input.Password);
+                if(isPasswordCorrect == PasswordVerificationResult.Failed)
+                {
+                    ModelState.AddModelError(string.Empty, "Incorrect password. Try again.");
+                    return Page();
+                }
+
+                await _signInManager.SignInAsync(ApplicationUser, Input.RememberMe, returnUrl);
+                _logger.LogInformation("User logged in.");
+                return LocalRedirect(returnUrl);
+                
+                //if (result.Succeeded)
+                //{
+                //    _logger.LogInformation("User logged in.");
+                //    return LocalRedirect(returnUrl);
+                //}
                 //if (result.RequiresTwoFactor)
                 //{
                 //    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
                 //}
-                if (result.IsLockedOut)
-                {
-                    _logger.LogWarning("User account locked out.");
-                    return RedirectToPage("./Lockout");
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return Page();
-                }
+                //if (result.IsLockedOut)
+                //{
+                //    _logger.LogWarning("User account locked out.");
+                //    return RedirectToPage("./Lockout");
+                //}
             }
-
-            // If we got this far, something failed, redisplay form
-            return Page();
+            else
+            {
+                ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                return Page();
+            }
         }
     }
 }

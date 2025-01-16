@@ -21,6 +21,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.WebUtilities;
+using System.Runtime.InteropServices;
+using System.Security.Claims;
+using BoardGameBrawl.Identity.Services;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
 {
@@ -33,7 +37,7 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<ApplicationUser> _userEmailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IMailKitEmailSender _emailSender;
-        private readonly IPasswordHasher<ApplicationUser> _passwordHasher;
+        private readonly IApplicationPasswordHasher<ApplicationUser> _passwordHasher;
 
         public RegisterModel(SignInManager<ApplicationUser> signInManager, 
             UserManager<ApplicationUser> userManager, 
@@ -41,8 +45,8 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
             IUserStore<ApplicationUser> userStore, 
             IUserEmailStore<ApplicationUser> userEmailStore, 
             ILogger<RegisterModel> logger, 
-            IMailKitEmailSender emailSender, 
-            IPasswordHasher<ApplicationUser> passwordHasher)
+            IMailKitEmailSender emailSender,
+            IApplicationPasswordHasher<ApplicationUser> passwordHasher)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -95,6 +99,7 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
             if (ModelState.IsValid)
             {
                 ApplicationUser user = CreateUser();
@@ -102,14 +107,28 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Username, CancellationToken.None);
                 await _userEmailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-                await _userStore.SetUserCreatedDateAsync(user, creationDate, CancellationToken.None);
+                await _userStore.SetUserCreatedDateAsync(user, creationDate);
+
+                string[] passwordCredentials = _passwordHasher.HashPasswordExtended(user, Input.Password);
+                await _userStore.SetUserPasswordSaltAsync(user, passwordCredentials[0]);
+                await _userStore.SetUserPasswordHashAsync(user, passwordCredentials[1]);
                 
-                var hashedpassword = _passwordHasher.HashPassword(user, Input.Password);
-                var result = await _userManager.CreateAsync(user, hashedpassword);
+                var result = await _userManager.CreateAsync(user);
 
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+
+                    //Add newly created user to basic role "User" and add list of basic claims about user
+                    await _userManager.AddToRoleAsync(user, "User");
+                    List<Claim> userClaims =
+                       [
+                           new (ClaimTypes.NameIdentifier, user.Id.ToString()),
+                       new (ClaimTypes.Name, user.UserName),
+                       new (ClaimTypes.Role, "User"),
+                       new (ClaimTypes.Email, user.Email)
+                       ];
+                    await _userManager.AddClaimsAsync(user, userClaims);
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -133,12 +152,12 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
                         return LocalRedirect(returnUrl);
                     }
                 }
-                foreach (var error in result.Errors)
+                else
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    return Page();
                 }
             }
-
             // If we got this far, something failed, redisplay form
             return Page();
         }

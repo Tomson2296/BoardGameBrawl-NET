@@ -1,5 +1,7 @@
 ﻿using BoardGameBrawl.Identity;
 using BoardGameBrawl.Identity.Entities;
+using BoardGameBrawl.Identity.Services;
+using BoardGameBrawl.Identity.Stores;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -10,14 +12,20 @@ namespace BoardGameBrawl.Infrastructure.DatabaseSeed
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly IUserStore<ApplicationUser> _userStore;
+        private readonly IApplicationPasswordHasher<ApplicationUser> _passwordHasher;
         private readonly IdentityAppDBContext _DBContext;
 
-        public ApplicationUserDatabaseSeed(UserManager<ApplicationUser> userManager,
+        public ApplicationUserDatabaseSeed(UserManager<ApplicationUser> userManager, 
             RoleManager<ApplicationRole> roleManager,
+            IUserStore<ApplicationUser> userStore,
+            IApplicationPasswordHasher<ApplicationUser> passwordHasher, 
             IdentityAppDBContext dBContext)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _userStore = userStore;
+            _passwordHasher = passwordHasher;
             _DBContext = dBContext;
         }
 
@@ -37,11 +45,14 @@ namespace BoardGameBrawl.Infrastructure.DatabaseSeed
                 NormalizedUserName = "ADMIN",
                 Email = "admin@admin.com",
                 NormalizedEmail = "ADMIN@ADMIN.COM",
-                EmailConfirmed = true
+                EmailConfirmed = true,
+                UserCreatedDate = DateOnly.FromDateTime(DateTime.UtcNow)
             };
-
             await _userManager.CreateAsync(admin);
-            await _userManager.AddPasswordAsync(admin, "Admin123!");
+           
+            string[] passwordCredentials = _passwordHasher.HashPasswordExtended(admin, "Admin123!");
+            await _userStore.SetUserPasswordSaltAsync(admin, passwordCredentials[0]);
+            await _userStore.SetUserPasswordHashAsync(admin, passwordCredentials[1]);
 
             if (await _DBContext.Roles.AnyAsync(r => r.Name!.Equals("Administrator")))
             {
@@ -117,11 +128,15 @@ namespace BoardGameBrawl.Infrastructure.DatabaseSeed
                         FirstName = FirstName,
                         LastName = LastName,
                         Email = Email,
-                        EmailConfirmed = true
+                        EmailConfirmed = true,
+                        UserCreatedDate = DateOnly.FromDateTime(DateTime.UtcNow)
                     };
-
                     await _userManager.CreateAsync(entry);
-                    await _userManager.AddPasswordAsync(entry, "Zaq1@WSX");
+
+                    passwordCredentials = _passwordHasher.HashPasswordExtended(entry, "Zaq1@WSX");
+                    await _userStore.SetUserPasswordSaltAsync(entry, passwordCredentials[0]);
+                    await _userStore.SetUserPasswordHashAsync(entry, passwordCredentials[1]);
+                   
                     await _userManager.AddToRoleAsync(entry, "User");
 
                     List<Claim> userClaims =

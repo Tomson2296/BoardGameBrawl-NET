@@ -32,7 +32,6 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
 
         public class InputModel
         {
-            /// </summary>
             [Required]
             [EmailAddress]
             public string Email { get; set; }

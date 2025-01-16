@@ -1,4 +1,5 @@
 ﻿using BoardGameBrawl.Identity.Entities;
+using BoardGameBrawl.Identity.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -16,6 +17,7 @@ namespace BoardGameBrawl.Identity.Stores
         IUserSecurityStampStore<ApplicationUser>
     {
         private readonly IdentityAppDBContext _context;
+
         public ApplicationUserStore(IdentityAppDBContext context)
         {
             _context = context;
@@ -326,7 +328,7 @@ namespace BoardGameBrawl.Identity.Stores
 
             return await Task.FromResult(user.SecurityStamp);
         }
-
+        
         public async Task<string> GetUserIdAsync(ApplicationUser user,
             CancellationToken cancellationToken = default)
         {

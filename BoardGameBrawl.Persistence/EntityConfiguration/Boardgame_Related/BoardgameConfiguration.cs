@@ -27,7 +27,7 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Boardgame_Related
                 .IsRequired();
 
             entity.Property(e => e.Description)
-                .HasMaxLength(2048)
+                .HasMaxLength(4098)
                 .IsRequired();
 
             // Each Boardgame have multiple rules associated with them
@@ -58,6 +58,20 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Boardgame_Related
                 .HasForeignKey(t => t.BoardgameId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.ClientCascade);
+
+            // Configure many-to-many relationship with BoardgameCategories using linked table BoardgameCategoryTags
+
+            //entity.HasMany(e => e.BoardgameCategoryTags)
+            //    .WithOne()
+            //    .HasForeignKey(t => t.BoardgameId)
+            //    .IsRequired();
+
+            // Configure many-to-many relationship with BoardgameMechanics using linked table BoardgamMechanicTags
+
+            //entity.HasMany(e => e.BoardgameMechanicTags)
+            //   .WithOne()
+            //   .HasForeignKey(t => t.BoardgameId)
+            //   .IsRequired();
 
             //entity.HasQueryFilter(e => !e.IsSoftDeleted);
 

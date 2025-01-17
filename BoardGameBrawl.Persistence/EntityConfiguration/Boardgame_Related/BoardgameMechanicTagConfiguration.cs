@@ -11,8 +11,8 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Boardgame_Related
             entity.HasKey(e => new { e.BoardgameId, e.MechanicId });
 
             entity.HasOne(e => e.Boardgame)
-               .WithMany(b => b.BoardgameMechanicTags)
-               .HasForeignKey(e => e.BoardgameId);
+                .WithMany(b => b.BoardgameMechanicTags)
+                .HasForeignKey(e => e.BoardgameId);
 
             entity.HasOne(e => e.BoardgameMechanic)
                 .WithMany(m => m.BoardgameMechanicTags)

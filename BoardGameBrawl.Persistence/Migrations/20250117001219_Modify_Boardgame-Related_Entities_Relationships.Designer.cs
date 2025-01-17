@@ -4,6 +4,7 @@ using BoardGameBrawl.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BoardGameBrawl.Persistence.Migrations
 {
     [DbContext(typeof(MainAppDBContext))]
-    partial class MainAppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250117001219_Modify_Boardgame-Related_Entities_Relationships")]
+    partial class Modify_BoardgameRelated_Entities_Relationships
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -126,15 +129,20 @@ namespace BoardGameBrawl.Persistence.Migrations
 
             modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Boardgame_Related.BoardgameCategoryTag", b =>
                 {
-                    b.Property<Guid>("BoardgameId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<Guid?>("BoardgameId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("BoardgameId");
 
-                    b.Property<Guid>("CategoryId")
+                    b.Property<Guid?>("CategoryId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("CategoryId");
+
+                    b.Property<Guid>("BoardgameCategoryId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("BoardgameId", "CategoryId");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("BoardgameCategoryId");
 
                     b.ToTable("BoardgameCategoryTags", "dbo");
                 });
@@ -171,15 +179,20 @@ namespace BoardGameBrawl.Persistence.Migrations
 
             modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Boardgame_Related.BoardgameMechanicTag", b =>
                 {
-                    b.Property<Guid>("BoardgameId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<Guid?>("BoardgameId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("BoardgameId");
 
-                    b.Property<Guid>("MechanicId")
+                    b.Property<Guid?>("MechanicId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("MechanicId");
+
+                    b.Property<Guid>("BoardgameMechanicId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("BoardgameId", "MechanicId");
 
-                    b.HasIndex("MechanicId");
+                    b.HasIndex("BoardgameMechanicId");
 
                     b.ToTable("BoardgameMechanicTags", "dbo");
                 });
@@ -531,15 +544,15 @@ namespace BoardGameBrawl.Persistence.Migrations
 
             modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Boardgame_Related.BoardgameCategoryTag", b =>
                 {
-                    b.HasOne("BoardGameBrawl.Domain.Entities.Boardgame_Related.Boardgame", "Boardgame")
+                    b.HasOne("BoardGameBrawl.Domain.Entities.Boardgame_Related.BoardgameCategory", "BoardgameCategory")
                         .WithMany("BoardgameCategoryTags")
-                        .HasForeignKey("BoardgameId")
+                        .HasForeignKey("BoardgameCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BoardGameBrawl.Domain.Entities.Boardgame_Related.BoardgameCategory", "BoardgameCategory")
+                    b.HasOne("BoardGameBrawl.Domain.Entities.Boardgame_Related.Boardgame", "Boardgame")
                         .WithMany("BoardgameCategoryTags")
-                        .HasForeignKey("CategoryId")
+                        .HasForeignKey("BoardgameId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -558,7 +571,7 @@ namespace BoardGameBrawl.Persistence.Migrations
 
                     b.HasOne("BoardGameBrawl.Domain.Entities.Boardgame_Related.BoardgameMechanic", "BoardgameMechanic")
                         .WithMany("BoardgameMechanicTags")
-                        .HasForeignKey("MechanicId")
+                        .HasForeignKey("BoardgameMechanicId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

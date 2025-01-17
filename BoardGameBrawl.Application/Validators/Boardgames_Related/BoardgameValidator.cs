@@ -12,7 +12,7 @@ namespace BoardGameBrawl.Application.Validators.Boardgames_Related
     public class BoardgameValidator : AbstractValidator<BoardgameDTO>
     {
         private readonly IBoardgameRepository _boardgameRepository;
-
+        
         public BoardgameValidator(IBoardgameRepository boardgameRepository)
         {
             _boardgameRepository = boardgameRepository;

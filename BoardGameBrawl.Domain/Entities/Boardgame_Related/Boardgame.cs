@@ -31,6 +31,7 @@ namespace BoardGameBrawl.Domain.Entities.Boardgame_Related
         
         public string? Description { get; set; }
 
+
         public ICollection<BoardgameCategoryTag>? BoardgameCategoryTags { get; set; }
 
         public ICollection<BoardgameMechanicTag>? BoardgameMechanicTags { get; set; }

@@ -4,6 +4,7 @@ using BoardGameBrawl.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BoardGameBrawl.Identity.Migrations
 {
     [DbContext(typeof(IdentityAppDBContext))]
-    partial class IdentityAppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250116172913_Modify_ApplicationUser_Table_Ignore_Lockout_Columns")]
+    partial class Modify_ApplicationUser_Table_Ignore_Lockout_Columns
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

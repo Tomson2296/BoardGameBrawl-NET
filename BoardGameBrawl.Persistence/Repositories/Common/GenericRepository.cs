@@ -1,16 +1,20 @@
 ﻿#nullable disable
 using BoardGameBrawl.Application.Contracts.Common;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography;
 
 namespace BoardGameBrawl.Persistence.Repositories.Common
 {
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
-        private readonly MainAppDBContext _context;
+        protected readonly MainAppDBContext _context;
         public GenericRepository(MainAppDBContext context)
         {
             _context = context;
         }
+
+        // exposing MainAppDBContext to derived repository classes //
+        protected MainAppDBContext Context => _context;
         
         public async Task<T> GetEntity(Guid id, CancellationToken cancellationToken = default)
         {

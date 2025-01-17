@@ -5,6 +5,10 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related
 {
     public interface IBoardgameCategoryTagsRepository : IGenericRepository<BoardgameCategoryTag>
     {
+        public Task<ICollection<Boardgame>> GetBoardgamesByCategoryAsync(Guid categoryId,
+            CancellationToken cancellationToken = default);
 
+        public Task<ICollection<BoardgameCategory>> GetBoardgameCategoriesByGameAsync(Guid boardgameId,
+            CancellationToken cancellationToken = default);
     }
 }

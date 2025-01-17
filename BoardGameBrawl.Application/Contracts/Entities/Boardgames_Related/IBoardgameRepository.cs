@@ -5,7 +5,7 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related
 {
     public interface IBoardgameRepository : IGenericRepository<Boardgame>
     {
-        // getter methods //
+        // basic fields getter methods //
 
         public Task<string?> GetNameAsync(Boardgame boardgame,
            CancellationToken cancellationToken = default);
@@ -41,9 +41,9 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related
          CancellationToken cancellationToken = default);
 
         
-        // setter methods //
+        // basic field setter methods //
         // weight may be updated once for a while //
-
+        
         public Task SetBGGWeight(Boardgame boardgame,
          float weight,
          CancellationToken cancellationToken = default);

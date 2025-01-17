@@ -38,13 +38,19 @@ namespace BoardGameBrawl.Identity.EntityConfiguration
                 .IsRequired();
 
             // Ignore default IdentityUser properties related to phone number
-            // and TwoFactor authentication 
+            // 2FA authentication and Lockout features
 
             entity.Ignore(e => e.PhoneNumber);
 
             entity.Ignore(e => e.PhoneNumberConfirmed);
 
             entity.Ignore(e => e.TwoFactorEnabled);
+
+            entity.Ignore(e => e.AccessFailedCount);
+
+            entity.Ignore(e => e.LockoutEnabled);
+
+            entity.Ignore(e => e.LockoutEnd);
 
             // Adding additional index to - if User has an account on boardgamegeek.com website
 

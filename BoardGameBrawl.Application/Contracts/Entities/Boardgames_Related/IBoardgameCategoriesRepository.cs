@@ -5,6 +5,6 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related
 {
     public interface IBoardgameCategoriesRepository : IGenericRepository<BoardgameCategory>
     {
-
+        
     }
 }

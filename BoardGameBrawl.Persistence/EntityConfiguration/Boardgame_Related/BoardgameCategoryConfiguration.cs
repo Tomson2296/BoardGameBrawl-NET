@@ -14,6 +14,11 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Boardgame_Related
                 .HasMaxLength(256)
                 .IsRequired();
 
+            //entity.HasMany(e => e.BoardgameCategoryTags)
+            //   .WithOne()
+            //   .HasForeignKey(t => t.CategoryId)
+            //   .IsRequired();
+
             entity.ToTable("BoardgameCategories");
         }
     }

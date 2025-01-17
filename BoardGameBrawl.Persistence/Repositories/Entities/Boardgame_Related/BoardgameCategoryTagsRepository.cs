@@ -12,6 +12,28 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
         {
         }
 
+        public async Task<BoardgameCategoryTag> GetEntity(Guid boardgameId,
+            Guid categoryId,
+            CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(boardgameId);
+            ArgumentNullException.ThrowIfNull(categoryId);
+
+            return await _context.Set<BoardgameCategoryTag>().FindAsync(new[] { boardgameId, categoryId }, cancellationToken);
+        }
+
+        public async Task<bool> Exists(Guid boardgameId, Guid categoryId, 
+            CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(boardgameId);
+            ArgumentNullException.ThrowIfNull(categoryId);
+
+            var entity = await Context.Set<BoardgameCategoryTag>().FindAsync(new[] { boardgameId, categoryId }, cancellationToken);
+            return entity != null;
+        }
+
         public async Task<ICollection<BoardgameCategory>> GetBoardgameCategoriesByGameAsync(Guid boardgameId, 
             CancellationToken cancellationToken = default)
         {

@@ -3,48 +3,48 @@ using BoardGameBrawl.Domain.Entities.Boardgame_Related;
 
 namespace BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related
 {
-    public interface IBoardgameRepository : IGenericRepository<Boardgame>
+    public interface IBoardgameRepository : IGenericRepository<Boardgame>, IAuditableRepository<Boardgame>
     {
         // basic fields getter methods //
 
-        public Task<string?> GetNameAsync(Boardgame boardgame,
+        Task<string?> GetNameAsync(Boardgame boardgame,
            CancellationToken cancellationToken = default);
 
-        public Task<int> GetBGGIDAsync(Boardgame boardgame,
+        Task<int> GetBGGIDAsync(Boardgame boardgame,
             CancellationToken cancellationToken = default);
 
-        public Task<short> GetYearPublishedAsync(Boardgame boardgame,
+        Task<short> GetYearPublishedAsync(Boardgame boardgame,
             CancellationToken cancellationToken = default);
 
-        public Task<byte> GetMinPlayersAsync(Boardgame boardgame,
+        Task<byte> GetMinPlayersAsync(Boardgame boardgame,
            CancellationToken cancellationToken = default);
 
-        public Task<byte> GetMaxPlayersAsync(Boardgame boardgame,
+        Task<byte> GetMaxPlayersAsync(Boardgame boardgame,
            CancellationToken cancellationToken = default);
 
-        public Task<short> GetPlayingTimeAsync(Boardgame boardgame,
+        Task<short> GetPlayingTimeAsync(Boardgame boardgame,
            CancellationToken cancellationToken = default);
 
-        public Task<short> GetMinimumPlayingTimeAsync(Boardgame boardgame,
+        Task<short> GetMinimumPlayingTimeAsync(Boardgame boardgame,
           CancellationToken cancellationToken = default);
 
-        public Task<short> GetMaximumPlayingTimeAsync(Boardgame boardgame,
+        Task<short> GetMaximumPlayingTimeAsync(Boardgame boardgame,
           CancellationToken cancellationToken = default);
 
-        public Task<float> GetBGGWeightAsync(Boardgame boardgame,
+        Task<float> GetBGGWeightAsync(Boardgame boardgame,
           CancellationToken cancellationToken = default);
 
-        public Task<byte[]?> GetImageAsync(Boardgame boardgame,
+        Task<byte[]?> GetImageAsync(Boardgame boardgame,
          CancellationToken cancellationToken = default);
 
-        public Task<string?> GetDescriptionAsync(Boardgame boardgame,
+        Task<string?> GetDescriptionAsync(Boardgame boardgame,
          CancellationToken cancellationToken = default);
 
         
         // basic field setter methods //
         // weight may be updated once for a while //
         
-        public Task SetBGGWeight(Boardgame boardgame,
+        Task SetBGGWeight(Boardgame boardgame,
          float weight,
          CancellationToken cancellationToken = default);
     }

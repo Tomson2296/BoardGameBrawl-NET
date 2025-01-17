@@ -3,9 +3,8 @@ using BoardGameBrawl.Domain.Entities.Player_Related;
 
 namespace BoardGameBrawl.Application.Contracts.Entities.Player_Related
 {
-    public interface IPlayerRepository : IGenericRepository<Player>
+    public interface IPlayerRepository : IGenericRepository<Player>, IAuditableRepository<Player>
     {
-
         // getter methods // 
 
         public Task<string?> GetUsernameAsync(Player player,

@@ -9,6 +9,8 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
         public BoardgameRepository(MainAppDBContext context) : base(context)
         {}
 
+        // getter methods //
+
         public async Task<int> GetBGGIDAsync(Boardgame boardgame, 
             CancellationToken cancellationToken = default)
         {
@@ -108,6 +110,7 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
             return await Task.FromResult(boardgame.YearPublished);
         }
 
+        // setter methods //
 
         public Task SetBGGWeight(Boardgame boardgame, float weight, 
             CancellationToken cancellationToken = default)

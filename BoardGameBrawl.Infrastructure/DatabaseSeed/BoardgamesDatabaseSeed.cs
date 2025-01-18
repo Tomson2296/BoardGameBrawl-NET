@@ -1,30 +1,47 @@
-﻿using BoardGameBrawl.Domain.Entities.Boardgame_Related;
+﻿using BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related;
+using BoardGameBrawl.Domain.Entities.Boardgame_Related;
 using BoardGameBrawl.Identity;
 using BoardGameBrawl.Persistence;
+using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace BoardGameBrawl.Infrastructure.DatabaseSeed
 {
     public class BoardgamesDatabaseSeed
     {
-        private readonly IdentityAppDBContext _context;
+        private readonly MainAppDBContext _context;
         private readonly IImageStream _imageStream;
-        
+
+        private readonly IBoardgameRepository _boardgameRepository;
+        private readonly IBoardgameCategoriesRepository _boardgameCategoriesRepository;
+        private readonly IBoardgameCategoryTagsRepository _boardgameCategoryTagsRepository;
+        private readonly IBoardgameMechanicsRepository _boardgameMechanicsRepository;
+        private readonly IBoardgameMechanicTagsRepository _boardgameMechanicTagsRepository;
+
         public BoardgamesDatabaseSeed(
-            IdentityAppDBContext context, 
-            IImageStream imageStream)
+            MainAppDBContext context, 
+            IImageStream imageStream, 
+            IBoardgameRepository boardgameRepository, 
+            IBoardgameCategoriesRepository boardgameCategoriesRepository, 
+            IBoardgameCategoryTagsRepository boardgameCategoryTagsRepository,
+            IBoardgameMechanicsRepository boardgameMechanicsRepository,
+            IBoardgameMechanicTagsRepository boardgameMechanicTagsRepository)
         {
             _context = context;
             _imageStream = imageStream;
+            _boardgameRepository = boardgameRepository;
+            _boardgameCategoriesRepository = boardgameCategoriesRepository;
+            _boardgameCategoryTagsRepository = boardgameCategoryTagsRepository;
+            _boardgameMechanicsRepository = boardgameMechanicsRepository;
+            _boardgameMechanicTagsRepository = boardgameMechanicTagsRepository;
         }
 
-        public async Task SeedDatabaseAsync(MainAppDBContext context)
+        public async Task SeedDatabaseAsync()
         {
             await _context.Database.EnsureCreatedAsync();
 
             string catalog = Directory.GetCurrentDirectory().ToString();
             string filePath = catalog + "\\Resources\\top100_boardgames_data.csv";
-            Console.WriteLine(filePath);
-
             bool firstLine = true;
 
             using (StreamReader reader = new(filePath))
@@ -32,7 +49,8 @@ namespace BoardGameBrawl.Infrastructure.DatabaseSeed
                 while (!reader.EndOfStream)
                 {
                     string? line = reader.ReadLine();
-                    string[] values = line!.Split(',');
+                    string[] values = line!.Split(';');
+                    int count = values.Length;
 
                     if (firstLine)
                     {
@@ -52,14 +70,31 @@ namespace BoardGameBrawl.Infrastructure.DatabaseSeed
 
                     string[] categories = values[9].Split(",");
                     string[] mechanics = values[10].Split(",");
-                    string desc = values[11];
-                    string imagePathFile = values[12];
+                    string imagePathFile = values[11];
+                    string desc;
+
+                    if (count > 13)
+                    {
+                        // recreate boardgame description 
+                        StringBuilder descriptionBuilder = new StringBuilder();
+                        descriptionBuilder.Append(values[12]);
+                        for (int j = 13; j < count; j++)
+                        {
+                            descriptionBuilder.Append(";" + values[j].Trim());
+                        }
+                        desc = descriptionBuilder.ToString();
+                    }
+                    else
+                    {
+                        // no ; separation - copy description w/o problems
+                        desc = values[12];
+                    }
 
                     byte[] image = await _imageStream.ReadImageStreamAsync(imagePathFile);
 
+                    // adding downloaded boardgame 
                     Boardgame entry = new()
                     {
-                        Id = Guid.NewGuid(),
                         BGGId = BGGId,
                         Name = name,
                         YearPublished = yearPublished,
@@ -72,9 +107,70 @@ namespace BoardGameBrawl.Infrastructure.DatabaseSeed
                         Description = desc,
                         Image = image
                     };
+
+                    await _boardgameRepository.AddEntity(entry);
+
+                    // adding downloaded distinct boardgame categories
+                    // adding relationship boardgame-boardgameCategory
+
+                    foreach (var category in categories)
+                    {
+                        BoardgameCategory newCategory = new()
+                        {
+                            Category = category.Trim()
+                        };
+                        Guid categoryId;
+
+                        if (await _boardgameCategoriesRepository.Exists(newCategory) == false)
+                        {
+                            categoryId = newCategory.Id;
+                            await _boardgameCategoriesRepository.AddEntity(newCategory);
+                        }
+                        else
+                        {
+                            categoryId = await _boardgameCategoriesRepository.GetBoardgameCategoryIdAsync(newCategory.Category);
+                        }
+
+                        BoardgameCategoryTag newBoardgameCategoryTag = new()
+                        {
+                            BoardgameId = entry.Id,
+                            CategoryId = categoryId
+                        };
+
+                        await _boardgameCategoryTagsRepository.AddEntity(newBoardgameCategoryTag);
+                    }
+
+                    // adding downloaded distinct boardgame mechanics 
+                    // adding relationship boardgame-boardgameMechanic
+
+                    foreach (var mechanic in mechanics)
+                    {
+                        BoardgameMechanic newMechanic = new()
+                        {
+                            Mechanic = mechanic.Trim()
+                        };
+                        Guid mechanicId;
+
+                        if (await _boardgameMechanicsRepository.Exists(newMechanic) == false)
+                        {
+                            mechanicId = newMechanic.Id;
+                            await _boardgameMechanicsRepository.AddEntity(newMechanic);
+                        }
+                        else
+                        {
+                            mechanicId = await _boardgameMechanicsRepository.GetBoardgameMechanicIdAsync(newMechanic.Mechanic);
+                        }
+
+                        BoardgameMechanicTag newBoardgameMechanicTag = new()
+                        {
+                            BoardgameId = entry.Id,
+                            MechanicId = mechanicId
+                        };
+
+                        await _boardgameMechanicTagsRepository.AddEntity(newBoardgameMechanicTag);
+                    }
                 }
             }
-
             await _context.SaveChangesAsync();
         }
     }

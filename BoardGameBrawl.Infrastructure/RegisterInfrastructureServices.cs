@@ -9,7 +9,7 @@ namespace BoardGameBrawl.Infrastructure
     {
         public static Task<IServiceCollection> RegisterInfraServices(this IServiceCollection services)
         {
-            services.AddTransient<IImageStream, ImageStream>();
+            services.AddScoped<IImageStream, ImageStream>();
 
             services.AddScoped<IMailKitEmailSender, MailKitEmailSender>();
 

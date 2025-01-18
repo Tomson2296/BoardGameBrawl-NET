@@ -17,8 +17,12 @@ namespace BoardGameBrawl.Infrastructure
                     //var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
                     
                     var serviceProvider = scope.ServiceProvider;
+
                     var appUserSeed = serviceProvider.GetRequiredService<ApplicationUserDatabaseSeed>();
                     await appUserSeed.SeedDatabaseAsync();
+
+                    var boardgameSeed = serviceProvider.GetRequiredService<BoardgamesDatabaseSeed>();
+                    await boardgameSeed.SeedDatabaseAsync();
                 }
             }
             catch (Exception ex)

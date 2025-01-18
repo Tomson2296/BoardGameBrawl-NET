@@ -5,13 +5,21 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related
 {
     public interface IBoardgameMechanicTagsRepository : IGenericRepository<BoardgameMechanicTag>
     {
-        Task<BoardgameMechanicTag> GetEntity(Guid boardgameId,
-           Guid mechanicId,
+        // refined methods //
+        
+        new Task AddEntity(BoardgameMechanicTag boardgameMechanicTag,
            CancellationToken cancellationToken = default);
 
         Task<bool> Exists(Guid boardgameId,
-            Guid mechanicId,
-            CancellationToken cancellationToken = default);
+           Guid mechanicId,
+           CancellationToken cancellationToken = default);
+
+        
+        // getter methods //
+
+        Task<BoardgameMechanicTag> GetEntity(Guid boardgameId,
+           Guid mechanicId,
+           CancellationToken cancellationToken = default);
 
         Task<ICollection<Boardgame>> GetBoardgamesByMechanicAsync(Guid mechanicId, 
             CancellationToken cancellationToken = default);

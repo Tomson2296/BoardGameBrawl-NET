@@ -1,6 +1,7 @@
 ﻿using BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related;
 using BoardGameBrawl.Domain.Entities.Boardgame_Related;
 using BoardGameBrawl.Persistence.Repositories.Common;
+using Microsoft.EntityFrameworkCore;
 
 namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
 {
@@ -9,6 +10,7 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
         public BoardgameRepository(MainAppDBContext context) : base(context)
         {}
 
+        
         // getter methods //
 
         public async Task<int> GetBGGIDAsync(Boardgame boardgame, 

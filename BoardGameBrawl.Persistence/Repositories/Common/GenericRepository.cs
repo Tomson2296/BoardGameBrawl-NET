@@ -40,19 +40,28 @@ namespace BoardGameBrawl.Persistence.Repositories.Common
             return entity != null;
         }
 
-        public async Task<T> AddEntity(T entity, CancellationToken cancellationToken = default)
+        public async Task AddEntity(T entity, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(entity);
 
-            if (!_context.Set<T>().Contains(entity))
+            // Assuming the primary key(s) can be extracted
+            var keyValues = _context.Model.FindEntityType(typeof(T))?
+                .FindPrimaryKey()?
+                .Properties
+                .Select(p => p.PropertyInfo?.GetValue(entity))
+                .ToArray();
+
+            if (keyValues == null || keyValues.Contains(null))
+            {
+                throw new InvalidOperationException("Unable to determine the primary key value(s) for the entity.");
+            }
+
+            var entityInDB = await _context.Set<T>().FindAsync(keyValues, cancellationToken);
+
+            if (entityInDB == null)
             {
                 await _context.Set<T>().AddAsync(entity, cancellationToken);
-                return entity;
-            }
-            else
-            {
-                throw new InvalidOperationException($"Invalid operation - entity cannot be added into the database - already exists");
             }
         }
 
@@ -61,7 +70,19 @@ namespace BoardGameBrawl.Persistence.Repositories.Common
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(entity);
 
-            var entityInDb = await _context.Set<T>().FindAsync(entity, cancellationToken);
+            // Assuming the primary key(s) can be extracted
+            var keyValues = _context.Model.FindEntityType(typeof(T))?
+                .FindPrimaryKey()?
+                .Properties
+                .Select(p => p.PropertyInfo?.GetValue(entity))
+                .ToArray();
+
+            if (keyValues == null || keyValues.Contains(null))
+            {
+                throw new InvalidOperationException("Unable to determine the primary key value(s) for the entity.");
+            }
+
+            var entityInDb = await _context.Set<T>().FindAsync(keyValues, cancellationToken);
 
             if (entityInDb != null)
             {

@@ -11,6 +11,22 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
         public BoardgameMechanicTagsRepository(MainAppDBContext context) : base(context)
         { }
 
+        // refined methods //
+
+        public async Task<bool> Exists(Guid boardgameId, Guid mechanicId,
+           CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(boardgameId);
+            ArgumentNullException.ThrowIfNull(mechanicId);
+
+            var entity = await Context.Set<BoardgameMechanicTag>().FindAsync(new[] { boardgameId, mechanicId }, cancellationToken);
+            return entity != null;
+        }
+
+
+        // getter methods //
+
         public async Task<BoardgameMechanicTag> GetEntity(Guid boardgameId, 
             Guid mechanicId, 
             CancellationToken cancellationToken = default)
@@ -20,17 +36,6 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
             ArgumentNullException.ThrowIfNull(mechanicId);
 
             return await _context.Set<BoardgameMechanicTag>().FindAsync(new[] { boardgameId, mechanicId }, cancellationToken);
-        }
-
-        public async Task<bool> Exists(Guid boardgameId, Guid mechanicId, 
-            CancellationToken cancellationToken = default)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            ArgumentNullException.ThrowIfNull(boardgameId);
-            ArgumentNullException.ThrowIfNull(mechanicId);
-
-            var entity = await Context.Set<BoardgameMechanicTag>().FindAsync(new[] {boardgameId, mechanicId}, cancellationToken);
-            return entity != null;
         }
 
         public async Task<ICollection<BoardgameMechanic>> GetBoardgameMechanicsByGameAsync(Guid boardgameId, 

@@ -6,7 +6,7 @@
 
         Task<ICollection<T>> GetAllEntities(CancellationToken cancellationToken = default);
 
-        Task<T> AddEntity(T entity, CancellationToken cancellationToken = default);
+        Task AddEntity(T entity, CancellationToken cancellationToken = default);
         
         Task<bool> Exists(Guid id, CancellationToken cancellationToken = default);
 

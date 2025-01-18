@@ -14,6 +14,10 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Boardgame_Related
                 .HasMaxLength(256)
                 .IsRequired();
 
+            entity.HasIndex(e => e.Mechanic)
+                .HasDatabaseName("BoardgameMechanicIndex")
+                .IsUnique();
+
             //entity.HasMany(e => e.BoardgameMechanicTags)
             //   .WithOne()
             //   .HasForeignKey(t => t.MechanicId)

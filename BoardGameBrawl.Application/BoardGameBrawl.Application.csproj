@@ -27,6 +27,8 @@
 
   <ItemGroup>
     <Folder Include="Contracts\Entities\Group_Related\" />
+    <Folder Include="Features\Group_Related\" />
+    <Folder Include="Validators\Group_Related\" />
   </ItemGroup>
 
 </Project>

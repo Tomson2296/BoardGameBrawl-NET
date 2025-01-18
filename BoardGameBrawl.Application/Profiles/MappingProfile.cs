@@ -24,6 +24,14 @@ namespace BoardGameBrawl.Application.Profiles
               .ForMember(dest => dest.Tournaments, opt => opt.Ignore())
               .ForMember(dest => dest.TournamentMatches, opt => opt.Ignore())
               .ReverseMap();
+
+            CreateMap<BoardgameCategoryDTO, BoardgameCategory>()
+              .ForMember(dest => dest.BoardgameCategoryTags, opt => opt.Ignore())
+              .ReverseMap();
+
+            CreateMap<BoardgameMechanicDTO, BoardgameMechanic>()
+             .ForMember(dest => dest.BoardgameMechanicTags, opt => opt.Ignore())
+             .ReverseMap();
         }
     }
 }

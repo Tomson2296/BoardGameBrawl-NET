@@ -11,7 +11,7 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
         { }
         
         // refined methods //
-
+        
         public async Task<bool> Exists(BoardgameCategory boardgameCategory,
            CancellationToken cancellationToken = default)
         {

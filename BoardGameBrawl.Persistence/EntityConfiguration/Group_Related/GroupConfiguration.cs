@@ -24,7 +24,7 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Group_Related
                 .IsUnique();
 
             entity.Property(e => e.GroupDescription)
-                .HasMaxLength(512);
+                .HasMaxLength(2048);
 
             entity.Property(e => e.GroupMiniature)
                .HasColumnType("varbinary(max)")

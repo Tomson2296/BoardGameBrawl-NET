@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using BoardGameBrawl.Application.DTOs.Entities.Boardgame_Related;
+using BoardGameBrawl.Application.DTOs.Entities.Group_Related;
 using BoardGameBrawl.Application.DTOs.Entities.Player_Related;
 using BoardGameBrawl.Domain.Entities.Boardgame_Related;
+using BoardGameBrawl.Domain.Entities.Group_Related;
 using BoardGameBrawl.Domain.Entities.Player_Related;
 
 namespace BoardGameBrawl.Application.Profiles
@@ -31,6 +33,10 @@ namespace BoardGameBrawl.Application.Profiles
 
             CreateMap<BoardgameMechanicDTO, BoardgameMechanic>()
              .ForMember(dest => dest.BoardgameMechanicTags, opt => opt.Ignore())
+             .ReverseMap();
+
+            CreateMap<GroupDTO, Group>()
+             .ForMember(dest => dest.GroupParticipants, opt => opt.Ignore())
              .ReverseMap();
         }
     }

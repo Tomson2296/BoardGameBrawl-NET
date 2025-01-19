@@ -2,8 +2,10 @@
 
 using BoardGameBrawl.Application.Contracts.Common;
 using BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related;
+using BoardGameBrawl.Application.Contracts.Entities.Group_Related;
 using BoardGameBrawl.Application.Contracts.Entities.Player_Related;
 using BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related;
+using BoardGameBrawl.Persistence.Repositories.Entities.Group_Related;
 using BoardGameBrawl.Persistence.Repositories.Entities.Player_Related;
 using Microsoft.AspNetCore.Http;
 
@@ -21,6 +23,8 @@ namespace BoardGameBrawl.Persistence.Repositories.Common
         private IBoardgameCategoryTagsRepository _boardgameCategoryTagsRepository;
         private IBoardgameMechanicsRepository _boardgameMechanicsRepository;
         private IBoardgameMechanicTagsRepository _boardgameMechanicTagsRepository;
+
+        private IGroupRepository _groupRepository;
 
         public UnitOfWork(MainAppDBContext context, 
             IHttpContextAccessor contextAccessor)
@@ -51,6 +55,11 @@ namespace BoardGameBrawl.Persistence.Repositories.Common
 
         public IBoardgameCategoryTagsRepository BoardgameCategoryTagsRepository =>
             _boardgameCategoryTagsRepository ??= new BoardgameCategoryTagsRepository(_context);
+
+        // Group-related repositories
+
+        public IGroupRepository GroupRepository =>
+            _groupRepository ??= new GroupRepository(_context);
 
 
         public async Task CommitChangesAsync()

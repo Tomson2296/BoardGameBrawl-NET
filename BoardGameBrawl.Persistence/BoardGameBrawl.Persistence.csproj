@@ -19,8 +19,4 @@
     <ProjectReference Include="..\BoardGameBrawl.Domain\BoardGameBrawl.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Repositories\Entities\Group_Related\" />
-  </ItemGroup>
-
 </Project>

@@ -58,6 +58,5 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Player_Related
         public Task SetUserAvatarAsync(Player player,
           byte[]? avatar,
           CancellationToken cancellationToken = default);
-
     }
 }

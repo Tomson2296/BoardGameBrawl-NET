@@ -1,9 +1,11 @@
 ﻿using BoardGameBrawl.Application.Contracts.Common;
 using BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related;
+using BoardGameBrawl.Application.Contracts.Entities.Group_Related;
 using BoardGameBrawl.Application.Contracts.Entities.Player_Related;
 
 using BoardGameBrawl.Persistence.Repositories.Common;
 using BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related;
+using BoardGameBrawl.Persistence.Repositories.Entities.Group_Related;
 using BoardGameBrawl.Persistence.Repositories.Entities.Player_Related;
 
 using Microsoft.EntityFrameworkCore;
@@ -33,6 +35,8 @@ namespace BoardGameBrawl.Persistence
 
             // Add Group-Related repositories
 
+            services.AddScoped<IGroupRepository, GroupRepository>();
+            
             return Task.FromResult(services);
         }
     }

@@ -9,7 +9,7 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
     {
         public BoardgameMechanicsRepository(MainAppDBContext context) : base(context)
         { }
-        
+
         // refined methods //
 
         public async Task<bool> Exists(BoardgameMechanic boardgameMechanic,
@@ -94,7 +94,7 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
             else
                 throw new ApplicationException("Entity has not been found");
         }
-        
+
 
         public async Task<string?> GetMechanicNameAsync(BoardgameMechanic mechanic,
            CancellationToken cancellationToken = default)

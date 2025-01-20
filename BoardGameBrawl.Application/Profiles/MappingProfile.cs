@@ -38,6 +38,11 @@ namespace BoardGameBrawl.Application.Profiles
             CreateMap<GroupDTO, Group>()
              .ForMember(dest => dest.GroupParticipants, opt => opt.Ignore())
              .ReverseMap();
+
+            CreateMap<GroupParticipantDTO, GroupParticipant>()
+             .ForMember(dest => dest.Group, opt => opt.Ignore())
+             .ForMember(dest => dest.Player, opt => opt.Ignore())
+             .ReverseMap();
         }
     }
 }

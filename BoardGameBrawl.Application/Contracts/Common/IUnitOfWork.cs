@@ -8,6 +8,9 @@ namespace BoardGameBrawl.Application.Contracts.Common
     {
         // Player-related repositories
         IPlayerRepository PlayerRepository { get; }
+        IGroupParticipantRepository GroupParticipantRepository { get; }
+        IPlayerPreferenceRepository PlayerPreferenceRepository { get; }
+
 
         // Boardgame-related repositories
         IBoardgameRepository BoardgameRepository { get; }

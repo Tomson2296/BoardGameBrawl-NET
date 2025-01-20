@@ -38,7 +38,7 @@ namespace BoardGameBrawl.Domain.Entities.Boardgame_Related
 
         public ICollection<MatchRule>? BoardgameRules { get; set; }
 
-        public ICollection<UserRatings>? UserRatings { get; set; }
+        public ICollection<PlayerRreference>? UserRatings { get; set; }
 
         public ICollection<Match>? Matches { get; set; }
 

@@ -1,7 +1,6 @@
 ﻿#nullable disable
 using BoardGameBrawl.Application.Contracts.Common;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Cryptography;
 
 namespace BoardGameBrawl.Persistence.Repositories.Common
 {
@@ -35,7 +34,7 @@ namespace BoardGameBrawl.Persistence.Repositories.Common
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(id);
-            
+
             var entity = await _context.Set<T>().FindAsync(id, cancellationToken);
             return entity != null;
         }

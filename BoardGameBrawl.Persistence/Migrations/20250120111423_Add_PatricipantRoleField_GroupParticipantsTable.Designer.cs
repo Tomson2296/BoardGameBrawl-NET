@@ -4,6 +4,7 @@ using BoardGameBrawl.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BoardGameBrawl.Persistence.Migrations
 {
     [DbContext(typeof(MainAppDBContext))]
-    partial class MainAppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250120111423_Add_PatricipantRoleField_GroupParticipantsTable")]
+    partial class Add_PatricipantRoleField_GroupParticipantsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,7 +47,7 @@ namespace BoardGameBrawl.Persistence.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(4096)
+                        .HasMaxLength(4098)
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<byte[]>("Image")
@@ -328,7 +331,7 @@ namespace BoardGameBrawl.Persistence.Migrations
                     b.ToTable("MatchRules", "dbo");
                 });
 
-            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Player_Related.GroupParticipant", b =>
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Player_Related.GroupParticipants", b =>
                 {
                     b.Property<Guid?>("GroupId")
                         .HasColumnType("uniqueidentifier");
@@ -387,8 +390,8 @@ namespace BoardGameBrawl.Persistence.Migrations
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("UserDescription")
-                        .HasMaxLength(2048)
-                        .HasColumnType("nvarchar(2048)");
+                        .HasMaxLength(512)
+                        .HasColumnType("nvarchar(512)");
 
                     b.Property<string>("UserName")
                         .IsRequired()
@@ -413,7 +416,7 @@ namespace BoardGameBrawl.Persistence.Migrations
                     b.ToTable("Players", "dbo");
                 });
 
-            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Player_Related.PlayerRreference", b =>
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Player_Related.UserRatings", b =>
                 {
                     b.Property<Guid?>("PlayerId")
                         .HasColumnType("uniqueidentifier");
@@ -428,7 +431,7 @@ namespace BoardGameBrawl.Persistence.Migrations
 
                     b.HasIndex("BoardgameId");
 
-                    b.ToTable("PlayerPreferences", "dbo");
+                    b.ToTable("UserRatings", "dbo");
                 });
 
             modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Tournament_Related.Tournament", b =>
@@ -596,7 +599,7 @@ namespace BoardGameBrawl.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Player_Related.GroupParticipant", b =>
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Player_Related.GroupParticipants", b =>
                 {
                     b.HasOne("BoardGameBrawl.Domain.Entities.Group_Related.Group", "Group")
                         .WithMany("GroupParticipants")
@@ -615,7 +618,7 @@ namespace BoardGameBrawl.Persistence.Migrations
                     b.Navigation("Player");
                 });
 
-            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Player_Related.PlayerRreference", b =>
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Player_Related.UserRatings", b =>
                 {
                     b.HasOne("BoardGameBrawl.Domain.Entities.Boardgame_Related.Boardgame", "Boardgame")
                         .WithMany("UserRatings")

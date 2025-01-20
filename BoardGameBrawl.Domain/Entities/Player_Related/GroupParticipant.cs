@@ -2,7 +2,7 @@
 
 namespace BoardGameBrawl.Domain.Entities.Player_Related
 {
-    public class GroupParticipants
+    public class GroupParticipant
     {
         public Guid? GroupId { get; set; }
 
@@ -11,6 +11,7 @@ namespace BoardGameBrawl.Domain.Entities.Player_Related
         public Guid? PlayerId { get; set; }
 
         public Player? Player { get; set; }
-
+ 
+        public bool IsAdmin { get; set; }       
     }
 }

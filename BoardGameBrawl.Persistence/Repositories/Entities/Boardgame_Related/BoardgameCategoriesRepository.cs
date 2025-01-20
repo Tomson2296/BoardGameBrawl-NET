@@ -9,9 +9,9 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
     {
         public BoardgameCategoriesRepository(MainAppDBContext context) : base(context)
         { }
-        
+
         // refined methods //
-        
+
         public async Task<bool> Exists(BoardgameCategory boardgameCategory,
            CancellationToken cancellationToken = default)
         {
@@ -54,7 +54,7 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
 
             var categoryObj = await Context.BoardgameCategories
                 .FirstOrDefaultAsync(e => e.Category == categoryName, cancellationToken);
-            
+
             if (categoryObj != null)
                 return categoryObj;
             else
@@ -77,7 +77,7 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
            .Entries<BoardgameCategory>()
            .Any(e => e.Entity.Category == categoryName);
 
-            if(isTracked)
+            if (isTracked)
             {
                 var entity = Context.ChangeTracker
                                .Entries<BoardgameCategory>()
@@ -95,7 +95,7 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
                 throw new ApplicationException("Entity has not been found");
         }
 
-        public async Task<string?> GetCategoryNameAsync(BoardgameCategory category, 
+        public async Task<string?> GetCategoryNameAsync(BoardgameCategory category,
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -106,7 +106,7 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
 
         // setter methods //
 
-        public Task SetCategoryNameAsync(BoardgameCategory category, 
+        public Task SetCategoryNameAsync(BoardgameCategory category,
             string? categoryName, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();

@@ -5,7 +5,7 @@ using BoardGameBrawl.Domain.Entities.Player_Related;
 namespace BoardGameBrawl.Application.DTOs.Entities.Player_Related
 {
     [AutoMap(typeof(Player))]
-    public class PlayerDTO : BaseEntityDTO
+    public class PlayerDTO : BaseAuditableEntityDTO
     {
         public string? UserName { get; set; }
 
@@ -20,13 +20,5 @@ namespace BoardGameBrawl.Application.DTOs.Entities.Player_Related
         public string? UserDescription { get; set; }
 
         public byte[]? UserAvatar { get; set; }
-
-        public DateTime CreatedDate { get; set; }
-
-        public string? CreatedBy { get; set; }
-        
-        public DateTime LastModifiedDate { get; set; }
-        
-        public string? LastModifiedBy { get; set; }
     }
 }

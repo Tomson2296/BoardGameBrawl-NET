@@ -1,11 +1,6 @@
 ﻿using BoardGameBrawl.Domain.Entities.Player_Related;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BoardGameBrawl.Persistence.EntityConfiguration.Player_Related
 {
@@ -36,7 +31,7 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Player_Related
                 .IsRequired(false);
 
             entity.Property(e => e.UserDescription)
-                .HasMaxLength(512)
+                .HasMaxLength(2048)
                 .IsRequired(false);
 
             entity.Property(e => e.UserAvatar)

@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿#nullable disable
+using BoardGameBrawl.Application.DTOs.Entities.Group_Related;
+using MediatR;
 
 namespace BoardGameBrawl.Application.Features.Group_Related.Group.Commands.UpdateGroup
 {
-    internal class UpdateGroupCommand
+    public class UpdateGroupCommand : IRequest<Unit>
     {
+        public GroupDTO GroupDTO { get; set; }
     }
 }

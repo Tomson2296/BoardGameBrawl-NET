@@ -44,9 +44,9 @@ namespace BoardGameBrawl.Persistence
 
         public DbSet<Group> Groups { get; set; }
 
-        public DbSet<GroupParticipants> GroupParticipants { get; set; }
+        public DbSet<GroupParticipant> GroupParticipants { get; set; }
 
-        public DbSet<UserRatings> UserRatings { get; set; }
+        public DbSet<PlayerRreference> PlayerRreferences { get; set; }
 
         public DbSet<Match> Matches { get; set; }
 

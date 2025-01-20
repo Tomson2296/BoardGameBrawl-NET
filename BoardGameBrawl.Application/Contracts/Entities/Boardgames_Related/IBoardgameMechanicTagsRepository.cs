@@ -6,10 +6,6 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related
     public interface IBoardgameMechanicTagsRepository : IGenericRepository<BoardgameMechanicTag>
     {
         // refined methods //
-        
-        new Task AddEntity(BoardgameMechanicTag boardgameMechanicTag,
-           CancellationToken cancellationToken = default);
-
         Task<bool> Exists(Guid boardgameId,
            Guid mechanicId,
            CancellationToken cancellationToken = default);

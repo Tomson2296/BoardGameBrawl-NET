@@ -13,6 +13,6 @@ namespace BoardGameBrawl.Domain.Entities.Group_Related
 
         public byte[]? GroupMiniature { get; set; }
 
-        public ICollection<GroupParticipants>? GroupParticipants { get; set; }
+        public ICollection<GroupParticipant>? GroupParticipants { get; set; }
     }
 }

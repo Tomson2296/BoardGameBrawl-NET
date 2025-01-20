@@ -1,17 +1,12 @@
 ﻿using BoardGameBrawl.Domain.Entities.Player_Related;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BoardGameBrawl.Persistence.EntityConfiguration.Player_Related
 {
-    internal class GroupParticipantsConfiguration : IEntityTypeConfiguration<GroupParticipants>
+    internal class GroupParticipantConfiguration : IEntityTypeConfiguration<GroupParticipant>
     {
-        public void Configure(EntityTypeBuilder<GroupParticipants> entity)
+        public void Configure(EntityTypeBuilder<GroupParticipant> entity)
         {
             entity.HasKey(e => new { e.GroupId, e.PlayerId });
 
@@ -22,6 +17,13 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Player_Related
             entity.HasOne(e => e.Player)
                 .WithMany(u => u.GroupParticipants)
                 .HasForeignKey(e => e.PlayerId);
+
+            entity.Property(e => e.IsAdmin)
+                .IsRequired();
+
+            //entity.Property(e => e.ParticipantRole)
+            //    .HasConversion<GroupParticipantRolxConverter>()
+            //    .IsRequired();
 
             //entity.HasQueryFilter(e => !e.IsSoftDeleted);
 

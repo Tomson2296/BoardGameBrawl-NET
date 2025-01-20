@@ -27,7 +27,7 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Boardgame_Related
                 .IsRequired();
 
             entity.Property(e => e.Description)
-                .HasMaxLength(4098)
+                .HasMaxLength(4096)
                 .IsRequired();
 
             // Each Boardgame have multiple rules associated with them

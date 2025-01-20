@@ -5,7 +5,7 @@ using BoardGameBrawl.Domain.Entities.Group_Related;
 namespace BoardGameBrawl.Application.DTOs.Entities.Group_Related
 {
     [AutoMap(typeof(Group))]
-    public class GroupDTO: BaseEntityDTO
+    public class GroupDTO: BaseAuditableEntityDTO
     {
         public string? GroupName { get; set; }
 

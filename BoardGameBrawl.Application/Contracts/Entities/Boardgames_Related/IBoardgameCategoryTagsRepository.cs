@@ -1,4 +1,5 @@
-﻿using BoardGameBrawl.Application.Contracts.Common;
+﻿
+using BoardGameBrawl.Application.Contracts.Common;
 using BoardGameBrawl.Domain.Entities.Boardgame_Related;
 
 namespace BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related
@@ -6,10 +7,7 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related
     public interface IBoardgameCategoryTagsRepository : IGenericRepository<BoardgameCategoryTag>
     {
         // refined methods //
-
-        new Task AddEntity(BoardgameCategoryTag boardgameCategoryTag,
-           CancellationToken cancellationToken = default);
-
+        
         Task<bool> Exists(Guid boardgameId,
            Guid categoryId,
            CancellationToken cancellationToken = default);

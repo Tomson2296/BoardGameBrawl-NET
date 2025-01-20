@@ -1,18 +1,11 @@
 ﻿using BoardGameBrawl.Domain.Entities.Player_Related;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace BoardGameBrawl.Persistence.EntityConfiguration.Player_Related
 {
-    internal class UserRatingsConfiguration : IEntityTypeConfiguration<UserRatings>
+    internal class PlayerPreferenceConfiguration : IEntityTypeConfiguration<PlayerRreference>
     {
-        public void Configure(EntityTypeBuilder<UserRatings> entity)
+        public void Configure(EntityTypeBuilder<PlayerRreference> entity)
         {
             entity.HasKey(e => new { e.PlayerId, e.BoardgameId });
 
@@ -29,7 +22,7 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Player_Related
 
             //entity.HasQueryFilter(e => !e.IsSoftDeleted);
 
-            entity.ToTable("UserRatings");
+            entity.ToTable("PlayerPreferences");
         }
     }
 }

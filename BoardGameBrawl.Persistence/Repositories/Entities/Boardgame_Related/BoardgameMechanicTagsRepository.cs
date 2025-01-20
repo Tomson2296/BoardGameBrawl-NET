@@ -1,4 +1,5 @@
 ﻿#nullable disable
+using BoardGameBrawl;
 using BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related;
 using BoardGameBrawl.Domain.Entities.Boardgame_Related;
 using BoardGameBrawl.Persistence.Repositories.Common;
@@ -27,8 +28,8 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
 
         // getter methods //
 
-        public async Task<BoardgameMechanicTag> GetEntity(Guid boardgameId, 
-            Guid mechanicId, 
+        public async Task<BoardgameMechanicTag> GetEntity(Guid boardgameId,
+            Guid mechanicId,
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -38,7 +39,7 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
             return await _context.Set<BoardgameMechanicTag>().FindAsync(new[] { boardgameId, mechanicId }, cancellationToken);
         }
 
-        public async Task<ICollection<BoardgameMechanic>> GetBoardgameMechanicsByGameAsync(Guid boardgameId, 
+        public async Task<ICollection<BoardgameMechanic>> GetBoardgameMechanicsByGameAsync(Guid boardgameId,
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -53,7 +54,7 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
             return await query.ToListAsync(cancellationToken);
         }
 
-        public async Task<ICollection<Boardgame>> GetBoardgamesByMechanicAsync(Guid mechanicId, 
+        public async Task<ICollection<Boardgame>> GetBoardgamesByMechanicAsync(Guid mechanicId,
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related;
+using BoardGameBrawl.Application.Contracts.Common;
 using BoardGameBrawl.Application.DTOs.Entities.Boardgame_Related;
 using MediatR;
 
@@ -7,12 +7,12 @@ namespace BoardGameBrawl.Application.Features.Boardgames_Related.Boardgames.Quer
 {
     public class GetBoardgameQueryHandler : IRequestHandler<GetBoardgameQuery, BoardgameDTO>
     {
-        private readonly IBoardgameRepository _boardgameRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public GetBoardgameQueryHandler(IBoardgameRepository boardgameRepository, IMapper mapper)
+        public GetBoardgameQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _boardgameRepository = boardgameRepository;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
@@ -20,7 +20,7 @@ namespace BoardGameBrawl.Application.Features.Boardgames_Related.Boardgames.Quer
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var boardgame = await _boardgameRepository.GetEntity(request.Id);
+            var boardgame = await _unitOfWork.BoardgameRepository.GetEntity(request.Id);
             return _mapper.Map<BoardgameDTO>(boardgame);
         }
     }

@@ -1,24 +1,18 @@
 ﻿using AutoMapper;
 using BoardGameBrawl.Application.Contracts.Common;
-using BoardGameBrawl.Application.Contracts.Entities.Player_Related;
 using BoardGameBrawl.Application.DTOs.Entities.Player_Related;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BoardGameBrawl.Application.Features.Player_Related.Players.Queries.GetPlayer
 {
     public class GetPlayerQueryHandler : IRequestHandler<GetPlayerQuery, PlayerDTO>
     {
-        private readonly IPlayerRepository _playerRepository;
+        private readonly IUnitOfWork _unitofwork;
         private readonly IMapper _mapper;
 
-        public GetPlayerQueryHandler(IPlayerRepository playerRepository, IMapper mapper)
+        public GetPlayerQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _playerRepository = playerRepository;
+            _unitofwork = unitOfWork;
             _mapper = mapper;
         }
 
@@ -26,7 +20,7 @@ namespace BoardGameBrawl.Application.Features.Player_Related.Players.Queries.Get
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var player = await _playerRepository.GetEntity(request.Id);
+            var player = await _unitofwork.PlayerRepository.GetEntity(request.Id);
             return _mapper.Map<PlayerDTO>(player);
         }
     }

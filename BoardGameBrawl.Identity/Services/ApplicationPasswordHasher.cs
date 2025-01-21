@@ -15,7 +15,7 @@ namespace BoardGameBrawl.Identity.Services
 
         public string[] HashPasswordExtended(ApplicationUser user, string password)
         {
-            string passwordSalt = BCrypt.Net.BCrypt.GenerateSalt();
+            string passwordSalt = BCrypt.Net.BCrypt.GenerateSalt(12);
             string passwordHash = BCrypt.Net.BCrypt.HashPassword(password, passwordSalt, false, hashType: BCrypt.Net.HashType.SHA512);
             return new[] { passwordSalt, passwordHash };
         }

@@ -1,5 +1,4 @@
 ﻿using BoardGameBrawl.Application.Contracts.Entities.Player_Related;
-using BoardGameBrawl.Application.Exceptions;
 using BoardGameBrawl.Domain.Entities.Player_Related;
 using BoardGameBrawl.Persistence.Repositories.Common;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +23,7 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
 
         // getter methods //
 
-        public async Task<Dictionary<Guid, byte>> GetAllPlayerPreferencesAsync(Guid playerId,
+        public async Task<IDictionary<Guid, byte>> GetAllPlayerPreferencesAsync(Guid playerId,
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -46,7 +45,7 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
             }
         }
 
-        public async Task<byte> GetPlayerPreferenceByBoardgameIdAsync(Guid playerId,
+        public async Task<PlayerRreference> GetPlayerPreferenceByBoardgameIdAsync(Guid playerId,
             Guid boardgameId,
             CancellationToken cancellationToken = default)
         {
@@ -57,7 +56,7 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
             var playerPreference = await _context.PlayerRreferences.FirstOrDefaultAsync(e => e.PlayerId == playerId && e.BoardgameId == boardgameId, cancellationToken);
 
             if (playerPreference != null)
-                return playerPreference.Rating;
+                return playerPreference;
             else
                 throw new ApplicationException("Entity has not been found");
         }

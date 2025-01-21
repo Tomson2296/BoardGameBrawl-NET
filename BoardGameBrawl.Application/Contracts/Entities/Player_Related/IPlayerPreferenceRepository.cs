@@ -13,11 +13,11 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Player_Related
 
         // getter methods //
 
-        Task<byte> GetPlayerPreferenceByBoardgameIdAsync(Guid playerId, 
+        Task<PlayerRreference> GetPlayerPreferenceByBoardgameIdAsync(Guid playerId, 
             Guid boardgameId,
             CancellationToken cancellationToken = default);
 
-        Task<Dictionary<Guid, byte>> GetAllPlayerPreferencesAsync(Guid playerId,
+        Task<IDictionary<Guid, byte>> GetAllPlayerPreferencesAsync(Guid playerId,
             CancellationToken cancellationToken = default);
 
 

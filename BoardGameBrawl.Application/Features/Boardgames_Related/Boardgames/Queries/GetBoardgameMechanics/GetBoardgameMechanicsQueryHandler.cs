@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related;
+using BoardGameBrawl.Application.Contracts.Common;
 using BoardGameBrawl.Application.DTOs.Entities.Boardgame_Related;
 using MediatR;
 
@@ -7,13 +7,12 @@ namespace BoardGameBrawl.Application.Features.Boardgames_Related.Boardgames.Quer
 {
     public class GetBoardgameMechanicsQueryHandler : IRequestHandler<GetBoardgameMechanicsQuery, ICollection<BoardgameMechanicDTO>>
     {
-        private readonly IBoardgameMechanicTagsRepository _boardgameMechanicTagsRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public GetBoardgameMechanicsQueryHandler(IBoardgameMechanicTagsRepository boardgameMechanicTagsRepository, 
-            IMapper mapper)
+        public GetBoardgameMechanicsQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _boardgameMechanicTagsRepository = boardgameMechanicTagsRepository;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
@@ -21,7 +20,7 @@ namespace BoardGameBrawl.Application.Features.Boardgames_Related.Boardgames.Quer
             CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            var entities = await _boardgameMechanicTagsRepository.GetBoardgameMechanicsByGameAsync(request.BoardgameId);
+            var entities = await _unitOfWork.BoardgameMechanicsTagsRepository.GetBoardgameMechanicsByGameAsync(request.BoardgameId);
             return _mapper.Map<ICollection<BoardgameMechanicDTO>>(entities);
         }
     }

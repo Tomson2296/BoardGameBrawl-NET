@@ -1,6 +1,5 @@
-﻿using AutoMapper.Configuration.Annotations;
-using BoardGameBrawl.Application.Contracts.Entities.Player_Related;
-using BoardGameBrawl.Domain.Entities.Boardgame_Related;
+﻿using BoardGameBrawl.Application.Contracts.Entities.Player_Related;
+using BoardGameBrawl.Application.Exceptions;
 using BoardGameBrawl.Domain.Entities.Player_Related;
 using BoardGameBrawl.Persistence.Repositories.Common;
 using Microsoft.EntityFrameworkCore;
@@ -35,7 +34,7 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
 
             if (isPlayerPreferenceExists == false)
             {
-                throw new ApplicationException("No player preferences found");
+                throw new ArgumentException("Entity has not been found");
             }
             else
             {
@@ -79,7 +78,6 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
             if (playerPreference != null)
             {
                 playerPreference.Rating = rating;
-                await UpdateEntity(playerPreference);
             }
             else
             {

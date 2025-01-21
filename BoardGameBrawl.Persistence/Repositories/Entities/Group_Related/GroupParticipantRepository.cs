@@ -1,10 +1,10 @@
-﻿using BoardGameBrawl.Application.Contracts.Entities.Player_Related;
+﻿using BoardGameBrawl.Application.Contracts.Entities.Group_Related;
 using BoardGameBrawl.Domain.Entities.Group_Related;
 using BoardGameBrawl.Domain.Entities.Player_Related;
 using BoardGameBrawl.Persistence.Repositories.Common;
 using Microsoft.EntityFrameworkCore;
 
-namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
+namespace BoardGameBrawl.Persistence.Repositories.Entities.Group_Related
 {
     public class GroupParticipantRepository : GenericRepository<GroupParticipant> , IGroupParticipantRepository
     {

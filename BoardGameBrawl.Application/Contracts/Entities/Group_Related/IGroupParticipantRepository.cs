@@ -1,8 +1,8 @@
 ﻿using BoardGameBrawl.Application.Contracts.Common;
+using BoardGameBrawl.Domain.Entities.Group_Related;
 using BoardGameBrawl.Domain.Entities.Player_Related;
-using System.Threading.Tasks;
 
-namespace BoardGameBrawl.Application.Contracts.Entities.Player_Related
+namespace BoardGameBrawl.Application.Contracts.Entities.Group_Related
 {
     public interface IGroupParticipantRepository : IGenericRepository<GroupParticipant>
     {

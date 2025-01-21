@@ -12,37 +12,42 @@ namespace BoardGameBrawl.Application.Profiles
     {
         public MappingProfile()
         {
-            CreateMap<PlayerDTO, Player>()
-                .ForMember(dest => dest.GroupParticipants, opt => opt.Ignore())
-                .ForMember(dest => dest.UserRatings, opt => opt.Ignore())
-                .ReverseMap();
+         CreateMap<PlayerDTO, Player>()
+            .ForMember(dest => dest.GroupParticipants, opt => opt.Ignore())
+            .ForMember(dest => dest.UserRatings, opt => opt.Ignore())
+            .ReverseMap();
 
-            CreateMap<BoardgameDTO, Boardgame>()
-              .ForMember(dest => dest.BoardgameCategoryTags, opt => opt.Ignore())
-              .ForMember(dest => dest.BoardgameMechanicTags, opt => opt.Ignore())
-              .ForMember(dest => dest.BoardgameRules, opt => opt.Ignore())
-              .ForMember(dest => dest.UserRatings, opt => opt.Ignore())
-              .ForMember(dest => dest.Matches, opt => opt.Ignore())
-              .ForMember(dest => dest.Tournaments, opt => opt.Ignore())
-              .ForMember(dest => dest.TournamentMatches, opt => opt.Ignore())
-              .ReverseMap();
+         CreateMap<PlayerPreferenceDTO, PlayerRreference>()
+            .ForMember(dest => dest.Player, opt => opt.Ignore())
+            .ForMember(dest => dest.Boardgame, opt => opt.Ignore())
+            .ReverseMap();
 
-            CreateMap<BoardgameCategoryDTO, BoardgameCategory>()
-              .ForMember(dest => dest.BoardgameCategoryTags, opt => opt.Ignore())
-              .ReverseMap();
+         CreateMap<BoardgameDTO, Boardgame>()
+            .ForMember(dest => dest.BoardgameCategoryTags, opt => opt.Ignore())
+            .ForMember(dest => dest.BoardgameMechanicTags, opt => opt.Ignore())
+            .ForMember(dest => dest.BoardgameRules, opt => opt.Ignore())
+            .ForMember(dest => dest.UserRatings, opt => opt.Ignore())
+            .ForMember(dest => dest.Matches, opt => opt.Ignore())
+            .ForMember(dest => dest.Tournaments, opt => opt.Ignore())
+            .ForMember(dest => dest.TournamentMatches, opt => opt.Ignore())
+            .ReverseMap();
 
-            CreateMap<BoardgameMechanicDTO, BoardgameMechanic>()
-             .ForMember(dest => dest.BoardgameMechanicTags, opt => opt.Ignore())
-             .ReverseMap();
+         CreateMap<BoardgameCategoryDTO, BoardgameCategory>()
+            .ForMember(dest => dest.BoardgameCategoryTags, opt => opt.Ignore())
+            .ReverseMap();
 
-            CreateMap<GroupDTO, Group>()
-             .ForMember(dest => dest.GroupParticipants, opt => opt.Ignore())
-             .ReverseMap();
+         CreateMap<BoardgameMechanicDTO, BoardgameMechanic>()
+            .ForMember(dest => dest.BoardgameMechanicTags, opt => opt.Ignore())
+            .ReverseMap();
 
-            CreateMap<GroupParticipantDTO, GroupParticipant>()
-             .ForMember(dest => dest.Group, opt => opt.Ignore())
-             .ForMember(dest => dest.Player, opt => opt.Ignore())
-             .ReverseMap();
+         CreateMap<GroupDTO, Group>()
+            .ForMember(dest => dest.GroupParticipants, opt => opt.Ignore())
+            .ReverseMap();
+
+         CreateMap<GroupParticipantDTO, GroupParticipant>()
+            .ForMember(dest => dest.Group, opt => opt.Ignore())
+            .ForMember(dest => dest.Player, opt => opt.Ignore())
+            .ReverseMap();
         }
     }
 }

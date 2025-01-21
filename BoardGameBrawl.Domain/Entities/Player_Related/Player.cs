@@ -1,4 +1,5 @@
 ﻿using BoardGameBrawl.Domain.Common;
+using BoardGameBrawl.Domain.Entities.Group_Related;
 
 namespace BoardGameBrawl.Domain.Entities.Player_Related
 {

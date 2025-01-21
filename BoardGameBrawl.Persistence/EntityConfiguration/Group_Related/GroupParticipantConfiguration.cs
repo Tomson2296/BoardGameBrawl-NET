@@ -1,8 +1,8 @@
-﻿using BoardGameBrawl.Domain.Entities.Player_Related;
+﻿using BoardGameBrawl.Domain.Entities.Group_Related;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace BoardGameBrawl.Persistence.EntityConfiguration.Player_Related
+namespace BoardGameBrawl.Persistence.EntityConfiguration.Group_Related
 {
     internal class GroupParticipantConfiguration : IEntityTypeConfiguration<GroupParticipant>
     {

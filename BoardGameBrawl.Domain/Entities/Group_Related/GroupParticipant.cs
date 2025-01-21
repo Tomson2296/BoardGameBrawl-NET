@@ -1,6 +1,6 @@
-﻿using BoardGameBrawl.Domain.Entities.Group_Related;
+﻿using BoardGameBrawl.Domain.Entities.Player_Related;
 
-namespace BoardGameBrawl.Domain.Entities.Player_Related
+namespace BoardGameBrawl.Domain.Entities.Group_Related
 {
     public class GroupParticipant
     {

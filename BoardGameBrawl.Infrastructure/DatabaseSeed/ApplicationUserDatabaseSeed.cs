@@ -50,9 +50,8 @@ namespace BoardGameBrawl.Infrastructure.DatabaseSeed
             };
             await _userManager.CreateAsync(admin);
            
-            string[] passwordCredentials = _passwordHasher.HashPasswordExtended(admin, "Admin123!");
-            await _userStore.SetUserPasswordSaltAsync(admin, passwordCredentials[0]);
-            await _userStore.SetUserPasswordHashAsync(admin, passwordCredentials[1]);
+            string passwordHash = _passwordHasher.HashPassword(admin, "Admin123!");
+            await _userStore.SetUserPasswordHashAsync(admin, passwordHash);
 
             if (await _DBContext.Roles.AnyAsync(r => r.Name!.Equals("Administrator")))
             {
@@ -133,9 +132,8 @@ namespace BoardGameBrawl.Infrastructure.DatabaseSeed
                     };
                     await _userManager.CreateAsync(entry);
 
-                    passwordCredentials = _passwordHasher.HashPasswordExtended(entry, "Zaq1@WSX");
-                    await _userStore.SetUserPasswordSaltAsync(entry, passwordCredentials[0]);
-                    await _userStore.SetUserPasswordHashAsync(entry, passwordCredentials[1]);
+                    passwordHash = _passwordHasher.HashPassword(entry, "Zaq1@WSX");
+                    await _userStore.SetUserPasswordHashAsync(entry, passwordHash);
                    
                     await _userManager.AddToRoleAsync(entry, "User");
 

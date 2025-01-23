@@ -4,6 +4,7 @@ using BoardGameBrawl.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BoardGameBrawl.Identity.Migrations
 {
     [DbContext(typeof(IdentityAppDBContext))]
-    partial class IdentityAppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250121143039_Modify_ApplicationUserTable_RemovePasswordSaltField")]
+    partial class Modify_ApplicationUserTable_RemovePasswordSaltField
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -109,9 +109,8 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
                 await _userEmailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 await _userStore.SetUserCreatedDateAsync(user, creationDate);
 
-                string[] passwordCredentials = _passwordHasher.HashPasswordExtended(user, Input.Password);
-                await _userStore.SetUserPasswordSaltAsync(user, passwordCredentials[0]);
-                await _userStore.SetUserPasswordHashAsync(user, passwordCredentials[1]);
+                string passwordHash = _passwordHasher.HashPassword(user, Input.Password);
+                await _userStore.SetUserPasswordHashAsync(user, passwordHash);
                 
                 var result = await _userManager.CreateAsync(user);
 
@@ -123,10 +122,10 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
                     await _userManager.AddToRoleAsync(user, "User");
                     List<Claim> userClaims =
                        [
-                           new (ClaimTypes.NameIdentifier, user.Id.ToString()),
-                       new (ClaimTypes.Name, user.UserName),
-                       new (ClaimTypes.Role, "User"),
-                       new (ClaimTypes.Email, user.Email)
+                        new (ClaimTypes.NameIdentifier, user.Id.ToString()),
+                        new (ClaimTypes.Name, user.UserName),
+                        new (ClaimTypes.Role, "User"),
+                        new (ClaimTypes.Email, user.Email)
                        ];
                     await _userManager.AddClaimsAsync(user, userClaims);
 
@@ -148,7 +147,7 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
                     }
                     else
                     {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
+                        await _signInManager.SignInAsync(user, isPersistent: true);
                         return LocalRedirect(returnUrl);
                     }
                 }

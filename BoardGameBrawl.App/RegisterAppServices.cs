@@ -20,7 +20,11 @@ namespace BoardGameBrawl.App
             builder.Services.AddHttpContextAccessor();
 
             // Add services to the container.
-            builder.Services.AddRazorPages();
+            builder.Services.AddRazorPages()
+                .AddRazorPagesOptions(options =>
+                {
+                    options.RootDirectory = "/Main/Pages";
+                });
 
             builder.Services.AddDbContext<MainAppDBContext>(options =>
                            options.UseSqlServer(configuration.GetConnectionString("MainAppDBConnection"),

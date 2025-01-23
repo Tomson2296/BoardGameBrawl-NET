@@ -87,17 +87,9 @@ namespace BoardGameBrawl.Identity.Stores
             return await Task.FromResult(user.PasswordHash);
         }
 
-        public async static Task<string?> GetUserPasswordSalt(this IUserStore<ApplicationUser> ApplicationUserStore,
-           ApplicationUser user,
-           CancellationToken cancellationToken = default)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            ArgumentNullException.ThrowIfNull(user);
-
-            return await Task.FromResult(user.PasswordSalt);
-        }
 
         // setter methods //
+
 
         public static Task SetFirstNamelAsync(this IUserStore<ApplicationUser> ApplicationUserStore, 
             ApplicationUser user, string? firstName,
@@ -212,22 +204,6 @@ namespace BoardGameBrawl.Identity.Stores
             }
 
             user.PasswordHash = passwordHash;
-            return Task.CompletedTask;
-        }
-
-        public static Task SetUserPasswordSaltAsync(this IUserStore<ApplicationUser> ApplicationUserStore,
-           ApplicationUser user, string? passwordSalt,
-           CancellationToken cancellationToken = default)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            ArgumentNullException.ThrowIfNull(user);
-
-            if (string.IsNullOrWhiteSpace(passwordSalt))
-            {
-                throw new ArgumentException("PasswordSalt cannot be null or whitespace.", nameof(passwordSalt));
-            }
-
-            user.PasswordSalt = passwordSalt;
             return Task.CompletedTask;
         }
     }

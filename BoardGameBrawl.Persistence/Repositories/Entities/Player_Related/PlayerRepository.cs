@@ -11,6 +11,9 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
 
         }
 
+        // getter methods //
+
+
         public async Task<string?> GetBGGUsernameAsync(Player player, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -67,6 +70,9 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
             return await Task.FromResult(player.UserName);
         }
 
+
+        // setter methods //
+        
         public Task SetBGGUsernameAsync(Player player, string? BGGUsername, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();

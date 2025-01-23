@@ -40,9 +40,6 @@ namespace BoardGameBrawl.Persistence.Repositories.Common
         public IPlayerRepository PlayerRepository =>
             _playerRepository ??= new PlayerRepository(_context);
 
-        public IGroupParticipantRepository GroupParticipantRepository =>
-            _groupParticipantRepository ??= new GroupParticipantRepository(_context);
-
         public IPlayerPreferenceRepository PlayerPreferenceRepository =>
             _playerPreferenceRepository ??= new PlayerPreferenceRepository(_context);
 
@@ -69,6 +66,9 @@ namespace BoardGameBrawl.Persistence.Repositories.Common
         
         public IGroupRepository GroupRepository =>
             _groupRepository ??= new GroupRepository(_context);
+
+        public IGroupParticipantRepository GroupParticipantRepository =>
+           _groupParticipantRepository ??= new GroupParticipantRepository(_context);
 
 
         public async Task CommitChangesAsync()

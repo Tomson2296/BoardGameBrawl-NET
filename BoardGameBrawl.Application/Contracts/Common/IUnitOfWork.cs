@@ -8,7 +8,6 @@ namespace BoardGameBrawl.Application.Contracts.Common
     {
         // Player-related repositories
         IPlayerRepository PlayerRepository { get; }
-        IGroupParticipantRepository GroupParticipantRepository { get; }
         IPlayerPreferenceRepository PlayerPreferenceRepository { get; }
 
 
@@ -19,9 +18,12 @@ namespace BoardGameBrawl.Application.Contracts.Common
         IBoardgameCategoriesRepository BoardgameCategoryRepository { get; }
         IBoardgameCategoryTagsRepository BoardgameCategoryTagsRepository { get; }
 
+
         // Group-related repositories
         IGroupRepository GroupRepository { get; }
-        
+        IGroupParticipantRepository GroupParticipantRepository { get; }
+
+
         Task CommitChangesAsync();
     }
 }

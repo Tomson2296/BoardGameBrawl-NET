@@ -98,10 +98,10 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
                 _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
                 return LocalRedirect(returnUrl);
             }
-            if (result.IsLockedOut)
-            {
-                return RedirectToPage("./Lockout");
-            }
+            //if (result.IsLockedOut)
+            //{
+            //    return RedirectToPage("./Lockout");
+            //}
             else
             {
                 // If the user does not have an account, then ask the user to create an account.
@@ -121,6 +121,7 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostConfirmationAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
+
             // Get the information about the user from the external login provider
             var info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)
@@ -128,21 +129,35 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
                 ErrorMessage = "Error loading external login information during confirmation.";
                 return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
             }
-
             if (ModelState.IsValid)
             {
-                var user = CreateUser();
+                ApplicationUser user = CreateUser();
+                DateOnly creationDate = DateOnly.FromDateTime(DateTime.UtcNow);
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _userEmailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                await _userStore.SetUserCreatedDateAsync(user, creationDate);
 
                 var result = await _userManager.CreateAsync(user);
+
                 if (result.Succeeded)
                 {
                     result = await _userManager.AddLoginAsync(user, info);
+
                     if (result.Succeeded)
                     {
                         _logger.LogInformation("User created an account using {Name} provider.", info.LoginProvider);
+
+                        //Add newly created user to basic role "User" and add list of basic claims about user
+                        await _userManager.AddToRoleAsync(user, "User");
+                        List<Claim> userClaims =
+                           [
+                            new (ClaimTypes.NameIdentifier, user.Id.ToString()),
+                            new (ClaimTypes.Name, user.UserName),
+                            new (ClaimTypes.Role, "User"),
+                            new (ClaimTypes.Email, user.Email)
+                           ];
+                        await _userManager.AddClaimsAsync(user, userClaims);
 
                         var userId = await _userManager.GetUserIdAsync(user);
                         var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -181,13 +196,13 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
         {
             try
             {
-                return Activator.CreateInstance<ApplicationUser> ();
+                return Activator.CreateInstance<ApplicationUser>();
             }
             catch
             {
-                throw new InvalidOperationException($"Can't create an instance of '{nameof(ApplicationUser )}'. " +
-                    $"Ensure that '{nameof(ApplicationUser )}' is not an abstract class and has a parameterless constructor, or alternatively " +
-                    $"override the external login page in /Areas/Identity/Pages/Account/ExternalLogin.cshtml");
+                throw new InvalidOperationException($"Can't create an instance of '{nameof(ApplicationUser)}'. " +
+                    $"Ensure that '{nameof(ApplicationUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
+                    $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
             }
         }
     }

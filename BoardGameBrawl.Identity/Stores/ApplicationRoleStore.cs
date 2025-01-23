@@ -81,6 +81,7 @@ namespace BoardGameBrawl.Identity.Stores
 
         public void Dispose()
         {
+            _context.Dispose();
             GC.SuppressFinalize(this);
         }
 

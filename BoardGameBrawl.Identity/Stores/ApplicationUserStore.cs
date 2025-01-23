@@ -1,5 +1,4 @@
 ﻿using BoardGameBrawl.Identity.Entities;
-using BoardGameBrawl.Identity.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -66,7 +65,8 @@ namespace BoardGameBrawl.Identity.Stores
                 {
                     LoginProvider = login.LoginProvider,
                     ProviderKey = login.ProviderKey,
-                    ProviderDisplayName = login.ProviderDisplayName
+                    ProviderDisplayName = login.ProviderDisplayName,
+                    UserId = user.Id
                 };
 
                 await _context.UserLogins.AddAsync(newUserLoginCredentials, cancellationToken);
@@ -138,6 +138,7 @@ namespace BoardGameBrawl.Identity.Stores
 
         public void Dispose()
         {
+            _context.Dispose();
             GC.SuppressFinalize(this);
         }
 

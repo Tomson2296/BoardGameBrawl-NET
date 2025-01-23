@@ -37,7 +37,7 @@ namespace BoardGameBrawl.App
             builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = true;
-                options.SignIn.RequireConfirmedEmail = true;
+                options.SignIn.RequireConfirmedEmail = true; 
 
                 options.Password.RequiredLength = 8;
                 options.Password.RequireDigit = true;

@@ -31,7 +31,7 @@ namespace BoardGameBrawl.Infrastructure.EmailSender
                 email.From.Add(MailboxAddress.Parse(from));
                 email.To.Add(MailboxAddress.Parse(to));
                 email.Subject = subject;
-                email.Body = new TextPart(TextFormat.Text) { Text = message };
+                email.Body = new TextPart(TextFormat.Html) { Text = message };
 
                 // send email using OAuth 2.0 Google credentials
                 using (var client = new SmtpClient())

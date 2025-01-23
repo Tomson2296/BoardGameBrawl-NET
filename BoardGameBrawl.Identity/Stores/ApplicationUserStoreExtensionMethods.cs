@@ -5,7 +5,13 @@ namespace BoardGameBrawl.Identity.Stores
 {
     public static class ApplicationUserStoreExtensionMethods
     {
-        // custom ApplicationUser getter methods //
+        // custom extension methods //
+
+
+
+
+
+        // getter methods //
         
         public async static Task<string?> GetFirstNameAsync(this IUserStore<ApplicationUser> ApplicationUserStore, 
            ApplicationUser user,

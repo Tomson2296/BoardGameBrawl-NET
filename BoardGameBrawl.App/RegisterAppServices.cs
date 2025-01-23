@@ -1,6 +1,5 @@
 ﻿#nullable disable
 using BoardGameBrawl.Identity.Entities;
-using BoardGameBrawl.Identity.Stores;
 using BoardGameBrawl.Identity;
 using BoardGameBrawl.Persistence;
 using BoardGameBrawl.Infrastructure;
@@ -81,7 +80,7 @@ namespace BoardGameBrawl.App
                     options.LoginPath = "/Identity/Account/Login";
                     options.LogoutPath = "/Identity/Account/Logout";
                 });
-
+            
             builder.Services.RegisterCustomIdentityServices();
 
             builder.Services.RegisterPersistenceServices();

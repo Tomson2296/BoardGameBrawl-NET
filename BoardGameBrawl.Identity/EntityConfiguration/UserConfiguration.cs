@@ -57,7 +57,7 @@ namespace BoardGameBrawl.Identity.EntityConfiguration
             entity.HasIndex(e => e.BGGUsername)
                 .HasDatabaseName("BGGUsernameIndex")
                 .IsUnique();
-            
+
             entity.ToTable("Users");
         }
     }

@@ -15,8 +15,13 @@ namespace BoardGameBrawl.Persistence
     {
         public static Task<IServiceCollection> RegisterPersistenceServices(this IServiceCollection services)
         {
+
+            // Register IGenericRepositories and both versions of UnitOfWork 
+            // one for every DBContext
+
             services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+
 
             // Add Player-Related repositories
 

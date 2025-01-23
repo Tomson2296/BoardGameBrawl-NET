@@ -30,25 +30,25 @@
                     </button>
                     <ul class="dropdown-menu">
                         <li>
-                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/User/Index" title="Profile">Profile Info</a>
+                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Index" title="Profile">Profile Info</a>
                         </li>
                         <li>
-                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/User/BGGCollection" title="Collection">BGG Collection</a>
+                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/BGGCollection" title="Collection">BGG Collection</a>
                         </li>
                         <li>
-                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/User/BoardgameFavourites" title="Favourites">Favourite BG</a>
+                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/BoardgameFavourites" title="Favourites">Favourite BG</a>
                         </li>
                         <li>
-                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/User/Moderator" title="Moderator">Moderator List</a>
+                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Moderator" title="Moderator">Moderator List</a>
                         </li>
                         <li>
-                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/User/Friends" title="Friends">Friends List</a>
+                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Friends" title="Friends">Friends List</a>
                         </li>
                         <li>
-                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/User/Groups" title="Groups">Group List</a>
+                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Groups" title="Groups">Group List</a>
                         </li>
                         <li>
-                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/User/Manage/Index" title="Manage">Manage Account</a>
+                            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Manage Account</a>
                         </li>
                         <li>
                             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/Index", new { area = "" })">

@@ -7,6 +7,7 @@ using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using BoardGameBrawl.Identity.Entities;
 using BoardGameBrawl.Identity.Managers;
+using BoardGameBrawl.Infrastructure.EmailSender;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -19,9 +20,10 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
     public class ForgotPasswordModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IEmailSender _emailSender;
-        public ForgotPasswordModel(UserManager<ApplicationUser> userManager, 
-            IEmailSender emailSender)
+        private readonly IMailKitEmailSender _emailSender;
+
+        public ForgotPasswordModel(UserManager<ApplicationUser> userManager,
+            IMailKitEmailSender emailSender)
         {
             _userManager = userManager;
             _emailSender = emailSender;
@@ -48,8 +50,6 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
                     return RedirectToPage("./ForgotPasswordConfirmation");
                 }
 
-                // For more information on how to enable account confirmation and password reset please
-                // visit https://go.microsoft.com/fwlink/?LinkID=532713
                 var code = await _userManager.GeneratePasswordResetTokenAsync(user);
                 code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                 var callbackUrl = Url.Page(

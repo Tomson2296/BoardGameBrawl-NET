@@ -16,7 +16,6 @@ namespace BoardGameBrawl.Identity.Stores
         IUserSecurityStampStore<ApplicationUser>
     {
         private readonly IdentityAppDBContext _context;
-
         public ApplicationUserStore(IdentityAppDBContext context)
         {
             _context = context;
@@ -277,7 +276,7 @@ namespace BoardGameBrawl.Identity.Stores
                 .Where(ul => ul.UserId == user.Id)
                 .ToListAsync(cancellationToken);
 
-            return await Task.FromResult((IList<UserLoginInfo>)appUserLogin);
+            return await Task.FromResult((IList<UserLoginInfo>) appUserLogin);
         }
 
         public async Task<string?> GetNormalizedEmailAsync(ApplicationUser user,

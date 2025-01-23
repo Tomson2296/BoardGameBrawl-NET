@@ -1,15 +1,12 @@
-﻿using BoardGameBrawl.Identity.Entities;
+﻿using AutoMapper;
+using BoardGameBrawl.Identity.Entities;
+using BoardGameBrawl.Identity.Profiles;
 using BoardGameBrawl.Identity.Services;
 using BoardGameBrawl.Identity.Stores;
 
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 
 namespace BoardGameBrawl.Identity
 {
@@ -17,6 +14,14 @@ namespace BoardGameBrawl.Identity
     {
         public static Task<IServiceCollection> RegisterCustomIdentityServices(this IServiceCollection services)
         {
+            // Add Automapper for mapping Identity entities
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            var AutomapperConfig = new MapperConfiguration(cfg => {
+                cfg.AddProfile<IdentityMappingProfile>();
+            });
+            AutomapperConfig.AssertConfigurationIsValid();
+            AutomapperConfig.CreateMapper();
+
             // Register Custom Identity Services
             services.AddScoped<ILookupNormalizer, ApplicationLookupNormalizer>();
             services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();

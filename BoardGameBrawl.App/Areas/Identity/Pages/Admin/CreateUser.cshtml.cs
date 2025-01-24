@@ -1,7 +1,8 @@
 #nullable disable
 
-using BoardGameBrawl.Identity.Entities;
-using BoardGameBrawl.Identity.Stores;
+using BoardGameBrawl.Application.Contracts.Entities.Identity_Related;
+using BoardGameBrawl.Domain.Entities;
+using BoardGameBrawl.Persistence.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,18 +15,15 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
     public class CreateUserModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IUserStore<ApplicationUser> _userStore;
-        private readonly IUserEmailStore<ApplicationUser> _emailStore;
+        private readonly IApplicationUserStore<ApplicationUser> _userStore;
         private readonly ILogger<CreateUserModel> _logger;
 
         public CreateUserModel(UserManager<ApplicationUser> userManager,
-            IUserStore<ApplicationUser> userStore,
-            IUserEmailStore<ApplicationUser> emailStore,
+            IApplicationUserStore<ApplicationUser> userStore,
             ILogger<CreateUserModel> logger)
         {
             _userManager = userManager;
             _userStore = userStore;
-            _emailStore = emailStore;
             _logger = logger;
         }
 
@@ -80,7 +78,7 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
 
                 // Set obligatory data about new user - Username, Email, Password
                 await _userStore.SetUserNameAsync(user, Input.Username, CancellationToken.None);
-                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                await _userStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 await _userManager.AddPasswordAsync(user, Input.Password);
 
                 // Set creation Time 

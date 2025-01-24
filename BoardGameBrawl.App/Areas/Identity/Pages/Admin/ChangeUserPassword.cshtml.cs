@@ -1,6 +1,6 @@
 #nullable disable
 
-using BoardGameBrawl.Identity.Entities;
+using BoardGameBrawl.Domain.Entities;
 using BoardGameBrawl.Infrastructure.EmailSender;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

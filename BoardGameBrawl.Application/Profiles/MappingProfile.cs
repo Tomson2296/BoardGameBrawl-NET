@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using BoardGameBrawl.Application.DTOs.Entities.Boardgame_Related;
 using BoardGameBrawl.Application.DTOs.Entities.Group_Related;
+using BoardGameBrawl.Application.DTOs.Entities.Identity_Related;
 using BoardGameBrawl.Application.DTOs.Entities.Player_Related;
+using BoardGameBrawl.Domain.Entities;
 using BoardGameBrawl.Domain.Entities.Boardgame_Related;
 using BoardGameBrawl.Domain.Entities.Group_Related;
 using BoardGameBrawl.Domain.Entities.Player_Related;
@@ -47,6 +49,13 @@ namespace BoardGameBrawl.Application.Profiles
          CreateMap<GroupParticipantDTO, GroupParticipant>()
             .ForMember(dest => dest.Group, opt => opt.Ignore())
             .ForMember(dest => dest.Player, opt => opt.Ignore())
+            .ReverseMap();
+
+         CreateMap<ViewUserDTO, ApplicationUser>()
+            .ForMember(dest => dest.UserClaims, opt => opt.Ignore())
+            .ForMember(dest => dest.UserLogins, opt => opt.Ignore())
+            .ForMember(dest => dest.UserTokens, opt => opt.Ignore())
+            .ForMember(dest => dest.UserRoles, opt => opt.Ignore())
             .ReverseMap();
         }
     }

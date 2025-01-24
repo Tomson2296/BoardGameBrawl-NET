@@ -1,6 +1,6 @@
 #nullable disable
 
-using BoardGameBrawl.Identity.Entities;
+using BoardGameBrawl.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,10 +12,10 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
     public class ChangeUserRolesModel : PageModel
     {
         public UserManager<ApplicationUser> _userManager;
-        public RoleManager<IdentityRole> _roleManager;
+        public RoleManager<ApplicationRole> _roleManager;
 
         public ChangeUserRolesModel(UserManager<ApplicationUser> userManager,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<ApplicationRole> roleManager)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -53,7 +53,7 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
 
         public async Task<IActionResult> OnPostDeleteFromListAsync(string role)
         {
-            IdentityRole idRole = await _roleManager.FindByNameAsync(role);
+            ApplicationRole idRole = await _roleManager.FindByNameAsync(role);
             IdentityResult result = await _roleManager.DeleteAsync(idRole);
 
             if (result.Succeeded)
@@ -74,7 +74,12 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
 
         public async Task<IActionResult> OnPostAddToListAsync(string role)
         {
-            IdentityResult result = await _roleManager.CreateAsync(new IdentityRole(role));
+            ApplicationRole newRole = new()
+            {
+                Name = role
+            };
+
+            IdentityResult result = await _roleManager.CreateAsync(newRole);
             if (result.Succeeded)
             {
                 await SetRolesLists();

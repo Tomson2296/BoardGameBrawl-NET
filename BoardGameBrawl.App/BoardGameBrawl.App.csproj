@@ -28,7 +28,6 @@
   <ItemGroup>
     <ProjectReference Include="..\BoardGameBrawl.Application\BoardGameBrawl.Application.csproj" />
     <ProjectReference Include="..\BoardGameBrawl.Domain\BoardGameBrawl.Domain.csproj" />
-    <ProjectReference Include="..\BoardGameBrawl.Identity\BoardGameBrawl.Identity.csproj" />
     <ProjectReference Include="..\BoardGameBrawl.Infrastructure\BoardGameBrawl.Infrastructure.csproj" />
     <ProjectReference Include="..\BoardGameBrawl.Persistence\BoardGameBrawl.Persistence.csproj" />
   </ItemGroup>

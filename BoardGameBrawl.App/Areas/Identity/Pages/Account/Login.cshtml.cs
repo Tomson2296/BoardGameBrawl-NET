@@ -12,8 +12,9 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using BoardGameBrawl.Identity.Entities;
-using BoardGameBrawl.Identity.Services;
+using BoardGameBrawl.Domain.Entities;
+using BoardGameBrawl.Application.Services;
+using BoardGameBrawl.Application.Contracts.Entities.Identity_Related;
 
 namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
 {
@@ -21,18 +22,21 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IApplicationUserStore<ApplicationUser> _userStore;
+        private readonly IPasswordHasher<ApplicationUser> _passwordHasher;
         private readonly ILogger<LoginModel> _logger;
-        private readonly IApplicationPasswordHasher<ApplicationUser> _passwordHasher;
 
         public LoginModel(SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
-            ILogger<LoginModel> logger,
-            IApplicationPasswordHasher<ApplicationUser> passwordHasher)
+            IApplicationUserStore<ApplicationUser> userStore,
+            IPasswordHasher<ApplicationUser> passwordHasher,
+            ILogger<LoginModel> logger)
         {
             _signInManager = signInManager;
-            _userManager = userManager; 
-            _logger = logger;
+            _userManager = userManager;
+            _userStore = userStore;
             _passwordHasher = passwordHasher;
+            _logger = logger;
         }
 
         [BindProperty]
@@ -94,7 +98,8 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
                     return Page();
                 }
 
-                PasswordVerificationResult isPasswordCorrect = await _passwordHasher.VerifyHashedPasswordAsync(ApplicationUser, Input.Password);
+                string hashedPassword = await _userStore.GetPasswordHashAsync(ApplicationUser, CancellationToken.None);
+                PasswordVerificationResult isPasswordCorrect = _passwordHasher.VerifyHashedPassword(ApplicationUser, hashedPassword, Input.Password);
                 if(isPasswordCorrect == PasswordVerificationResult.Failed)
                 {
                     ModelState.AddModelError(string.Empty, "Incorrect password. Try again.");

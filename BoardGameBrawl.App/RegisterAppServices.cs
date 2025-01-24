@@ -1,12 +1,12 @@
 ﻿#nullable disable
-using BoardGameBrawl.Identity.Entities;
-using BoardGameBrawl.Identity;
 using BoardGameBrawl.Persistence;
 using BoardGameBrawl.Infrastructure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using BoardGameBrawl.Identity.Services;
 using BoardGameBrawl.Application;
+using BoardGameBrawl.Domain.Entities;
+using BoardGameBrawl.Application.Services;
+using BoardGameBrawl.Persistence.Stores;
 
 namespace BoardGameBrawl.App
 {
@@ -51,6 +51,8 @@ namespace BoardGameBrawl.App
             })
                 .AddEntityFrameworkStores<IdentityAppDBContext>()
                 .AddClaimsPrincipalFactory<ApplicationUserClaimsPrincipalFactory>()
+                .AddUserStore<ApplicationUserStore>()
+                .AddRoleStore<ApplicationRoleStore>()
                 .AddDefaultTokenProviders()
                 .AddDefaultUI();
 
@@ -81,13 +83,11 @@ namespace BoardGameBrawl.App
                     options.LogoutPath = "/Identity/Account/Logout";
                 });
             
-            builder.Services.RegisterCustomIdentityServices();
-
             builder.Services.RegisterPersistenceServices();
 
-            builder.Services.RegisterInfraServices();
-
             builder.Services.RegisterApplicationServices();
+
+            builder.Services.RegisterInfraServices();
 
             return builder;
         }

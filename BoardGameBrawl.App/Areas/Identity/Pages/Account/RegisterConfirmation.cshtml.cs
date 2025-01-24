@@ -3,8 +3,7 @@
 using System;
 using System.Text;
 using System.Threading.Tasks;
-using BoardGameBrawl.Identity.Entities;
-using BoardGameBrawl.Identity.Managers;
+using BoardGameBrawl.Domain.Entities;
 using BoardGameBrawl.Infrastructure.EmailSender;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -21,7 +20,8 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMailKitEmailSender _sender;
 
-        public RegisterConfirmationModel(UserManager<ApplicationUser> userManager, IMailKitEmailSender sender)
+        public RegisterConfirmationModel(UserManager<ApplicationUser> userManager,
+            IMailKitEmailSender sender)
         {
             _userManager = userManager;
             _sender = sender;

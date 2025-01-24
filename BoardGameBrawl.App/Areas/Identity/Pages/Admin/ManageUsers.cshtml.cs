@@ -1,8 +1,8 @@
 #nullable disable
 
 using AutoMapper;
-using BoardGameBrawl.Identity.DTOs;
-using BoardGameBrawl.Identity.Entities;
+using BoardGameBrawl.Application.DTOs.Entities.Identity_Related;
+using BoardGameBrawl.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

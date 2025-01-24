@@ -5,8 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using BoardGameBrawl.Identity.Entities;
-using BoardGameBrawl.Identity.Managers;
+using BoardGameBrawl.Application.Contracts.Entities.Identity_Related;
+using BoardGameBrawl.Domain.Entities;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,12 +18,12 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser>  _signInManager;
-        private readonly IUserStore<ApplicationUser>  _userStore;
+        private readonly IApplicationUserStore<ApplicationUser>  _userStore;
 
         public ExternalLoginsModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser>  signInManager,
-            IUserStore<ApplicationUser>  userStore)
+            IApplicationUserStore<ApplicationUser>  userStore)
         {
             _userManager = userManager;
             _signInManager = signInManager;

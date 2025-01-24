@@ -3,8 +3,7 @@
 using System;
 using System.Text;
 using System.Threading.Tasks;
-using BoardGameBrawl.Identity.Entities;
-using BoardGameBrawl.Identity.Managers;
+using BoardGameBrawl.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +17,8 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public ConfirmEmailChangeModel(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        public ConfirmEmailChangeModel(UserManager<ApplicationUser> userManager, 
+            SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;

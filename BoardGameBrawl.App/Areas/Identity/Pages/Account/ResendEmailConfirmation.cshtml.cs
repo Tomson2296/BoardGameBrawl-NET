@@ -5,8 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using BoardGameBrawl.Identity.Entities;
-using BoardGameBrawl.Identity.Managers;
+using BoardGameBrawl.Domain.Entities;
 using BoardGameBrawl.Infrastructure.EmailSender;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -23,7 +22,8 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMailKitEmailSender _emailSender;
 
-        public ResendEmailConfirmationModel(UserManager<ApplicationUser> userManager, IMailKitEmailSender emailSender)
+        public ResendEmailConfirmationModel(UserManager<ApplicationUser> userManager, 
+            IMailKitEmailSender emailSender)
         {
             _userManager = userManager;
             _emailSender = emailSender;

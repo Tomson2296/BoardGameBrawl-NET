@@ -1,8 +1,6 @@
 ﻿using BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related;
 using BoardGameBrawl.Domain.Entities.Boardgame_Related;
-using BoardGameBrawl.Identity;
 using BoardGameBrawl.Persistence;
-using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace BoardGameBrawl.Infrastructure.DatabaseSeed

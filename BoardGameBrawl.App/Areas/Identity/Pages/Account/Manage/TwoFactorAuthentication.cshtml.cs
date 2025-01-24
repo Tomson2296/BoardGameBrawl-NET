@@ -2,8 +2,7 @@
 
 using System;
 using System.Threading.Tasks;
-using BoardGameBrawl.Identity.Entities;
-using BoardGameBrawl.Identity.Managers;
+using BoardGameBrawl.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -18,7 +17,9 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account.Manage
         private readonly ILogger<TwoFactorAuthenticationModel> _logger;
 
         public TwoFactorAuthenticationModel(
-            UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser>  signInManager, ILogger<TwoFactorAuthenticationModel> logger)
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
+            ILogger<TwoFactorAuthenticationModel> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;

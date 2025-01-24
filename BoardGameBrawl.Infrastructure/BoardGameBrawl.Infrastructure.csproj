@@ -28,7 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BoardGameBrawl.Identity\BoardGameBrawl.Identity.csproj" />
     <ProjectReference Include="..\BoardGameBrawl.Persistence\BoardGameBrawl.Persistence.csproj" />
   </ItemGroup>
 

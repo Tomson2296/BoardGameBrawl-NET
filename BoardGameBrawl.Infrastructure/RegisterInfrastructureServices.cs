@@ -1,7 +1,6 @@
 ﻿using BoardGameBrawl.Infrastructure.DatabaseSeed;
 using BoardGameBrawl.Infrastructure.EmailSender;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace BoardGameBrawl.Infrastructure
 {

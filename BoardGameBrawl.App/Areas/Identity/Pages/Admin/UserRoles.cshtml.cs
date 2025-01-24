@@ -1,6 +1,6 @@
 #nullable disable
 
-using BoardGameBrawl.Identity.Entities;
+using BoardGameBrawl.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,12 +11,6 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
     [Authorize(Roles = "Administrator")]
     public class UserRolesModel : PageModel
     {
-        public class ViewUserModel
-        {
-            public string Id { get; set; }
-            public string Email { get; set; }
-        }
-
         public UserManager<ApplicationUser> _userManager;
         public RoleManager<ApplicationRole> _roleManager;
 
@@ -25,6 +19,12 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
         {
             _userManager = userManager;
             _roleManager = roleManager;
+        }
+
+        public class ViewUserModel
+        {
+            public string Id { get; set; }
+            public string Email { get; set; }
         }
 
         [TempData]

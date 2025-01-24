@@ -15,10 +15,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
-using BoardGameBrawl.Identity.Managers;
-using BoardGameBrawl.Identity.Entities;
-using BoardGameBrawl.Identity.Stores;
 using BoardGameBrawl.Infrastructure.EmailSender;
+using BoardGameBrawl.Domain.Entities;
+using BoardGameBrawl.Application.Contracts.Entities.Identity_Related;
+using BoardGameBrawl.Persistence.Extensions;
 
 namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
 {
@@ -27,7 +27,7 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IUserStore<ApplicationUser> _userStore;
+        private readonly IApplicationUserStore<ApplicationUser> _userStore;
         private readonly IUserEmailStore<ApplicationUser> _userEmailStore;
         private readonly ILogger<ExternalLoginModel> _logger;
         private readonly IMailKitEmailSender _emailSender;
@@ -35,7 +35,7 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
         public ExternalLoginModel(
             SignInManager<ApplicationUser>  signInManager,
             UserManager<ApplicationUser> userManager,
-            IUserStore<ApplicationUser> userStore,
+            IApplicationUserStore<ApplicationUser> userStore,
             IUserEmailStore<ApplicationUser> userEmailStore,
             ILogger<ExternalLoginModel> logger,
             IMailKitEmailSender emailSender

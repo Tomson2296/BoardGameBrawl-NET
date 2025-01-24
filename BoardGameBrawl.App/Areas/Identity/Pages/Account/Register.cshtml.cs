@@ -8,10 +8,6 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
-using BoardGameBrawl.Identity;
-using BoardGameBrawl.Identity.Entities;
-using BoardGameBrawl.Identity.Managers;
-using BoardGameBrawl.Identity.Stores;
 using BoardGameBrawl.Infrastructure.EmailSender;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -23,8 +19,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.WebUtilities;
 using System.Runtime.InteropServices;
 using System.Security.Claims;
-using BoardGameBrawl.Identity.Services;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using BoardGameBrawl.Domain.Entities;
+using BoardGameBrawl.Application.Services;
+using BoardGameBrawl.Application.Contracts.Entities.Identity_Related;
+using BoardGameBrawl.Persistence.Extensions;
 
 namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
 {
@@ -33,26 +32,23 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
-        private readonly IUserStore<ApplicationUser> _userStore;
-        private readonly IUserEmailStore<ApplicationUser> _userEmailStore;
+        private readonly IApplicationUserStore<ApplicationUser> _userStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IMailKitEmailSender _emailSender;
-        private readonly IApplicationPasswordHasher<ApplicationUser> _passwordHasher;
+        private readonly IPasswordHasher<ApplicationUser> _passwordHasher;
 
         public RegisterModel(SignInManager<ApplicationUser> signInManager, 
             UserManager<ApplicationUser> userManager, 
             RoleManager<ApplicationRole> roleManager, 
-            IUserStore<ApplicationUser> userStore, 
-            IUserEmailStore<ApplicationUser> userEmailStore, 
+            IApplicationUserStore<ApplicationUser> userStore,
             ILogger<RegisterModel> logger, 
             IMailKitEmailSender emailSender,
-            IApplicationPasswordHasher<ApplicationUser> passwordHasher)
+            IPasswordHasher<ApplicationUser> passwordHasher)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _roleManager = roleManager;
             _userStore = userStore;
-            _userEmailStore = userEmailStore;
             _logger = logger;
             _emailSender = emailSender;
             _passwordHasher = passwordHasher;
@@ -106,11 +102,11 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
                 DateOnly creationDate = DateOnly.FromDateTime(DateTime.UtcNow);
 
                 await _userStore.SetUserNameAsync(user, Input.Username, CancellationToken.None);
-                await _userEmailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                await _userStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 await _userStore.SetUserCreatedDateAsync(user, creationDate);
 
                 string passwordHash = _passwordHasher.HashPassword(user, Input.Password);
-                await _userStore.SetUserPasswordHashAsync(user, passwordHash);
+                await _userStore.SetPasswordHashAsync(user, passwordHash, CancellationToken.None);
                 
                 var result = await _userManager.CreateAsync(user);
 

@@ -23,6 +23,26 @@ namespace BoardGameBrawl.Persistence.Repositories.Common
             return await _context.Set<T>().FindAsync(id, cancellationToken);    
         }
 
+        public async Task<ICollection<T>> GetBatchOfEntities(int size, int skip = 0, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            if (size <= 0)
+                throw new ArgumentException("Batch size must be greater than zero.", nameof(size));
+
+            try
+            {
+                return await _context.Set<T>()
+                    .Skip(skip)
+                    .Take(size)
+                    .ToListAsync(cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("An error occurred while retrieving a batch of entities.", ex);
+            }
+        }
+
         public async Task<ICollection<T>> GetAllEntities(CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();

@@ -79,10 +79,25 @@ namespace BoardGameBrawl.Persistence.Stores
             }
         }
 
+        private bool _disposed = false;
         public void Dispose()
         {
-            _context.Dispose();
+            Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    // Dispose managed resources
+                    _context.Dispose();
+                }
+                // Mark as disposed.
+                _disposed = true;
+            }
         }
 
         public async Task<ApplicationRole?> FindByIdAsync(string roleId, 
@@ -127,31 +142,31 @@ namespace BoardGameBrawl.Persistence.Stores
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<string?> GetNormalizedRoleNameAsync(ApplicationRole role, 
+        public Task<string?> GetNormalizedRoleNameAsync(ApplicationRole role, 
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(role);
 
-            return await Task.FromResult(role.NormalizedName);
+            return Task.FromResult(role.NormalizedName);
         }
 
-        public async Task<string> GetRoleIdAsync(ApplicationRole role, 
+        public Task<string> GetRoleIdAsync(ApplicationRole role, 
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(role);
 
-            return await Task.FromResult(role.Id.ToString());
+            return Task.FromResult(role.Id.ToString());
         }
 
-        public async Task<string?> GetRoleNameAsync(ApplicationRole role, 
+        public Task<string?> GetRoleNameAsync(ApplicationRole role, 
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(role);
 
-            return await Task.FromResult(role.Name);
+            return Task.FromResult(role.Name);
         }
 
         public async Task RemoveClaimAsync(ApplicationRole role, Claim claim,

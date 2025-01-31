@@ -29,13 +29,13 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Group_Related
                 throw new ApplicationException("Entity has not been found");
         }
 
-        public async Task<bool> GetAdminStatusAsync(GroupParticipant groupParticipant,
+        public Task<bool> GetAdminStatusAsync(GroupParticipant groupParticipant,
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(groupParticipant);
 
-            return await Task.FromResult(groupParticipant.IsAdmin);
+            return Task.FromResult(groupParticipant.IsAdmin);
         }
 
         public async Task<ICollection<Group>> GetAllPlayerGroupsByIdAsync(Guid playerId, CancellationToken cancellationToken = default)

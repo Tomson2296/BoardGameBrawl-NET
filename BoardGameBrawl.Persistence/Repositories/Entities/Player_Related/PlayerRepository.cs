@@ -14,60 +14,60 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
         // getter methods //
 
 
-        public async Task<string?> GetBGGUsernameAsync(Player player, CancellationToken cancellationToken = default)
+        public Task<string?> GetBGGUsernameAsync(Player player, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(player);
 
-            return await Task.FromResult(player.BGGUsername);
+            return Task.FromResult(player.BGGUsername);
         }
 
-        public async Task<string?> GetEmailAsync(Player player, CancellationToken cancellationToken = default)
+        public Task<string?> GetEmailAsync(Player player, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(player);
 
-            return await Task.FromResult(player.Email);
+            return Task.FromResult(player.Email);
         }
 
-        public async Task<string?> GetFirstNameAsync(Player player, CancellationToken cancellationToken = default)
+        public Task<string?> GetFirstNameAsync(Player player, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(player);
 
-            return await Task.FromResult(player.FirstName);
+            return Task.FromResult(player.FirstName);
         }
 
-        public async Task<string?> GetLastNameAsync(Player player, CancellationToken cancellationToken = default)
+        public Task<string?> GetLastNameAsync(Player player, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(player);
 
-            return await Task.FromResult(player.LastName);
+            return Task.FromResult(player.LastName);
         }
 
-        public async Task<byte[]?> GetUserAvatarAsync(Player player, CancellationToken cancellationToken = default)
+        public Task<byte[]?> GetUserAvatarAsync(Player player, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(player);
 
-            return await Task.FromResult(player.UserAvatar);
+            return Task.FromResult(player.UserAvatar);
         }
 
-        public async Task<string?> GetUserDescriptionAsync(Player player, CancellationToken cancellationToken = default)
+        public Task<string?> GetUserDescriptionAsync(Player player, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(player);
 
-            return await Task.FromResult(player.UserDescription);
+            return Task.FromResult(player.UserDescription);
         }
 
-        public async Task<string?> GetUsernameAsync(Player player, CancellationToken cancellationToken = default)
+        public Task<string?> GetUsernameAsync(Player player, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(player);
 
-            return await Task.FromResult(player.UserName);
+            return Task.FromResult(player.UserName);
         }
 
 

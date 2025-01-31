@@ -21,7 +21,6 @@ using System.Runtime.InteropServices;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using BoardGameBrawl.Domain.Entities;
-using BoardGameBrawl.Application.Services;
 using BoardGameBrawl.Application.Contracts.Entities.Identity_Related;
 using BoardGameBrawl.Persistence.Extensions;
 
@@ -33,17 +32,15 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly IApplicationUserStore<ApplicationUser> _userStore;
-        private readonly ILogger<RegisterModel> _logger;
         private readonly IMailKitEmailSender _emailSender;
-        private readonly IPasswordHasher<ApplicationUser> _passwordHasher;
+        private readonly ILogger<RegisterModel> _logger;
 
         public RegisterModel(SignInManager<ApplicationUser> signInManager, 
             UserManager<ApplicationUser> userManager, 
             RoleManager<ApplicationRole> roleManager, 
             IApplicationUserStore<ApplicationUser> userStore,
-            ILogger<RegisterModel> logger, 
             IMailKitEmailSender emailSender,
-            IPasswordHasher<ApplicationUser> passwordHasher)
+            ILogger<RegisterModel> logger)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -51,7 +48,6 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
             _userStore = userStore;
             _logger = logger;
             _emailSender = emailSender;
-            _passwordHasher = passwordHasher;
         }
 
         [BindProperty]
@@ -105,7 +101,7 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
                 await _userStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 await _userStore.SetUserCreatedDateAsync(user, creationDate);
 
-                string passwordHash = _passwordHasher.HashPassword(user, Input.Password);
+                string passwordHash = _userManager.PasswordHasher.HashPassword(user, Input.Password);
                 await _userStore.SetPasswordHashAsync(user, passwordHash, CancellationToken.None);
                 
                 var result = await _userManager.CreateAsync(user);

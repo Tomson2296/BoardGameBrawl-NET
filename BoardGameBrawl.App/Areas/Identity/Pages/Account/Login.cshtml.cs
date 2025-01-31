@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using BoardGameBrawl.Domain.Entities;
-using BoardGameBrawl.Application.Services;
 using BoardGameBrawl.Application.Contracts.Entities.Identity_Related;
 
 namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
@@ -23,19 +22,16 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IApplicationUserStore<ApplicationUser> _userStore;
-        private readonly IPasswordHasher<ApplicationUser> _passwordHasher;
         private readonly ILogger<LoginModel> _logger;
 
         public LoginModel(SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
             IApplicationUserStore<ApplicationUser> userStore,
-            IPasswordHasher<ApplicationUser> passwordHasher,
             ILogger<LoginModel> logger)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _userStore = userStore;
-            _passwordHasher = passwordHasher;
             _logger = logger;
         }
 
@@ -99,7 +95,7 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
                 }
 
                 string hashedPassword = await _userStore.GetPasswordHashAsync(ApplicationUser, CancellationToken.None);
-                PasswordVerificationResult isPasswordCorrect = _passwordHasher.VerifyHashedPassword(ApplicationUser, hashedPassword, Input.Password);
+                PasswordVerificationResult isPasswordCorrect = _userManager.PasswordHasher.VerifyHashedPassword(ApplicationUser, hashedPassword, Input.Password);
                 if(isPasswordCorrect == PasswordVerificationResult.Failed)
                 {
                     ModelState.AddModelError(string.Empty, "Incorrect password. Try again.");

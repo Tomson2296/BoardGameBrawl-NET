@@ -96,13 +96,13 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
         }
 
 
-        public async Task<string?> GetMechanicNameAsync(BoardgameMechanic mechanic,
+        public Task<string?> GetMechanicNameAsync(BoardgameMechanic mechanic,
            CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(mechanic);
 
-            return await Task.FromResult(mechanic.Mechanic);
+            return Task.FromResult(mechanic.Mechanic);
         }
 
         // setter methods //

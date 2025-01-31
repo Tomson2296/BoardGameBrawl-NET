@@ -23,7 +23,6 @@ namespace BoardGameBrawl.Application.Contracts.Common
         IGroupRepository GroupRepository { get; }
         IGroupParticipantRepository GroupParticipantRepository { get; }
 
-
         Task CommitChangesAsync();
     }
 }

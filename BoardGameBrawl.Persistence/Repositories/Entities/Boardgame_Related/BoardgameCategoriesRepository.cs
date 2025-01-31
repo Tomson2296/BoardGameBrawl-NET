@@ -95,13 +95,13 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
                 throw new ApplicationException("Entity has not been found");
         }
 
-        public async Task<string?> GetCategoryNameAsync(BoardgameCategory category,
+        public Task<string?> GetCategoryNameAsync(BoardgameCategory category,
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(category);
 
-            return await Task.FromResult(category.Category);
+            return Task.FromResult(category.Category);
         }
 
         // setter methods //

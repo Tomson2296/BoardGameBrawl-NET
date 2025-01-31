@@ -17,13 +17,13 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account.Manage
     public class ExternalLoginsModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser>  _signInManager;
-        private readonly IApplicationUserStore<ApplicationUser>  _userStore;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly IApplicationUserStore<ApplicationUser> _userStore;
 
         public ExternalLoginsModel(
             UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser>  signInManager,
-            IApplicationUserStore<ApplicationUser>  userStore)
+            SignInManager<ApplicationUser> signInManager,
+            IApplicationUserStore<ApplicationUser> userStore)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -48,12 +48,13 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account.Manage
             }
 
             CurrentLogins = await _userManager.GetLoginsAsync(user);
+
             OtherLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync())
                 .Where(auth => CurrentLogins.All(ul => auth.Name != ul.LoginProvider))
                 .ToList();
 
             string passwordHash = null;
-            if (_userStore is IUserPasswordStore<ApplicationUser>  userPasswordStore)
+            if (_userStore is IUserPasswordStore<ApplicationUser> userPasswordStore)
             {
                 passwordHash = await userPasswordStore.GetPasswordHashAsync(user, HttpContext.RequestAborted);
             }

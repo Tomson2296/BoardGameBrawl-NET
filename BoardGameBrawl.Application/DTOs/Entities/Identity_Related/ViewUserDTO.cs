@@ -5,7 +5,7 @@ using BoardGameBrawl.Domain.Entities;
 namespace BoardGameBrawl.Application.DTOs.Entities.Identity_Related
 {
     [AutoMap(typeof(ApplicationUser))]
-    public class ViewUserDTO : BaseEntityDTO
+    public class ViewUserDTO : BaseAuditableEntityDTO
     {
         public string? UserName { get; set; }
 

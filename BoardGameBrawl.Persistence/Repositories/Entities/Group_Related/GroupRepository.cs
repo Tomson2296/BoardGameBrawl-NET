@@ -13,31 +13,31 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Group_Related
 
         // getter methods //
 
-        public async Task<string?> GetGroupNameAsync(Group group,
+        public Task<string?> GetGroupNameAsync(Group group,
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(group);
 
-            return await Task.FromResult(group.GroupName);
+            return Task.FromResult(group.GroupName);
         }
 
-        public async Task<string?> GetGroupDescriptionAsync(Group group, 
+        public Task<string?> GetGroupDescriptionAsync(Group group, 
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(group);
 
-            return await Task.FromResult(group.GroupDescription);
+            return Task.FromResult(group.GroupDescription);
         }
 
-        public async Task<byte[]?> GetGroupMiniatureAsync(Group group,
+        public Task<byte[]?> GetGroupMiniatureAsync(Group group,
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(group);
 
-            return await Task.FromResult(group.GroupMiniature);
+            return Task.FromResult(group.GroupMiniature);
         }
 
 

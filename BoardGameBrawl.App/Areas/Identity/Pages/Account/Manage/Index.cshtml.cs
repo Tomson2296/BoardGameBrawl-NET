@@ -37,7 +37,6 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account.Manage
             //[Phone]
             //[Display(Name = "Phone number")]
             //public string PhoneNumber { get; set; }
-
         }
 
         private async Task LoadAsync(ApplicationUser user)
@@ -77,8 +76,6 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-
-
             //var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             //if (Input.PhoneNumber != phoneNumber)
             //{
@@ -89,8 +86,6 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account.Manage
             //        return RedirectToPage();
             //    }
             //}
-
-
 
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";

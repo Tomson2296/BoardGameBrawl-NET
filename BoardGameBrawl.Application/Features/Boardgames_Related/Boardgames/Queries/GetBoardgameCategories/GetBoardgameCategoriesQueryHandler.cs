@@ -2,7 +2,6 @@
 using BoardGameBrawl.Application.Contracts.Common;
 using BoardGameBrawl.Application.DTOs.Entities.Boardgame_Related;
 using MediatR;
-using System.Collections;
 
 namespace BoardGameBrawl.Application.Features.Boardgames_Related.Boardgames.Queries.GetBoardgameCategories
 {

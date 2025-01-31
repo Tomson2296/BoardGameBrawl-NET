@@ -128,10 +128,25 @@ namespace BoardGameBrawl.Persistence.Stores
             }
         }
 
+        private bool _disposed = false; 
         public void Dispose()
         {
-            _context.Dispose();
+            Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed)
+            {
+                if (disposing)
+                {
+                    // Dispose managed resources
+                    _context.Dispose();
+                }
+                // Mark as disposed.
+                _disposed = true; 
+            }
         }
 
         public async Task<ApplicationUser?> FindByEmailAsync(string normalizedEmail,
@@ -202,13 +217,13 @@ namespace BoardGameBrawl.Persistence.Stores
             return await _context.Users.SingleOrDefaultAsync(u => u.NormalizedUserName!.Equals(normalizedUserName), cancellationToken);
         }
 
-        public async Task<int> GetAccessFailedCountAsync(ApplicationUser user,
+        public Task<int> GetAccessFailedCountAsync(ApplicationUser user,
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(user);
 
-            return await Task.FromResult(user.AccessFailedCount);
+            return Task.FromResult(user.AccessFailedCount);
         }
 
         public async Task<IList<Claim>> GetClaimsAsync(ApplicationUser user,
@@ -223,40 +238,40 @@ namespace BoardGameBrawl.Persistence.Stores
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<string?> GetEmailAsync(ApplicationUser user,
+        public Task<string?> GetEmailAsync(ApplicationUser user,
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(user);
 
-            return await Task.FromResult(user.Email);
+            return Task.FromResult(user.Email);
         }
 
-        public async Task<bool> GetEmailConfirmedAsync(ApplicationUser user,
+        public Task<bool> GetEmailConfirmedAsync(ApplicationUser user,
            CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(user);
 
-            return await Task.FromResult(user.EmailConfirmed);
+            return Task.FromResult(user.EmailConfirmed);
         }
 
-        public async Task<bool> GetLockoutEnabledAsync(ApplicationUser user,
+        public Task<bool> GetLockoutEnabledAsync(ApplicationUser user,
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(user);
 
-            return await Task.FromResult(user.LockoutEnabled);
+            return Task.FromResult(user.LockoutEnabled);
         }
 
-        public async Task<DateTimeOffset?> GetLockoutEndDateAsync(ApplicationUser user,
+        public Task<DateTimeOffset?> GetLockoutEndDateAsync(ApplicationUser user,
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(user);
 
-            return await Task.FromResult(user.LockoutEnd);
+            return Task.FromResult(user.LockoutEnd);
         }
 
         public async Task<IList<UserLoginInfo>> GetLoginsAsync(ApplicationUser user,
@@ -267,36 +282,37 @@ namespace BoardGameBrawl.Persistence.Stores
 
             var appUserLogin = await _context.UserLogins
                 .Where(ul => ul.UserId == user.Id)
+                .Select(ul => new UserLoginInfo(ul.LoginProvider, ul.ProviderKey, ul.ProviderDisplayName))
                 .ToListAsync(cancellationToken);
 
-            return await Task.FromResult((IList<UserLoginInfo>) appUserLogin);
+            return appUserLogin;
         }
 
-        public async Task<string?> GetNormalizedEmailAsync(ApplicationUser user,
+        public Task<string?> GetNormalizedEmailAsync(ApplicationUser user,
            CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(user);
 
-            return await Task.FromResult(user.NormalizedEmail);
+            return Task.FromResult(user.NormalizedEmail);
         }
 
-        public async Task<string?> GetNormalizedUserNameAsync(ApplicationUser user,
+        public Task<string?> GetNormalizedUserNameAsync(ApplicationUser user,
            CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(user);
 
-            return await Task.FromResult(user.NormalizedUserName);
+            return Task.FromResult(user.NormalizedUserName);
         }
 
-        public async Task<string?> GetPasswordHashAsync(ApplicationUser user,
+        public Task<string?> GetPasswordHashAsync(ApplicationUser user,
              CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(user);
 
-            return await Task.FromResult(user.PasswordHash);
+            return Task.FromResult(user.PasswordHash);
         }
 
         public async Task<IList<string>> GetRolesAsync(ApplicationUser user,
@@ -313,31 +329,31 @@ namespace BoardGameBrawl.Persistence.Stores
             return await query.ToListAsync(cancellationToken);
         }
 
-        public async Task<string?> GetSecurityStampAsync(ApplicationUser user,
+        public Task<string?> GetSecurityStampAsync(ApplicationUser user,
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(user);
 
-            return await Task.FromResult(user.SecurityStamp);
+            return Task.FromResult(user.SecurityStamp);
         }
         
-        public async Task<string> GetUserIdAsync(ApplicationUser user,
+        public Task<string> GetUserIdAsync(ApplicationUser user,
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(user);
 
-            return await Task.FromResult(user.Id.ToString());
+            return Task.FromResult(user.Id.ToString());
         }
 
-        public async Task<string?> GetUserNameAsync(ApplicationUser user,
+        public Task<string?> GetUserNameAsync(ApplicationUser user,
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(user);
 
-            return await Task.FromResult(user.UserName);
+            return Task.FromResult(user.UserName);
         }
 
         public async Task<IList<ApplicationUser>> GetUsersForClaimAsync(Claim claim,
@@ -366,22 +382,22 @@ namespace BoardGameBrawl.Persistence.Stores
             return await query.ToListAsync(cancellationToken);
         }
 
-        public async Task<bool> HasPasswordAsync(ApplicationUser user,
+        public Task<bool> HasPasswordAsync(ApplicationUser user,
            CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(user);
 
-            return await Task.FromResult(!string.IsNullOrWhiteSpace(user.PasswordHash));
+            return Task.FromResult(!string.IsNullOrWhiteSpace(user.PasswordHash));
         }
 
-        public async Task<int> IncrementAccessFailedCountAsync(ApplicationUser user,
+        public Task<int> IncrementAccessFailedCountAsync(ApplicationUser user,
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(user);
             user.AccessFailedCount += 1;
-            return await Task.FromResult(user.AccessFailedCount);
+            return Task.FromResult(user.AccessFailedCount);
         }
 
         public async Task<bool> IsConfirmedAsync(UserManager<ApplicationUser> manager, ApplicationUser user)

@@ -27,26 +27,25 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly IApplicationUserStore<ApplicationUser> _userStore;
-        private readonly IUserEmailStore<ApplicationUser> _userEmailStore;
-        private readonly ILogger<ExternalLoginModel> _logger;
         private readonly IMailKitEmailSender _emailSender;
+        private readonly ILogger<ExternalLoginModel> _logger;
 
         public ExternalLoginModel(
             SignInManager<ApplicationUser>  signInManager,
             UserManager<ApplicationUser> userManager,
+            RoleManager<ApplicationRole> roleManager,
             IApplicationUserStore<ApplicationUser> userStore,
-            IUserEmailStore<ApplicationUser> userEmailStore,
-            ILogger<ExternalLoginModel> logger,
-            IMailKitEmailSender emailSender
-            )
+            IMailKitEmailSender emailSender,
+            ILogger<ExternalLoginModel> logger)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _roleManager = roleManager;
             _userStore = userStore;
-            _userEmailStore = userEmailStore;
-            _logger = logger;
             _emailSender = emailSender;
+            _logger = logger;
         }
 
         [BindProperty]
@@ -95,6 +94,12 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
             var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: true, bypassTwoFactor: true);
             if (result.Succeeded)
             {
+                //Update LastLogin information
+                DateOnly loginDate = DateOnly.FromDateTime(DateTime.UtcNow);
+                ApplicationUser user = await _userManager.GetUserAsync(HttpContext.User);
+                await _userStore.SetUserLastLoginAsync(user, loginDate);
+                await _userManager.UpdateAsync(user);
+
                 _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
                 return LocalRedirect(returnUrl);
             }
@@ -135,7 +140,7 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
                 DateOnly creationDate = DateOnly.FromDateTime(DateTime.UtcNow);
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-                await _userEmailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                await _userStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 await _userStore.SetUserCreatedDateAsync(user, creationDate);
 
                 var result = await _userManager.CreateAsync(user);

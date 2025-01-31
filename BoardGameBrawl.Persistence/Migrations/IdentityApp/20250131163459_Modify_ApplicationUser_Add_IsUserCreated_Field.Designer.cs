@@ -4,6 +4,7 @@ using BoardGameBrawl.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BoardGameBrawl.Persistence.Migrations.IdentityApp
 {
     [DbContext(typeof(IdentityAppDBContext))]
-    partial class IdentityAppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250131163459_Modify_ApplicationUser_Add_IsUserCreated_Field")]
+    partial class Modify_ApplicationUser_Add_IsUserCreated_Field
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

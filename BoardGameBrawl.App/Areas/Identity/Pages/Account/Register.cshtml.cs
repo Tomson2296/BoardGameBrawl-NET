@@ -30,21 +30,18 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly IApplicationUserStore<ApplicationUser> _userStore;
         private readonly IMailKitEmailSender _emailSender;
         private readonly ILogger<RegisterModel> _logger;
 
         public RegisterModel(SignInManager<ApplicationUser> signInManager, 
             UserManager<ApplicationUser> userManager, 
-            RoleManager<ApplicationRole> roleManager, 
             IApplicationUserStore<ApplicationUser> userStore,
             IMailKitEmailSender emailSender,
             ILogger<RegisterModel> logger)
         {
             _signInManager = signInManager;
             _userManager = userManager;
-            _roleManager = roleManager;
             _userStore = userStore;
             _logger = logger;
             _emailSender = emailSender;

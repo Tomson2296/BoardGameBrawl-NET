@@ -66,6 +66,7 @@ namespace BoardGameBrawl.Application.Profiles
             .ForMember(dest => dest.PasswordHash, opt => opt.Ignore())
             .ForMember(dest => dest.SecurityStamp, opt => opt.Ignore())
             .ForMember(dest => dest.ConcurrencyStamp, opt => opt.Ignore())
+            .ForMember(dest => dest.IsPlayerCreated, opt => opt.Ignore())
 
             .ForMember(dest => dest.PhoneNumber, opt => opt.Ignore())
             .ForMember(dest => dest.PhoneNumberConfirmed, opt => opt.Ignore())

@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using BoardGameBrawl.Domain.Entities;
 using BoardGameBrawl.Application.Contracts.Entities.Identity_Related;
+using BoardGameBrawl.Persistence.Extensions;
 
 namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
 {
@@ -23,7 +24,7 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IApplicationUserStore<ApplicationUser> _userStore;
         private readonly ILogger<LoginModel> _logger;
-
+        
         public LoginModel(SignInManager<ApplicationUser> signInManager,
             UserManager<ApplicationUser> userManager,
             IApplicationUserStore<ApplicationUser> userStore,
@@ -102,6 +103,11 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
                     return Page();
                 }
 
+                //Update LastLogin information
+                DateOnly loginDate = DateOnly.FromDateTime(DateTime.UtcNow);
+                await _userStore.SetUserLastLoginAsync(ApplicationUser, loginDate);
+                await _userManager.UpdateAsync(ApplicationUser);
+                
                 await _signInManager.SignInAsync(ApplicationUser, Input.RememberMe, returnUrl);
                 _logger.LogInformation("User logged in.");
                 return LocalRedirect(returnUrl);

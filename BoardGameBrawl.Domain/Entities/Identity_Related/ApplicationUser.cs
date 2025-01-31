@@ -23,6 +23,8 @@ public class ApplicationUser : IdentityUser<Guid>
 
     public byte[]? UserAvatar { get; set; }
 
+    public bool IsPlayerCreated { get; set; } = false;
+
     public ICollection<ApplicationUserClaim>? UserClaims { get; set; }
 
     public ICollection<ApplicationUserLogin>? UserLogins { get; set; }

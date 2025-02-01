@@ -1,11 +1,11 @@
 ﻿#nullable disable
-using BoardGameBrawl.Application.DTOs.Common;
 using BoardGameBrawl.Application.DTOs.Entities.Player_Related;
+using BoardGameBrawl.Application.Responses;
 using MediatR;
 
 namespace BoardGameBrawl.Application.Features.Player_Related.Players.Commands.UpdateUser
 {
-    public class UpdatePlayerCommand : IRequest<Unit>
+    public class UpdatePlayerCommand : IRequest<BaseCommandResponse>
     {
         public PlayerDTO PlayerDTO { get; set; }
     }

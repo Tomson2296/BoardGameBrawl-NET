@@ -191,7 +191,7 @@ namespace BoardGameBrawl.Persistence.Extensions
         //    return Task.CompletedTask;
         //}
 
-        public static Task SetUserIsPlayerCreatedAsync(this IApplicationUserStore<ApplicationUser> ApplicationUserStore,
+        public static Task SetUserIsPlayerAccountCreatedAsync(this IApplicationUserStore<ApplicationUser> ApplicationUserStore,
            ApplicationUser user, bool playerCreated,
            CancellationToken cancellationToken = default)
         {

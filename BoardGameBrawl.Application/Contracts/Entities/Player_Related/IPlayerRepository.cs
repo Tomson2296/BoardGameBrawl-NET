@@ -5,7 +5,16 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Player_Related
 {
     public interface IPlayerRepository : IGenericRepository<Player>, IAuditableRepository<Player>
     {
+        // custom PlayerRepository methods //
+
+        Task<Player?> GetPlayerByApplicationUserIdAsync(Guid applicationUserId,
+            CancellationToken cancellationToken = default);
+
+
         // getter methods // 
+
+        Task<Guid> GetApplicationUserIdAsync(Player player,
+            CancellationToken cancellationToken = default);
 
         Task<string?> GetUsernameAsync(Player player,
             CancellationToken cancellationToken = default);
@@ -30,6 +39,9 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Player_Related
 
 
         // setter methods //
+        Task SetApplicationUserIdAsync(Player player,
+            Guid applicationUserId,
+            CancellationToken cancellationToken = default);
 
         Task SetUsernameAsync(Player player,
             string? userName,

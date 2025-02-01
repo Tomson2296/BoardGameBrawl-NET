@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
 using BoardGameBrawl.Application.DTOs.Entities.Boardgame_Related;
 using BoardGameBrawl.Application.DTOs.Entities.Group_Related;
-using BoardGameBrawl.Application.DTOs.Entities.Identity_Related;
 using BoardGameBrawl.Application.DTOs.Entities.Player_Related;
-using BoardGameBrawl.Domain.Entities;
 using BoardGameBrawl.Domain.Entities.Boardgame_Related;
 using BoardGameBrawl.Domain.Entities.Group_Related;
 using BoardGameBrawl.Domain.Entities.Player_Related;

@@ -10,6 +10,14 @@
     <p> You can navigate through different user options using navigation available on the screen. </p>
 </div>
 
+@if (!string.IsNullOrEmpty(Model.SuccessMessage))
+{
+    <div class="alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        @Model.SuccessMessage
+    </div>
+}
+
 @if (Model.IfProfileCreated == false)
 {
     <div class="row">

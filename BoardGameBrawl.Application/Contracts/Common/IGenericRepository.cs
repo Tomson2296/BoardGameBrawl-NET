@@ -15,5 +15,9 @@
         Task DeleteEntity(T entity, CancellationToken cancellationToken = default);
 
         Task UpdateEntity(T entity, CancellationToken cancellationToken = default);
+
+        void AttachEntity(T entity, CancellationToken cancellationToken = default);
+
+        void DetachEntity(T entity, CancellationToken cancellationToken = default);
     }
 }

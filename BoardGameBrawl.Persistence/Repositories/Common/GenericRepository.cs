@@ -1,5 +1,6 @@
 ﻿#nullable disable
 using BoardGameBrawl.Application.Contracts.Common;
+using BoardGameBrawl.Domain.Entities.Player_Related;
 using Microsoft.EntityFrameworkCore;
 
 namespace BoardGameBrawl.Persistence.Repositories.Common
@@ -120,6 +121,30 @@ namespace BoardGameBrawl.Persistence.Repositories.Common
 
             _context.Entry(entity).State = EntityState.Modified;
             return Task.CompletedTask;
+        }
+
+        public void AttachEntity(T entity, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(entity);
+
+            if (_context.Entry(entity).State == EntityState.Detached)
+            {
+                _context.Attach(entity);
+            }
+        }
+
+        public void DetachEntity(T entity, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(entity);
+
+            var entry = _context.Entry(entity);
+            if (entry.State == EntityState.Detached)
+            {
+                return;
+            }
+            entry.State = EntityState.Detached;
         }
     }
 }

@@ -13,6 +13,8 @@ namespace  BoardGameBrawl.App.Areas.Identity.Pages.Account.Manage
         
         public static string Email => "Email";
 
+        public static string PlayerProfile => "PlayerProfile";
+
         public static string ChangePassword => "ChangePassword";
 
         public static string DownloadPersonalData => "DownloadPersonalData";
@@ -32,6 +34,8 @@ namespace  BoardGameBrawl.App.Areas.Identity.Pages.Account.Manage
         public static string UsernameNavClass(ViewContext viewContext) => PageNavClass(viewContext, Username);
 
         public static string EmailNavClass(ViewContext viewContext) => PageNavClass(viewContext, Email);
+
+        public static string PlayerProfileClass (ViewContext viewContext) => PageNavClass(viewContext, PlayerProfile);
 
         public static string ChangePasswordNavClass(ViewContext viewContext) => PageNavClass(viewContext, ChangePassword);
         

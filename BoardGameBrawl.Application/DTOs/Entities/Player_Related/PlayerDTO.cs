@@ -7,6 +7,8 @@ namespace BoardGameBrawl.Application.DTOs.Entities.Player_Related
     [AutoMap(typeof(Player))]
     public class PlayerDTO : BaseAuditableEntityDTO
     {
+        public Guid ApplicationUserId { get; set; }
+
         public string? UserName { get; set; }
 
         public string? Email { get; set; }

@@ -5,7 +5,9 @@ namespace BoardGameBrawl.Domain.Entities.Player_Related
 {
     public class Player : BaseEntity
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
+
+        public Guid ApplicationUserId { get; set; }
 
         public string? UserName { get; set; }
 

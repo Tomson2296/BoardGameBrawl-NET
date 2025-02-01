@@ -1,6 +1,7 @@
 ﻿#nullable disable
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Reflection.Metadata;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using BoardGameBrawl.Application.Contracts.Entities.Identity_Related;
@@ -26,6 +27,8 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account.Manage
 
         public string Username { get; set; }
 
+        public string SuccessMessage { get; set; }
+
         public bool IfProfileCreated { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
@@ -37,6 +40,7 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account.Manage
             }
 
             Username = user.UserName;
+            SuccessMessage = TempData["StatusMessage"] as string;
             IfProfileCreated = await _userManager.CheckIfUserHasCreatedPlayerAccountAsync(_userStore, user);
             return Page();
         }

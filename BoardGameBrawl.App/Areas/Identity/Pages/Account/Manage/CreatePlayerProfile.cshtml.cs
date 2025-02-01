@@ -6,9 +6,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using BoardGameBrawl.Domain.Entities;
 using System.ComponentModel.DataAnnotations;
 using BoardGameBrawl.Application.Contracts.Entities.Identity_Related;
-using BoardGameBrawl.Persistence.Extensions;
 using BoardGameBrawl.Application.DTOs.Entities.Player_Related;
 using BoardGameBrawl.Application.Features.Player_Related.Players.Commands.AddPlayer;
+using BoardGameBrawl.Persistence.Extensions;
 
 namespace BoardGameBrawl.App.Areas.Identity.Pages.Account.Manage
 {
@@ -76,24 +76,14 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account.Manage
         {
             var userName = await _userStore.GetUserNameAsync(user, CancellationToken.None);
             var email = await _userStore.GetEmailAsync(user, CancellationToken.None);
-            //var firstName = await _userStore.GetFirstNameAsync(user);
-            //var lastName = await _userStore.GetLastNameAsync(user);
-            //var bggUsername = await _userStore.GetBGGUsernameAsync(user);
-            //var userDescription = await _userStore.GetBGGUsernameAsync(user);
-            //var profileAvatar = await _userStore.GetUserAvatarAsync(user);
 
             Input = new InputModel
             {
                 UserName = userName,
                 Email = email
-                //FirstName = firstName,
-                //LastName = lastName,
-                //BGGUsername = bggUsername,
-                //UserDescription = userDescription,
-                //UserAvatar = profileAvatar
             };
         }
-
+        
         public async Task<IActionResult> OnPostAsync()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -111,7 +101,8 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account.Manage
             // create new PlayerDTO object
             PlayerDTO playerDTO = new()
             {
-                Id = user.Id,
+                Id = Guid.NewGuid(),
+                ApplicationUserId = user.Id,
                 UserName = Input.UserName,
                 Email = Input.Email,
                 FirstName = Input.FirstName,
@@ -146,8 +137,10 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-            StatusMessage = "Your Player Profile has been created";
-            return RedirectToPage();
+            await _userStore.SetUserIsPlayerAccountCreatedAsync(user, true);
+            await _userManager.UpdateAsync(user);
+            StatusMessage = "Player Profile Created Successfully";
+            return RedirectToPage("/Account/Manage/Index", new { area = "Identity" });
         }
 
         public class FileUploadResult

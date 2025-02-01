@@ -18,7 +18,8 @@ namespace BoardGameBrawl.Persistence.Extensions
             ArgumentNullException.ThrowIfNull(applicationUserStore);
             ArgumentNullException.ThrowIfNull(applicationUser);
 
-            return await applicationUserStore.GetUserIsPlayerCreatedAsync(applicationUser, cancellationToken).ConfigureAwait(false);
+            return await applicationUserStore.GetUserIsPlayerCreatedAsync(applicationUser, cancellationToken)
+                .ConfigureAwait(false);
         }
 
         public static async Task<bool> ChangeApplicationUsernameAsync(this UserManager<ApplicationUser> userManager,

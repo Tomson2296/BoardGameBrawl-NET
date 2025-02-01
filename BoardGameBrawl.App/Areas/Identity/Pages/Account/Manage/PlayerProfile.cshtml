@@ -1,0 +1,70 @@
+﻿@page
+@model BoardGameBrawl.App.Areas.Identity.Pages.Account.Manage.PlayerProfileModel
+@{
+    ViewData["Title"] = "Manage Player Profle";
+    ViewData["ActivePage"] = ManageNavPages.PlayerProfile;
+    ViewData["UserImg"] = "Player's Avatar Image";
+}
+
+<h3>@ViewData["Title"]</h3>
+<partial name="_StatusMessage" for="StatusMessage" />
+<div class="container">
+    @if (!Model.IfProfileCreated)
+    {
+        <div class="row">
+            <p> Looks like you still don't have your Player Profile. You can create one by clicking on a link below:</p>
+            <a href="./CreatePlayerProfile" class="w-100 btn btn-lg btn-primary"> Create Player Profile </a>
+        </div>
+    }
+    else
+    {
+        <form id="account" method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-md-6">
+                    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Id" class="form-control" readonly="readonly" aria-required="true" />
+                        <label asp-for="Input.Id" class="form-label">Id</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.UserName" class="form-control" readonly="readonly" aria-required="true" />
+                        <label asp-for="Input.UserName" class="form-label">UserName</label>
+                        <span asp-validation-for="Input.UserName" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.Email" class="form-control" readonly="readonly" aria-required="true" />
+                        <label asp-for="Input.Email" class="form-label">Email</label>
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.FirstName" class="form-control" placeholder=" " />
+                        <label asp-for="Input.FirstName" class="form-label">FirstName</label>
+                        <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.LastName" class="form-control" placeholder=" " />
+                        <label asp-for="Input.LastName" class="form-label">LastName</label>
+                        <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input asp-for="Input.BGGUsername" class="form-control" placeholder=" " />
+                        <label asp-for="Input.BGGUsername" class="form-label">BGGUsername</label>
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <textarea asp-for="Input.UserDescription" class="form-control" placeholder=" "></textarea>
+                        <label asp-for="Input.UserDescription" class="form-label"></label>
+                        <span asp-validation-for="Input.UserDescription" class="text-danger"></span>
+                    </div>
+                    <div>
+                        <button id="change-submit" type="submit" class="w-100 btn btn-lg btn-primary">Change Player Profile</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    }
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

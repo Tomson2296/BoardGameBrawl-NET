@@ -12,10 +12,14 @@ namespace BoardGameBrawl.Application.Validators.Player_Related
         {
             _playerRepository = playerRepository;
 
+            RuleFor(player => player.ApplicationUserId)
+               .NotNull()
+               .NotEmpty().WithMessage("{PropertyName} cannot be empty");
+
             RuleFor(player => player.UserName)
-                .NotNull()
-                .NotEmpty().WithMessage("{PropertyName} cannot be empty")
-                .MaximumLength(256).WithMessage("Username cannot be over {ComparisonValue} characters long");
+               .NotNull()
+               .NotEmpty().WithMessage("{PropertyName} cannot be empty")
+               .MaximumLength(256).WithMessage("Username cannot be over {ComparisonValue} characters long");
             
             RuleFor(player => player.Email)
                .EmailAddress()

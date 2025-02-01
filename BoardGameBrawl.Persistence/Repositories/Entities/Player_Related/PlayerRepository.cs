@@ -1,6 +1,7 @@
 ﻿using BoardGameBrawl.Application.Contracts.Entities.Player_Related;
 using BoardGameBrawl.Domain.Entities.Player_Related;
 using BoardGameBrawl.Persistence.Repositories.Common;
+using Microsoft.EntityFrameworkCore;
 
 namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
 {
@@ -11,8 +12,25 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
 
         }
 
+        // custom PlayerRepository methods //
+
+        public async Task<Player?> GetPlayerByApplicationUserIdAsync(Guid applicationUserId, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(applicationUserId);
+
+            return await Context.Players.SingleOrDefaultAsync(u => u.ApplicationUserId == applicationUserId, cancellationToken);
+        }
+
         // getter methods //
 
+        public Task<Guid> GetApplicationUserIdAsync(Player player, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(player);
+
+            return Task.FromResult(player.ApplicationUserId);
+        }
 
         public Task<string?> GetBGGUsernameAsync(Player player, CancellationToken cancellationToken = default)
         {
@@ -73,6 +91,17 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
 
         // setter methods //
         
+        
+        public Task SetApplicationUserIdAsync(Player player, Guid applicationUserId, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(player);
+            ArgumentNullException.ThrowIfNull(applicationUserId);
+
+            player.ApplicationUserId = applicationUserId;
+            return Task.CompletedTask;
+        }
+
         public Task SetBGGUsernameAsync(Player player, string? BGGUsername, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();

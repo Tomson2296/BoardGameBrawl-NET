@@ -4,11 +4,6 @@ using BoardGameBrawl.Application.Responses;
 using BoardGameBrawl.Application.Validators.Boardgames_Related;
 using BoardGameBrawl.Domain.Entities.Boardgame_Related;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BoardGameBrawl.Application.Features.Boardgames_Related.Boardgames.Commands.AddBoardgame
 {
@@ -29,19 +24,22 @@ namespace BoardGameBrawl.Application.Features.Boardgames_Related.Boardgames.Comm
 
             var response = new BaseCommandResponse();
             var validator = new AddBoardgameValidator(_unitOfWork.BoardgameRepository);
-            var validationResult = await validator.ValidateAsync(request.BoardgameDTO);
+            var validationResult = await validator.ValidateAsync(request.BoardgameDTO, cancellationToken);
 
-            if (validationResult.IsValid == false)
+            if (!validationResult.IsValid)
             {
-                response.Success = false;
-                response.Message = "Creation Failed";
-                response.Errors = validationResult.Errors.Select(q => q.ErrorMessage).ToList();
+                return new BaseCommandResponse
+                {
+                    Success = false,
+                    Message = "Creation Failed",
+                    Errors = validationResult.Errors.Select(q => q.ErrorMessage).ToList()
+                };
             }
             else
             {
                 var boardgame = _mapper.Map<Boardgame>(request.BoardgameDTO);
 
-                await _unitOfWork.BoardgameRepository.AddEntity(boardgame);
+                await _unitOfWork.BoardgameRepository.AddEntity(boardgame, cancellationToken);
                 await _unitOfWork.CommitChangesAsync();
 
                 response.Success = true;

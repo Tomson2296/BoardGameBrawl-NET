@@ -8,6 +8,9 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Identity_Related
     {
         public void Configure(EntityTypeBuilder<ApplicationUserClaim> entity)
         {
+            // Primary key
+            entity.HasKey(uc => uc.Id);
+
             entity.ToTable("UserClaims");
         }
     }

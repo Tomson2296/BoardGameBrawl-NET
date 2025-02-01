@@ -36,13 +36,9 @@ namespace BoardGameBrawl.Persistence.Migrations.IdentityApp
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    LastName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    BGGUsername = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    UserDescription = table.Column<string>(type: "nvarchar(512)", maxLength: 512, nullable: true),
-                    CreationDate = table.Column<DateOnly>(type: "date", nullable: true),
+                    CreationDate = table.Column<DateOnly>(type: "date", nullable: true, defaultValueSql: "getdate()"),
                     UserLastLogin = table.Column<DateOnly>(type: "date", nullable: true),
-                    UserAvatar = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
+                    IsPlayerCreated = table.Column<bool>(type: "bit", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -50,10 +46,7 @@ namespace BoardGameBrawl.Persistence.Migrations.IdentityApp
                     EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
                     PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -111,8 +104,8 @@ namespace BoardGameBrawl.Persistence.Migrations.IdentityApp
                 schema: "dbo",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
@@ -161,8 +154,8 @@ namespace BoardGameBrawl.Persistence.Migrations.IdentityApp
                 columns: table => new
                 {
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", maxLength: 450, nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -213,7 +206,9 @@ namespace BoardGameBrawl.Persistence.Migrations.IdentityApp
                 name: "EmailIndex",
                 schema: "dbo",
                 table: "Users",
-                column: "NormalizedEmail");
+                column: "NormalizedEmail",
+                unique: true,
+                filter: "[NormalizedEmail] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",

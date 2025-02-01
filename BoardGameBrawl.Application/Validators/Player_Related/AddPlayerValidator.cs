@@ -1,11 +1,6 @@
 ﻿using BoardGameBrawl.Application.Contracts.Entities.Player_Related;
 using BoardGameBrawl.Application.DTOs.Entities.Player_Related;
 using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BoardGameBrawl.Application.Validators.Player_Related
 {

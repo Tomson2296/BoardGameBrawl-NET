@@ -8,6 +8,9 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Identity_Related
     {
         public void Configure(EntityTypeBuilder<ApplicationUserRole> entity)
         {
+            // Primary key
+            entity.HasKey(r => new { r.UserId, r.RoleId });
+
             entity.ToTable("UserRoles");
         }
     }

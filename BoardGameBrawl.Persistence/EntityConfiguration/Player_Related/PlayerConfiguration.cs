@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BoardGameBrawl.Persistence.EntityConfiguration.Player_Related
 {
-    internal class AppUserConfiguration : IEntityTypeConfiguration<Player>
+    internal class PlayerConfiguration : IEntityTypeConfiguration<Player>
     {
         public void Configure(EntityTypeBuilder<Player> entity)
         {

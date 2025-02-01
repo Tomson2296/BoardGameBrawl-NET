@@ -8,6 +8,38 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Identity_Related
     {
         public void Configure(EntityTypeBuilder<ApplicationUser> entity)
         {
+            // Primary key
+            entity.HasKey(u => u.Id);
+
+            // Indexes for "normalized" username and email, to allow efficient lookups
+            entity.HasIndex(u => u.NormalizedUserName)
+                .HasDatabaseName("UserNameIndex")
+                .IsUnique();
+
+            entity.HasIndex(u => u.NormalizedEmail)
+                .HasDatabaseName("EmailIndex")
+                .IsUnique();
+
+            // A concurrency token for use with the optimistic concurrency checking
+            entity.Property(u => u.ConcurrencyStamp)
+                .IsConcurrencyToken();
+
+            // Limit the size of columns to use efficient database types
+            entity.Property(u => u.UserName)
+                .HasMaxLength(256);
+
+            entity.Property(u => u.NormalizedUserName)
+                .HasMaxLength(256);
+
+            entity.Property(u => u.Email)
+                .HasMaxLength(256);
+
+            entity.Property(u => u.NormalizedEmail)
+                .HasMaxLength(256);
+
+            // The relationships between User and other entity types
+            // Note that these relationships are configured with no navigation properties
+
             entity.Property(e => e.UserCreatedDate)
                 .HasColumnName("CreationDate")
                 .ValueGeneratedOnAdd()
@@ -51,13 +83,7 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Identity_Related
             entity.Ignore(e => e.LockoutEnabled);
 
             entity.Ignore(e => e.LockoutEnd);
-
-            // Adding additional index to - if User has an account on boardgamegeek.com website
-
-            entity.HasIndex(e => e.BGGUsername)
-                .HasDatabaseName("BGGUsernameIndex")
-                .IsUnique();
-
+            
             entity.ToTable("Users");
         }
     }

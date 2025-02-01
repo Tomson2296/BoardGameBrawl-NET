@@ -12,19 +12,16 @@ namespace BoardGameBrawl.Infrastructure.DatabaseSeed
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly IApplicationUserStore<ApplicationUser> _userStore;
-        private readonly IPasswordHasher<ApplicationUser> _passwordHasher;
         private readonly IdentityAppDBContext _DBContext;
 
         public ApplicationUserDatabaseSeed(UserManager<ApplicationUser> userManager, 
             RoleManager<ApplicationRole> roleManager,
             IApplicationUserStore<ApplicationUser> userStore,
-            IPasswordHasher<ApplicationUser> passwordHasher, 
             IdentityAppDBContext dBContext)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _userStore = userStore;
-            _passwordHasher = passwordHasher;
             _DBContext = dBContext;
         }
 
@@ -49,7 +46,7 @@ namespace BoardGameBrawl.Infrastructure.DatabaseSeed
             };
             await _userManager.CreateAsync(admin);
            
-            string passwordHash = _passwordHasher.HashPassword(admin, "Admin123!");
+            string passwordHash = _userManager.PasswordHasher.HashPassword(admin, "Admin123!");
             await _userStore.SetPasswordHashAsync(admin, passwordHash, CancellationToken.None);
 
             if (await _DBContext.Roles.AnyAsync(r => r.Name!.Equals("Administrator")))
@@ -123,15 +120,15 @@ namespace BoardGameBrawl.Infrastructure.DatabaseSeed
                     {
                         Id = Guid.NewGuid(),
                         UserName = Username,
-                        FirstName = FirstName,
-                        LastName = LastName,
+                        //FirstName = FirstName,
+                        //LastName = LastName,
                         Email = Email,
                         EmailConfirmed = true,
                         UserCreatedDate = DateOnly.FromDateTime(DateTime.UtcNow)
                     };
                     await _userManager.CreateAsync(entry);
 
-                    passwordHash = _passwordHasher.HashPassword(entry, "Zaq1@WSX");
+                    passwordHash = _userManager.PasswordHasher.HashPassword(entry, "Zaq1@WSX");
                     await _userStore.SetPasswordHashAsync(entry, passwordHash, CancellationToken.None);
                    
                     await _userManager.AddToRoleAsync(entry, "User");

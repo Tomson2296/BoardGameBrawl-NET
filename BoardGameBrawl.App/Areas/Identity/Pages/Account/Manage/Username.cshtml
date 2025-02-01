@@ -1,0 +1,32 @@
+﻿@page
+@model BoardGameBrawl.App.Areas.Identity.Pages.Account.Manage.UsernameModel
+@{
+    ViewData["Title"] = "Manage Username";
+    ViewData["ActivePage"] = ManageNavPages.Username;
+}
+
+<h3>@ViewData["Title"]</h3>
+<partial name="_StatusMessage" for="StatusMessage" />
+<div class="row">
+    <div class="col-md-6">
+        <form id="email-form" method="post">
+            <div asp-validation-summary="All" class="text-danger" role="alert"></div>
+            <div class="form-floating mb-3">
+                <input asp-for="Username" class="form-control" disabled />
+                <label asp-for="Username" class="form-label"></label>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.NewUsername" class="form-control" aria-required="true" placeholder="Please enter new username." />
+                <label asp-for="Input.NewUsername" class="form-label"></label>
+                <span asp-validation-for="Input.NewUsername" class="text-danger"></span>
+            </div>
+            <button id="change-username-button" type="submit" asp-page-handler="ChangeUsername" class="w-100 btn btn-lg btn-primary">Change Username</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+
+

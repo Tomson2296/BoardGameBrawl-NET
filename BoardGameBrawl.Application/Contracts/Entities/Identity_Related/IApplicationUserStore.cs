@@ -12,5 +12,6 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Identity_Related
         IUserRoleStore<TUser>,
         IUserSecurityStampStore<TUser> where TUser : class
     {
+        public Task<bool> CheckApplicationUsernameExistsAsync(TUser user, string newUsername, CancellationToken cancellationToken = default);
     }
 }

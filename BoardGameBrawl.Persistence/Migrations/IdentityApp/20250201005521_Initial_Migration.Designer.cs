@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BoardGameBrawl.Persistence.Migrations.IdentityApp
 {
     [DbContext(typeof(IdentityAppDBContext))]
-    [Migration("20241216182656_Add_Index_ApplicationUser_BGGUsernameProperty")]
-    partial class Add_Index_ApplicationUser_BGGUsernameProperty
+    [Migration("20250201005521_Initial_Migration")]
+    partial class Initial_Migration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,7 +26,7 @@ namespace BoardGameBrawl.Persistence.Migrations.IdentityApp
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("BoardgameBrawl.Domain.Identity_Related.ApplicationRole", b =>
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.ApplicationRole", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -58,7 +58,7 @@ namespace BoardGameBrawl.Persistence.Migrations.IdentityApp
                     b.ToTable("Roles", "dbo");
                 });
 
-            modelBuilder.Entity("BoardgameBrawl.Domain.Identity_Related.ApplicationRoleClaim", b =>
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.ApplicationRoleClaim", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -82,18 +82,11 @@ namespace BoardGameBrawl.Persistence.Migrations.IdentityApp
                     b.ToTable("RoleClaims", "dbo");
                 });
 
-            modelBuilder.Entity("BoardgameBrawl.Domain.Identity_Related.ApplicationUser", b =>
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.ApplicationUser", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("BGGUsername")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -106,19 +99,8 @@ namespace BoardGameBrawl.Persistence.Migrations.IdentityApp
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("FirstName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("LastName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("LockoutEnabled")
+                    b.Property<bool>("IsPlayerCreated")
                         .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -134,17 +116,11 @@ namespace BoardGameBrawl.Persistence.Migrations.IdentityApp
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte[]>("UserAvatar")
-                        .HasColumnType("varbinary(max)");
-
                     b.Property<DateOnly?>("UserCreatedDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("date")
-                        .HasColumnName("CreationDate");
-
-                    b.Property<string>("UserDescription")
-                        .HasMaxLength(512)
-                        .HasColumnType("nvarchar(512)");
+                        .HasColumnName("CreationDate")
+                        .HasDefaultValueSql("getdate()");
 
                     b.Property<DateOnly?>("UserLastLogin")
                         .HasColumnType("date");
@@ -155,13 +131,10 @@ namespace BoardGameBrawl.Persistence.Migrations.IdentityApp
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BGGUsername")
-                        .IsUnique()
-                        .HasDatabaseName("BGGUsernameIndex")
-                        .HasFilter("[BGGUsername] IS NOT NULL");
-
                     b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
+                        .IsUnique()
+                        .HasDatabaseName("EmailIndex")
+                        .HasFilter("[NormalizedEmail] IS NOT NULL");
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
@@ -171,7 +144,7 @@ namespace BoardGameBrawl.Persistence.Migrations.IdentityApp
                     b.ToTable("Users", "dbo");
                 });
 
-            modelBuilder.Entity("BoardgameBrawl.Domain.Identity_Related.ApplicationUserClaim", b =>
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.ApplicationUserClaim", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -195,12 +168,14 @@ namespace BoardGameBrawl.Persistence.Migrations.IdentityApp
                     b.ToTable("UserClaims", "dbo");
                 });
 
-            modelBuilder.Entity("BoardgameBrawl.Domain.Identity_Related.ApplicationUserLogin", b =>
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.ApplicationUserLogin", b =>
                 {
                     b.Property<string>("LoginProvider")
+                        .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderKey")
+                        .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ProviderDisplayName")
@@ -216,7 +191,7 @@ namespace BoardGameBrawl.Persistence.Migrations.IdentityApp
                     b.ToTable("UserLogins", "dbo");
                 });
 
-            modelBuilder.Entity("BoardgameBrawl.Domain.Identity_Related.ApplicationUserRole", b =>
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.ApplicationUserRole", b =>
                 {
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -231,15 +206,17 @@ namespace BoardGameBrawl.Persistence.Migrations.IdentityApp
                     b.ToTable("UserRoles", "dbo");
                 });
 
-            modelBuilder.Entity("BoardgameBrawl.Domain.Identity_Related.ApplicationUserToken", b =>
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.ApplicationUserToken", b =>
                 {
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("LoginProvider")
+                        .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
+                        .HasMaxLength(450)
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Value")
@@ -250,9 +227,9 @@ namespace BoardGameBrawl.Persistence.Migrations.IdentityApp
                     b.ToTable("UserTokens", "dbo");
                 });
 
-            modelBuilder.Entity("BoardgameBrawl.Domain.Identity_Related.ApplicationRoleClaim", b =>
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.ApplicationRoleClaim", b =>
                 {
-                    b.HasOne("BoardgameBrawl.Domain.Identity_Related.ApplicationRole", "Role")
+                    b.HasOne("BoardGameBrawl.Domain.Entities.ApplicationRole", "Role")
                         .WithMany("RoleClaims")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -261,9 +238,9 @@ namespace BoardGameBrawl.Persistence.Migrations.IdentityApp
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("BoardgameBrawl.Domain.Identity_Related.ApplicationUserClaim", b =>
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.ApplicationUserClaim", b =>
                 {
-                    b.HasOne("BoardgameBrawl.Domain.Identity_Related.ApplicationUser", "User")
+                    b.HasOne("BoardGameBrawl.Domain.Entities.ApplicationUser", "User")
                         .WithMany("UserClaims")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -272,9 +249,9 @@ namespace BoardGameBrawl.Persistence.Migrations.IdentityApp
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("BoardgameBrawl.Domain.Identity_Related.ApplicationUserLogin", b =>
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.ApplicationUserLogin", b =>
                 {
-                    b.HasOne("BoardgameBrawl.Domain.Identity_Related.ApplicationUser", "User")
+                    b.HasOne("BoardGameBrawl.Domain.Entities.ApplicationUser", "User")
                         .WithMany("UserLogins")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -283,15 +260,15 @@ namespace BoardGameBrawl.Persistence.Migrations.IdentityApp
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("BoardgameBrawl.Domain.Identity_Related.ApplicationUserRole", b =>
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.ApplicationUserRole", b =>
                 {
-                    b.HasOne("BoardgameBrawl.Domain.Identity_Related.ApplicationRole", "Role")
+                    b.HasOne("BoardGameBrawl.Domain.Entities.ApplicationRole", "Role")
                         .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BoardgameBrawl.Domain.Identity_Related.ApplicationUser", "User")
+                    b.HasOne("BoardGameBrawl.Domain.Entities.ApplicationUser", "User")
                         .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -302,9 +279,9 @@ namespace BoardGameBrawl.Persistence.Migrations.IdentityApp
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("BoardgameBrawl.Domain.Identity_Related.ApplicationUserToken", b =>
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.ApplicationUserToken", b =>
                 {
-                    b.HasOne("BoardgameBrawl.Domain.Identity_Related.ApplicationUser", "User")
+                    b.HasOne("BoardGameBrawl.Domain.Entities.ApplicationUser", "User")
                         .WithMany("UserTokens")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -313,14 +290,14 @@ namespace BoardGameBrawl.Persistence.Migrations.IdentityApp
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("BoardgameBrawl.Domain.Identity_Related.ApplicationRole", b =>
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.ApplicationRole", b =>
                 {
                     b.Navigation("RoleClaims");
 
                     b.Navigation("UserRoles");
                 });
 
-            modelBuilder.Entity("BoardgameBrawl.Domain.Identity_Related.ApplicationUser", b =>
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.ApplicationUser", b =>
                 {
                     b.Navigation("UserClaims");
 

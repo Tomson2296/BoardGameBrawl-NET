@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using BoardGameBrawl.Domain.Entities;
+using BoardGameBrawl.Infrastructure.EmailSender;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -18,12 +19,12 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly IEmailSender _emailSender;
+        private readonly IMailKitEmailSender _emailSender;
 
         public EmailModel(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser>  signInManager,
-            IEmailSender emailSender)
+            IMailKitEmailSender emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;

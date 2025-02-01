@@ -233,6 +233,24 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
                     b.ToTable("Groups", "dbo");
                 });
 
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Group_Related.GroupParticipant", b =>
+                {
+                    b.Property<Guid?>("GroupId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("PlayerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsAdmin")
+                        .HasColumnType("bit");
+
+                    b.HasKey("GroupId", "PlayerId");
+
+                    b.HasIndex("PlayerId");
+
+                    b.ToTable("GroupParticipants", "dbo");
+                });
+
             modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Match_Related.Match", b =>
                 {
                     b.Property<Guid>("Id")
@@ -328,24 +346,6 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
                     b.ToTable("MatchRules", "dbo");
                 });
 
-            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Player_Related.GroupParticipant", b =>
-                {
-                    b.Property<Guid?>("GroupId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("PlayerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsAdmin")
-                        .HasColumnType("bit");
-
-                    b.HasKey("GroupId", "PlayerId");
-
-                    b.HasIndex("PlayerId");
-
-                    b.ToTable("GroupParticipants", "dbo");
-                });
-
             modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Player_Related.Player", b =>
                 {
                     b.Property<Guid>("Id")
@@ -415,14 +415,14 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
 
             modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Player_Related.PlayerRreference", b =>
                 {
-                    b.Property<Guid?>("PlayerId")
+                    b.Property<Guid>("PlayerId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("BoardgameId")
+                    b.Property<Guid>("BoardgameId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<short>("Rating")
-                        .HasColumnType("smallint");
+                    b.Property<byte>("Rating")
+                        .HasColumnType("tinyint");
 
                     b.HasKey("PlayerId", "BoardgameId");
 
@@ -578,25 +578,7 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
                     b.Navigation("BoardgameMechanic");
                 });
 
-            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Match_Related.Match", b =>
-                {
-                    b.HasOne("BoardGameBrawl.Domain.Entities.Boardgame_Related.Boardgame", null)
-                        .WithMany("Matches")
-                        .HasForeignKey("BoardgameId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Match_Related.MatchRule", b =>
-                {
-                    b.HasOne("BoardGameBrawl.Domain.Entities.Boardgame_Related.Boardgame", null)
-                        .WithMany("BoardgameRules")
-                        .HasForeignKey("BoardgameId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Player_Related.GroupParticipant", b =>
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Group_Related.GroupParticipant", b =>
                 {
                     b.HasOne("BoardGameBrawl.Domain.Entities.Group_Related.Group", "Group")
                         .WithMany("GroupParticipants")
@@ -613,6 +595,24 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
                     b.Navigation("Group");
 
                     b.Navigation("Player");
+                });
+
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Match_Related.Match", b =>
+                {
+                    b.HasOne("BoardGameBrawl.Domain.Entities.Boardgame_Related.Boardgame", null)
+                        .WithMany("Matches")
+                        .HasForeignKey("BoardgameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Match_Related.MatchRule", b =>
+                {
+                    b.HasOne("BoardGameBrawl.Domain.Entities.Boardgame_Related.Boardgame", null)
+                        .WithMany("BoardgameRules")
+                        .HasForeignKey("BoardgameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Player_Related.PlayerRreference", b =>

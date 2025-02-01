@@ -5,53 +5,47 @@ namespace BoardGameBrawl.Persistence.Extensions
 {
     public static class ApplicationUserStoreExtensionMethods
     {
-        // custom extension methods //
-
-
-
-
-
         // getter methods //
         
-        public static Task<string?> GetFirstNameAsync(this IApplicationUserStore<ApplicationUser> ApplicationUserStore, 
-           ApplicationUser user,
-           CancellationToken cancellationToken = default)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            ArgumentNullException.ThrowIfNull(user);
+        //public static Task<string?> GetFirstNameAsync(this IApplicationUserStore<ApplicationUser> ApplicationUserStore, 
+        //   ApplicationUser user,
+        //   CancellationToken cancellationToken = default)
+        //{
+        //    cancellationToken.ThrowIfCancellationRequested();
+        //    ArgumentNullException.ThrowIfNull(user);
 
-            return Task.FromResult(user.FirstName);
-        }
+        //    return Task.FromResult(user.FirstName);
+        //}
 
-        public static Task<string?> GetLastNameAsync(this IApplicationUserStore<ApplicationUser> ApplicationUserStore, 
-           ApplicationUser user,
-           CancellationToken cancellationToken = default)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            ArgumentNullException.ThrowIfNull(user);
+        //public static Task<string?> GetLastNameAsync(this IApplicationUserStore<ApplicationUser> ApplicationUserStore, 
+        //   ApplicationUser user,
+        //   CancellationToken cancellationToken = default)
+        //{
+        //    cancellationToken.ThrowIfCancellationRequested();
+        //    ArgumentNullException.ThrowIfNull(user);
 
-            return Task.FromResult(user.LastName);
-        }
+        //    return Task.FromResult(user.LastName);
+        //}
 
-        public static Task<string?> GetBGGUsernameAsync(this IApplicationUserStore<ApplicationUser> ApplicationUserStore, 
-           ApplicationUser user,
-           CancellationToken cancellationToken = default)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            ArgumentNullException.ThrowIfNull(user);
+        //public static Task<string?> GetBGGUsernameAsync(this IApplicationUserStore<ApplicationUser> ApplicationUserStore, 
+        //   ApplicationUser user,
+        //   CancellationToken cancellationToken = default)
+        //{
+        //    cancellationToken.ThrowIfCancellationRequested();
+        //    ArgumentNullException.ThrowIfNull(user);
 
-            return Task.FromResult(user.BGGUsername);
-        }
+        //    return Task.FromResult(user.BGGUsername);
+        //}
 
-        public static Task<string?> GetUserDescriptionAsync(this IApplicationUserStore<ApplicationUser> ApplicationUserStore, 
-           ApplicationUser user,
-           CancellationToken cancellationToken = default)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            ArgumentNullException.ThrowIfNull(user);
+        //public static Task<string?> GetUserDescriptionAsync(this IApplicationUserStore<ApplicationUser> ApplicationUserStore, 
+        //   ApplicationUser user,
+        //   CancellationToken cancellationToken = default)
+        //{
+        //    cancellationToken.ThrowIfCancellationRequested();
+        //    ArgumentNullException.ThrowIfNull(user);
 
-            return Task.FromResult(user.UserDescription);
-        }
+        //    return Task.FromResult(user.UserDescription);
+        //}
 
         public static Task<DateOnly?> GetUserCreatedDateAsync(this IApplicationUserStore<ApplicationUser> ApplicationUserStore, 
            ApplicationUser user,
@@ -73,15 +67,15 @@ namespace BoardGameBrawl.Persistence.Extensions
             return Task.FromResult(user.UserLastLogin);
         }
 
-        public static Task<byte[]?> GetUserAvatarAsync(this IApplicationUserStore<ApplicationUser> ApplicationUserStore,
-           ApplicationUser user,
-           CancellationToken cancellationToken = default)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            ArgumentNullException.ThrowIfNull(user);
+        //public static Task<byte[]?> GetUserAvatarAsync(this IApplicationUserStore<ApplicationUser> ApplicationUserStore,
+        //   ApplicationUser user,
+        //   CancellationToken cancellationToken = default)
+        //{
+        //    cancellationToken.ThrowIfCancellationRequested();
+        //    ArgumentNullException.ThrowIfNull(user);
 
-            return Task.FromResult(user.UserAvatar);
-        }
+        //    return Task.FromResult(user.UserAvatar);
+        //}
 
         public static Task<bool> GetUserIsPlayerCreatedAsync(this IApplicationUserStore<ApplicationUser> ApplicationUserStore,
            ApplicationUser user,
@@ -97,69 +91,69 @@ namespace BoardGameBrawl.Persistence.Extensions
         // setter methods //
 
 
-        public static Task SetFirstNameAsync(this IApplicationUserStore<ApplicationUser> ApplicationUserStore, 
-            ApplicationUser user, string? firstName,
-            CancellationToken cancellationToken = default)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            ArgumentNullException.ThrowIfNull(user);
+        //public static Task SetFirstNameAsync(this IApplicationUserStore<ApplicationUser> ApplicationUserStore, 
+        //    ApplicationUser user, string? firstName,
+        //    CancellationToken cancellationToken = default)
+        //{
+        //    cancellationToken.ThrowIfCancellationRequested();
+        //    ArgumentNullException.ThrowIfNull(user);
 
-            if (string.IsNullOrWhiteSpace(firstName))
-            {
-                throw new ArgumentException("First name cannot be null or whitespace.", nameof(firstName));
-            }
+        //    if (string.IsNullOrWhiteSpace(firstName))
+        //    {
+        //        throw new ArgumentException("First name cannot be null or whitespace.", nameof(firstName));
+        //    }
 
-            user.FirstName = firstName;
-            return Task.CompletedTask;
-        }
+        //    user.FirstName = firstName;
+        //    return Task.CompletedTask;
+        //}
 
-        public static Task SetLastNameAsync(this IApplicationUserStore<ApplicationUser> ApplicationUserStore, 
-            ApplicationUser user, string? lastName,
-            CancellationToken cancellationToken = default)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            ArgumentNullException.ThrowIfNull(user);
+        //public static Task SetLastNameAsync(this IApplicationUserStore<ApplicationUser> ApplicationUserStore, 
+        //    ApplicationUser user, string? lastName,
+        //    CancellationToken cancellationToken = default)
+        //{
+        //    cancellationToken.ThrowIfCancellationRequested();
+        //    ArgumentNullException.ThrowIfNull(user);
 
-            if (string.IsNullOrWhiteSpace(lastName))
-            {
-                throw new ArgumentException("Last name cannot be null or whitespace.", nameof(lastName));
-            }
+        //    if (string.IsNullOrWhiteSpace(lastName))
+        //    {
+        //        throw new ArgumentException("Last name cannot be null or whitespace.", nameof(lastName));
+        //    }
 
-            user.LastName = lastName;
-            return Task.CompletedTask;
-        }
+        //    user.LastName = lastName;
+        //    return Task.CompletedTask;
+        //}
 
-        public static Task SetBGGUsernameAsync(this IApplicationUserStore<ApplicationUser> ApplicationUserStore, 
-            ApplicationUser user, string? BGGUsername,
-            CancellationToken cancellationToken = default)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            ArgumentNullException.ThrowIfNull(user);
+        //public static Task SetBGGUsernameAsync(this IApplicationUserStore<ApplicationUser> ApplicationUserStore, 
+        //    ApplicationUser user, string? BGGUsername,
+        //    CancellationToken cancellationToken = default)
+        //{
+        //    cancellationToken.ThrowIfCancellationRequested();
+        //    ArgumentNullException.ThrowIfNull(user);
 
-            if (string.IsNullOrWhiteSpace(BGGUsername))
-            {
-                throw new ArgumentException("BGGUsername cannot be null or whitespace.", nameof(BGGUsername));
-            }
+        //    if (string.IsNullOrWhiteSpace(BGGUsername))
+        //    {
+        //        throw new ArgumentException("BGGUsername cannot be null or whitespace.", nameof(BGGUsername));
+        //    }
 
-            user.BGGUsername = BGGUsername;
-            return Task.CompletedTask;
-        }
+        //    user.BGGUsername = BGGUsername;
+        //    return Task.CompletedTask;
+        //}
 
-        public static Task SetUserDescriptionAsync(this IApplicationUserStore<ApplicationUser> ApplicationUserStore, 
-            ApplicationUser user, string? UserDescription,
-            CancellationToken cancellationToken = default)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            ArgumentNullException.ThrowIfNull(user);
+        //public static Task SetUserDescriptionAsync(this IApplicationUserStore<ApplicationUser> ApplicationUserStore, 
+        //    ApplicationUser user, string? UserDescription,
+        //    CancellationToken cancellationToken = default)
+        //{
+        //    cancellationToken.ThrowIfCancellationRequested();
+        //    ArgumentNullException.ThrowIfNull(user);
 
-            if (string.IsNullOrWhiteSpace(UserDescription))
-            {
-                throw new ArgumentException("User description cannot be null or whitespace.", nameof(UserDescription));
-            }
+        //    if (string.IsNullOrWhiteSpace(UserDescription))
+        //    {
+        //        throw new ArgumentException("User description cannot be null or whitespace.", nameof(UserDescription));
+        //    }
 
-            user.UserDescription = UserDescription;
-            return Task.CompletedTask;
-        }
+        //    user.UserDescription = UserDescription;
+        //    return Task.CompletedTask;
+        //}
 
         public static Task SetUserCreatedDateAsync(this IApplicationUserStore<ApplicationUser> ApplicationUserStore, 
             ApplicationUser user, DateOnly UserCreatedDate,
@@ -185,17 +179,17 @@ namespace BoardGameBrawl.Persistence.Extensions
             return Task.CompletedTask;
         }
 
-        public static Task SetUserAvatarAsync(this IApplicationUserStore<ApplicationUser> ApplicationUserStore, 
-            ApplicationUser user, byte[]? UserAvatar,
-            CancellationToken cancellationToken = default)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-            ArgumentNullException.ThrowIfNull(user);
-            ArgumentNullException.ThrowIfNull(UserAvatar);
+        //public static Task SetUserAvatarAsync(this IApplicationUserStore<ApplicationUser> ApplicationUserStore, 
+        //    ApplicationUser user, byte[]? UserAvatar,
+        //    CancellationToken cancellationToken = default)
+        //{
+        //    cancellationToken.ThrowIfCancellationRequested();
+        //    ArgumentNullException.ThrowIfNull(user);
+        //    ArgumentNullException.ThrowIfNull(UserAvatar);
 
-            user.UserAvatar = UserAvatar;
-            return Task.CompletedTask;
-        }
+        //    user.UserAvatar = UserAvatar;
+        //    return Task.CompletedTask;
+        //}
 
         public static Task SetUserIsPlayerCreatedAsync(this IApplicationUserStore<ApplicationUser> ApplicationUserStore,
            ApplicationUser user, bool playerCreated,

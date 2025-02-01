@@ -27,11 +27,11 @@ namespace BoardGameBrawl.App
 
             builder.Services.AddDbContext<MainAppDBContext>(options =>
                            options.UseSqlServer(configuration.GetConnectionString("MainAppDBConnection"),
-                           b => b.MigrationsAssembly(typeof(MainAppDBContext).Assembly.FullName)));
+                           b => b.MigrationsAssembly(typeof(MainAppDBContext).Assembly.GetName().Name)));
 
             builder.Services.AddDbContext<IdentityAppDBContext>(options =>
                              options.UseSqlServer(configuration.GetConnectionString("IdentityAppDBConnection"),
-                             b => b.MigrationsAssembly(typeof(IdentityAppDBContext).Assembly.FullName)));
+                             b => b.MigrationsAssembly(typeof(IdentityAppDBContext).Assembly.GetName().Name)));
 
             builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
             {

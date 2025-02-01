@@ -8,6 +8,9 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Identity_Related
     {
         public void Configure(EntityTypeBuilder<ApplicationRoleClaim> entity)
         {
+            // Primary key
+            entity.HasKey(rc => rc.Id);
+
             entity.ToTable("RoleClaims");
         }
     }

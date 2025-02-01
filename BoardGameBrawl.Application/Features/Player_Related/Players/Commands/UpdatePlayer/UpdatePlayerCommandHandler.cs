@@ -30,7 +30,7 @@ namespace BoardGameBrawl.Application.Features.Player_Related.Players.Commands.Up
             }
             else
             {
-                var playerInDB = await _unitOfWork.PlayerRepository.GetEntity(request.PlayerDTO.Id);
+                var playerInDB = await _unitOfWork.PlayerRepository.GetEntity(request.PlayerDTO.Id, cancellationToken);
 
                 if (playerInDB == null)
                 {
@@ -39,7 +39,7 @@ namespace BoardGameBrawl.Application.Features.Player_Related.Players.Commands.Up
                 else
                 {
                     var player = _mapper.Map<Player>(request.PlayerDTO);
-                    await _unitOfWork.PlayerRepository.UpdateEntity(player);
+                    await _unitOfWork.PlayerRepository.UpdateEntity(player, cancellationToken);
                     await _unitOfWork.CommitChangesAsync();
                     return Unit.Value;
                 }

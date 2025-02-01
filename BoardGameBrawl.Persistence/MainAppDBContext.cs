@@ -3,8 +3,12 @@ using BoardGameBrawl.Domain.Entities.Group_Related;
 using BoardGameBrawl.Domain.Entities.Match_Related;
 using BoardGameBrawl.Domain.Entities.Player_Related;
 using BoardGameBrawl.Domain.Entities.Tournament_Related;
+using BoardGameBrawl.Persistence.EntityConfiguration.Boardgame_Related;
+using BoardGameBrawl.Persistence.EntityConfiguration.Group_Related;
+using BoardGameBrawl.Persistence.EntityConfiguration.Match_Related;
+using BoardGameBrawl.Persistence.EntityConfiguration.Player_Related;
+using BoardGameBrawl.Persistence.EntityConfiguration.Tournament_Related;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 
 namespace BoardGameBrawl.Persistence
 {
@@ -20,7 +24,28 @@ namespace BoardGameBrawl.Persistence
             base.OnModelCreating(modelBuilder);
             modelBuilder.HasDefaultSchema("dbo");
 
-            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+            //Boardgame-related entities configuration
+            modelBuilder.ApplyConfiguration(new BoardgameConfiguration());
+            modelBuilder.ApplyConfiguration(new BoardgameCategoryConfiguration());
+            modelBuilder.ApplyConfiguration(new BoardgameCategoryTagConfiguration());
+            modelBuilder.ApplyConfiguration(new BoardgameMechanicConfiguration());
+            modelBuilder.ApplyConfiguration(new BoardgameMechanicTagConfigutaion());
+
+            //Group-related entities configuration
+            modelBuilder.ApplyConfiguration(new GroupConfiguration());
+            modelBuilder.ApplyConfiguration(new GroupParticipantConfiguration());
+
+            //Match-related entities configuration
+            modelBuilder.ApplyConfiguration(new MatchConfiguration());
+            modelBuilder.ApplyConfiguration(new MatchRuleConfiguration());
+
+            //Player-related entities configuration
+            modelBuilder.ApplyConfiguration(new PlayerConfiguration());
+            modelBuilder.ApplyConfiguration(new PlayerPreferenceConfiguration());
+
+            //Tournament-related entities configuration
+            modelBuilder.ApplyConfiguration(new TournamentConfiguration());
+            modelBuilder.ApplyConfiguration(new TournamentMatchConfiguration());
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -40,6 +65,7 @@ namespace BoardGameBrawl.Persistence
 
         public DbSet<BoardgameMechanicTag> BoardgameMechanicTags { get; set; }
 
+
         public DbSet<Player> Players { get; set; }
 
         public DbSet<Group> Groups { get; set; }
@@ -47,6 +73,7 @@ namespace BoardGameBrawl.Persistence
         public DbSet<GroupParticipant> GroupParticipants { get; set; }
 
         public DbSet<PlayerRreference> PlayerRreferences { get; set; }
+
 
         public DbSet<Match> Matches { get; set; }
 

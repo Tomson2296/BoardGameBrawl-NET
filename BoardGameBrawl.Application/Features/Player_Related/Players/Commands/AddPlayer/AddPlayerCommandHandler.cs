@@ -1,4 +1,5 @@
 ﻿#nullable disable
+
 using AutoMapper;
 using BoardGameBrawl.Application.Contracts.Common;
 using BoardGameBrawl.Application.Responses;
@@ -29,22 +30,25 @@ namespace BoardGameBrawl.Application.Features.Player_Related.Players.Commands.Ad
 
             if (validationResult.IsValid == false)
             {
-                response.Success = false;
-                response.Message = "Creation Failed";
-                response.Errors = validationResult.Errors.Select(q => q.ErrorMessage).ToList();
+                return new BaseCommandResponse
+                {
+                    Success = false,
+                    Message = "Creation Failed",
+                    Errors = validationResult.Errors.Select(q => q.ErrorMessage).ToList()
+                };
             }
             else
             {
                 var player = _mapper.Map<Player>(request.PlayerDTO);
 
-                await _unitOfWork.PlayerRepository.AddEntity(player);
+                await _unitOfWork.PlayerRepository.AddEntity(player, cancellationToken);
                 await _unitOfWork.CommitChangesAsync();
 
                 response.Success = true;
                 response.Message = "Creation Successful";
                 response.Id = player.Id;
             }
-
+            
             return response;
         }
     }

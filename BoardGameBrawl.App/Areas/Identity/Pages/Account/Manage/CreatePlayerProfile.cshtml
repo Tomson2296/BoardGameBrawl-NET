@@ -1,0 +1,73 @@
+﻿@page
+@model BoardGameBrawl.App.Areas.Identity.Pages.Account.Manage.CreatePlayerProfile
+@{
+    ViewData["Title"] = "Player Profile Creation Site";
+    ViewData["BGGQuest"] = "Do you have a BGG Account?";
+    ViewData["UserImg"] = "User's Avatar Image";
+}
+
+<h3>@ViewData["Title"]</h3>
+<br />
+<div class="container">
+    <form id="account" method="post" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-md-6">
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.UserName" class="form-control" readonly="readonly" aria-required="true" />
+                    <label asp-for="Input.UserName" class="form-label">UserName</label>
+                    <span asp-validation-for="Input.UserName" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.Email" class="form-control" readonly="readonly" aria-required="true" />
+                    <label asp-for="Input.Email" class="form-label">Email</label>
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.FirstName" class="form-control" placeholder=" " />
+                    <label asp-for="Input.FirstName" class="form-label">FirstName</label>
+                    <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.LastName" class="form-control" placeholder=" " />
+                    <label asp-for="Input.LastName" class="form-label">LastName</label>
+                    <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                </div>
+                <h4>@ViewData["BGGQuest"]</h4>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.BGGUsername" class="form-control" placeholder=" " />
+                    <label asp-for="Input.BGGUsername" class="form-label">BGGUsername</label>
+                    <span asp-validation-for="Input.Email" class="text-danger"></span>
+                </div>
+                <div class="form-floating mb-3">
+                    <textarea asp-for="Input.UserDescription" class="form-control" placeholder=" "></textarea>
+                    <label asp-for="Input.UserDescription" class="form-label"></label>
+                    <span asp-validation-for="Input.UserDescription" class="text-danger"></span>
+                </div>
+                <div>
+                    <button id="create-submit" type="submit" class="w-100 btn btn-lg btn-primary">Create Player Profile</button>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <h4>@ViewData["UserImg"]</h4>
+                    @if (Model.Input.UserAvatar != null)
+                    {
+                        <img id="profilePicture" class="img-fluid img-thumbnail" src="data:image/*;base64,@(Convert.ToBase64String(Model.Input.UserAvatar))">
+                    }
+                    else
+                    {
+                        <img id="profilePicture" class="img-fluid img-thumbnail" src="">
+                    }
+                    <input type="file" asp-for="Input.UserAvatar" class="form-control" style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px"
+                           onchange="document.getElementById('profilePicture').src = window.URL.createObjectURL(this.files[0])" />
+                    <span asp-validation-for="Input.UserAvatar" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>    
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

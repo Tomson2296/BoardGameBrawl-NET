@@ -666,5 +666,22 @@ namespace BoardGameBrawl.Persistence.Stores
             ? IdentityResult.Success
                     : IdentityResult.Failed(new IdentityError() { Description = $"Could not update user: {user.Id}." });
         }
+
+
+        // custom methods //
+
+        public async Task<bool> CheckApplicationUsernameExistsAsync(ApplicationUser user, 
+            string newUsername, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(user);
+
+            if (string.IsNullOrWhiteSpace(newUsername))
+            {
+                throw new ArgumentException("Username cannot be null or whitespace.", nameof(newUsername));
+            }
+
+            return await _context.Users.AnyAsync(u => u.UserName == newUsername, cancellationToken);
+        }
     }
 }

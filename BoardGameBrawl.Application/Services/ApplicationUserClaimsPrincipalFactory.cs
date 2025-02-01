@@ -16,21 +16,6 @@ namespace BoardGameBrawl.Application.Services
         {
             ClaimsIdentity principal = await base.GenerateClaimsAsync(user);
 
-            if (!string.IsNullOrWhiteSpace(user.FirstName))
-            {
-                principal.AddClaim(new Claim("FirstName", user.FirstName));
-            }
-
-            if (!string.IsNullOrWhiteSpace(user.LastName))
-            {
-                principal.AddClaim(new Claim("LastName", user.LastName));
-            }
-
-            if (!string.IsNullOrWhiteSpace(user.BGGUsername))
-            {
-                principal.AddClaim(new Claim("BGGUsername", user.BGGUsername));
-            }
-
             return principal;
         }
     }

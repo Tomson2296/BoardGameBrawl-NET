@@ -35,7 +35,7 @@ namespace BoardGameBrawl.Application.Features.Boardgames_Related.Boardgames.Comm
             }
             else
             {
-                var boardgameInDB = await _unitOfWork.BoardgameRepository.GetEntity(request.BoardgameDTO.Id);
+                var boardgameInDB = await _unitOfWork.BoardgameRepository.GetEntity(request.BoardgameDTO.Id, cancellationToken);
 
                 if (boardgameInDB == null)
                 {
@@ -44,7 +44,7 @@ namespace BoardGameBrawl.Application.Features.Boardgames_Related.Boardgames.Comm
                 else
                 {
                     var boardgame = _mapper.Map<Boardgame>(request.BoardgameDTO);
-                    await _unitOfWork.BoardgameRepository.UpdateEntity(boardgame);
+                    await _unitOfWork.BoardgameRepository.UpdateEntity(boardgame, cancellationToken);
                     await _unitOfWork.CommitChangesAsync();
                     return Unit.Value;
                 }

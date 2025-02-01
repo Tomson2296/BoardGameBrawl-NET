@@ -23,7 +23,7 @@ namespace BoardGameBrawl.Application.Features.Player_Related.Players.Commands.Re
             cancellationToken.ThrowIfCancellationRequested();
             var player = _mapper.Map<Player>(request.Id);
 
-            var playerInDB = await _unitOfWork.PlayerRepository.GetEntity(player.Id);
+            var playerInDB = await _unitOfWork.PlayerRepository.GetEntity(player.Id, cancellationToken);
 
             if (playerInDB == null)
             {
@@ -31,7 +31,7 @@ namespace BoardGameBrawl.Application.Features.Player_Related.Players.Commands.Re
             }
             else
             {
-                await _unitOfWork.PlayerRepository.DeleteEntity(player);
+                await _unitOfWork.PlayerRepository.DeleteEntity(player, cancellationToken);
                 await _unitOfWork.CommitChangesAsync();
                 return Unit.Value;
             }

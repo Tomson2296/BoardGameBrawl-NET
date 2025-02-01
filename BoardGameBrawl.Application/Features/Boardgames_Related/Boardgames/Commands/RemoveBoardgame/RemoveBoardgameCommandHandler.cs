@@ -22,15 +22,14 @@ namespace BoardGameBrawl.Application.Features.Boardgames_Related.Boardgames.Comm
             cancellationToken.ThrowIfCancellationRequested();
             var boardgame = _mapper.Map<Boardgame>(request.Id);
 
-            var boardgameInDB = await _unitOfWork.BoardgameRepository.GetEntity(boardgame.Id);
-
+            var boardgameInDB = await _unitOfWork.BoardgameRepository.GetEntity(boardgame.Id, cancellationToken);
             if (boardgameInDB == null)
             {
                 throw new NotFoundException(nameof(boardgameInDB), boardgame.Id);
             }
             else
             {
-                await _unitOfWork.BoardgameRepository.DeleteEntity(boardgame);
+                await _unitOfWork.BoardgameRepository.DeleteEntity(boardgame, cancellationToken);
                 await _unitOfWork.CommitChangesAsync();
                 return Unit.Value;
             }

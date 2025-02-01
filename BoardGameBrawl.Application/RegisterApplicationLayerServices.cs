@@ -27,8 +27,9 @@ namespace BoardGameBrawl.Application
                 cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
             // Register Custom Identity Services
+            
             services.AddScoped<ILookupNormalizer, ApplicationLookupNormalizer>();
-            services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();
+            //services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();
             services.AddScoped<IPasswordHasher<ApplicationUser>, ApplicationPasswordHasher>();
 
             return Task.FromResult(services);

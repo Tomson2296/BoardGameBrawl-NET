@@ -68,14 +68,14 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
                 if(User != null)
                 {
                     user.UserName = editBinding.UserName;
-                    user.FirstName = editBinding.FirstName;
-                    user.LastName = editBinding.LastName;
+                    //user.FirstName = editBinding.FirstName;
+                    //user.LastName = editBinding.LastName;
                     user.Email = editBinding.Email;
                     user.EmailConfirmed = editBinding.EmailConfirmed;
                     user.PhoneNumber = editBinding.PhoneNumber;
                     user.PhoneNumberConfirmed = editBinding.PhoneNumberConfirmed;
-                    user.BGGUsername = editBinding.BGGUsername;
-                    user.UserDescription = editBinding.UserDescription;
+                    //user.BGGUsername = editBinding.BGGUsername;
+                    //user.UserDescription = editBinding.UserDescription;
                 }
                 
                 IdentityResult result = await _userManager.UpdateAsync(user);

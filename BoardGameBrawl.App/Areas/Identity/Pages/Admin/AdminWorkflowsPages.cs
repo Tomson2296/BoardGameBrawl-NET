@@ -19,6 +19,10 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
 
         public static string UserRoles => "UserRoles";
 
+        public static string UserClaims => "UserClaims";
+
+
+
         public static string IndexNavClass(ViewContext viewContext) => PageNavAdminClass(viewContext, Index);
 
         public static string DashboardNavClass(ViewContext viewContext) => PageNavAdminClass(viewContext, Dashboard);
@@ -32,6 +36,10 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
         public static string CreateUserNavClass(ViewContext viewContext) => PageNavAdminClass(viewContext, CreateUser);
 
         public static string UserRolesNavClass(ViewContext viewContext) => PageNavAdminClass(viewContext, UserRoles);
+
+        public static string UserClaimsNavClass(ViewContext viewContext) => PageNavAdminClass(viewContext, UserClaims);
+
+
 
         public static string PageNavAdminClass(ViewContext viewContext, string page)
         {

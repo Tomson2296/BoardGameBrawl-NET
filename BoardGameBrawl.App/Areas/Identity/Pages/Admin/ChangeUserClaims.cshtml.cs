@@ -1,17 +1,14 @@
 #nullable disable
-
+using BoardGameBrawl.App.Areas.Identity.Pages.Admin;
 using BoardGameBrawl.Domain.Entities;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 
 namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
 {
-    [Authorize(Roles = "Administrator")]
-    public class ChangeUserClaimsModel : PageModel
+    public class ChangeUserClaimsModel : AdminPageModel
     {
         public UserManager<ApplicationUser> _userManager;
         public SignInManager<ApplicationUser> _singInManager;

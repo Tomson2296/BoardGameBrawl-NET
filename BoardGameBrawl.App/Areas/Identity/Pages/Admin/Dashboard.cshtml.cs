@@ -1,15 +1,15 @@
+using BoardGameBrawl.App.Areas.Identity.Pages.Admin;
 using BoardGameBrawl.Domain.Entities;
-using Microsoft.AspNetCore.Authorization;
+using BoardGameBrawl.Persistence.Extensions;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
 {
-    [Authorize(Roles = "Administrator")]
-    public class DashboardModel : PageModel
+    public class DashboardModel : AdminPageModel
     {
         public UserManager<ApplicationUser> _userManager;
-
+        
         public DashboardModel(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
@@ -19,15 +19,13 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
 
         public int UsersUnconfirmed { get; set; } = 0;
 
-        public int UsersLockedout { get; set; } = 0;
-
-        public void OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
-            UsersCount = _userManager.Users.Count();
+            UsersCount = await _userManager.GetNumberOfUsersCountAsync();
 
-            UsersUnconfirmed = _userManager.Users.Where(u => u.EmailConfirmed == false).Count();
+            UsersUnconfirmed = await _userManager.GetNumberOfUsersUnconfirmedCountAsync();
 
-            UsersLockedout = _userManager.Users.Where(u => u.AccessFailedCount == 5).Count();
+            return Page();
         }
     }
 }

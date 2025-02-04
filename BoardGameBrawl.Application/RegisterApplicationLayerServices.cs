@@ -16,7 +16,10 @@ namespace BoardGameBrawl.Application
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             var AutomapperConfig = new MapperConfiguration(cfg => {
-                cfg.AddProfile<MappingProfile>();
+                cfg.AddProfile<ApplicationUserMappingProfile>();
+                cfg.AddProfile<PlayerMappingProfile>();
+                cfg.AddProfile<BoardgameMappingProfile>();
+                cfg.AddProfile<GroupMappingProfile>();
             });
             AutomapperConfig.AssertConfigurationIsValid();
             AutomapperConfig.CreateMapper();

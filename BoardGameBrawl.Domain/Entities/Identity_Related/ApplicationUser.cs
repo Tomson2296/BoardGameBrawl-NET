@@ -3,20 +3,6 @@ namespace BoardGameBrawl.Domain.Entities;
 
 public class ApplicationUser : IdentityUser<Guid>
 {
-    //[MaxLength(256)]
-    //public string? FirstName { get; set; }
-
-    //[MaxLength(256)]
-    //public string? LastName { get; set; }
-
-    //[MaxLength(256)]
-    //public string? BGGUsername { get; set; }
-
-    //[MaxLength(512)]
-    //public string? UserDescription { get; set; }
-
-    //public byte[]? UserAvatar { get; set; }
-
     public DateOnly? UserCreatedDate { get; set; }
 
     public DateOnly? UserLastLogin { get; set; }

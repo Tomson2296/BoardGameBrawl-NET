@@ -1,9 +1,9 @@
 #nullable disable
 
+using BoardGameBrawl.App.Areas.Identity.Pages.Admin;
 using BoardGameBrawl.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 
 namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
@@ -33,7 +33,7 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
         public string UserDescription { get; set; }
     }
 
-    public class EditUserModel : PageModel
+    public class EditUserModel : AdminPageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
 

@@ -8,6 +8,7 @@ using BoardGameBrawl.Persistence.Repositories.Common;
 using BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related;
 using BoardGameBrawl.Persistence.Repositories.Entities.Group_Related;
 using BoardGameBrawl.Persistence.Repositories.Entities.Player_Related;
+using BoardGameBrawl.Persistence.Services;
 using BoardGameBrawl.Persistence.Stores;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -54,8 +55,10 @@ namespace BoardGameBrawl.Persistence
             //services.AddScoped<IUserPasswordStore<ApplicationUser>, ApplicationUserStore>();
             //services.AddScoped<IUserRoleStore<ApplicationUser>, ApplicationUserStore>();
             //services.AddScoped<IUserSecurityStampStore<ApplicationUser>, ApplicationUserStore>();
-
             //services.AddScoped<IRoleClaimStore<ApplicationRole>, ApplicationRoleStore>();
+
+            // Register ApplicationUserQuery Service
+            services.AddScoped<IApplicationUserQueryService, ApplicationUserQueryService>();
 
             return Task.FromResult(services);
         }

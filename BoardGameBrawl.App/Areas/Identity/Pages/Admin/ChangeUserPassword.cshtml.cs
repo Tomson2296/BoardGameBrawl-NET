@@ -1,17 +1,14 @@
 #nullable disable
-
+using BoardGameBrawl.App.Areas.Identity.Pages.Admin;
 using BoardGameBrawl.Domain.Entities;
 using BoardGameBrawl.Infrastructure.EmailSender;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 
 namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
 {
-    [Authorize(Roles = "Administrator")]
-    public class ChangeUserPasswordModel : PageModel
+    public class ChangeUserPasswordModel : AdminPageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMailKitEmailSender _mailKitService;

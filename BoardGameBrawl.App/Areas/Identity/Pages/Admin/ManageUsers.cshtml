@@ -12,10 +12,9 @@
         <div class="p-3">
             <form method="post">
                 <div class="form-row">
-                    UserName: <input asp-for="Filter" class="form-control" placeholder="" />
-                    <div class="col-auto">
-                        <button class="btn btn-secondary">Filter</button>
-                    </div>
+                    <p> UserName: </p> 
+                    <input asp-for="Filter" class="form-control" placeholder="" />
+                    <button class="btn btn-secondary">Filter</button>
                 </div>
             </form>
             <br />
@@ -32,10 +31,10 @@
                     }
                     else
                     {
-                        @foreach (ViewUserDTO user in Model.Users)
+                        @foreach (NavUserDTO user in Model.Users)
                         {
                             <tr>
-                                <td><strong>@user.UserName</strong></td>
+                                <td><strong>@user.Username </strong></td>
                                 <td><a class="btn btn-primary btn-block w-100" asp-page="ViewUser" asp-route-PageNumber="@Model.PageNumber" asp-route-id="@user.Id"> View </a></td>
                                 <td><a class="btn btn-warning btn-block w-100" asp-page="EditUser" asp-route-id="@user.Id"> Edit </a></td>
                                 <td><a class="btn btn-danger btn-block w-100" asp-page="DeleteUser" asp-route-id="@user.Id"> Delete </a></td>
@@ -46,6 +45,7 @@
                     }
                 </tbody>
             </table>
+
             @if (Model.PageNumber == 1 && Model.TotalUsersNumber < Model.PageSize)
             {
                 <a asp-page="ManageUsers" asp-route-Filter="@Model.Filter" asp-route-PageNumber="@Model.PageNumber"> @Model.PageNumber </a>
@@ -66,6 +66,7 @@
                 <a asp-page="ManageUsers" asp-route-Filter="@Model.Filter" asp-route-PageNumber="@Model.PreviousNumber"> @Model.PreviousNumber </a>
                 <a asp-page="ManageUsers" asp-route-Filter="@Model.Filter" asp-route-PageNumber="@Model.PageNumber"> @Model.PageNumber </a>
             }
+
         </div>
     </div>
 </div>

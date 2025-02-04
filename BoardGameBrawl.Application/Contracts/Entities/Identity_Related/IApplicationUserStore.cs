@@ -10,7 +10,8 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Identity_Related
         IUserLoginStore<TUser>,
         IUserPasswordStore<TUser>,
         IUserRoleStore<TUser>,
-        IUserSecurityStampStore<TUser> where TUser : class
+        IUserSecurityStampStore<TUser>,
+        IQueryableUserStore<TUser> where TUser : class
     {
         public Task<bool> CheckApplicationUsernameExistsAsync(TUser user, string newUsername, CancellationToken cancellationToken = default);
     }

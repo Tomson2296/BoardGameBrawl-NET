@@ -1,17 +1,14 @@
 #nullable disable
-
 using AutoMapper;
+using BoardGameBrawl.App.Areas.Identity.Pages.Admin;
 using BoardGameBrawl.Application.DTOs.Entities.Identity_Related;
 using BoardGameBrawl.Domain.Entities;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
 {
-    [Authorize(Roles = "Administrator")]
-    public class UsersInRoleModel : PageModel
+    public class UsersInRoleModel : AdminPageModel
     {
         public UserManager<ApplicationUser> _userManager;
         public RoleManager<ApplicationRole> _roleManager;

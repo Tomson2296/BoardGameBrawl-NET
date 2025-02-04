@@ -1,36 +1,37 @@
 #nullable disable
-
-using AutoMapper;
+using BoardGameBrawl.App.Areas.Identity.Pages.Admin;
 using BoardGameBrawl.Application.DTOs.Entities.Identity_Related;
+using BoardGameBrawl.Application.Features.Identity_Related.AppUsers.Queries.ListFilteredUsers;
 using BoardGameBrawl.Domain.Entities;
-using Microsoft.AspNetCore.Authorization;
+using BoardGameBrawl.Persistence.Extensions;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 
 namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
 {
-    [Authorize(Roles = "Administrator")]
-    public class ManageUsersModel : PageModel
+    public class ManageUsersModel : AdminPageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IMapper _mapper;
+        private readonly IMediator _mediator;
 
-        public IEnumerable<ViewUserDTO> Users;
-        
-        public ManageUsersModel(UserManager<ApplicationUser> userManager, IMapper mapper)
+        public ManageUsersModel(UserManager<ApplicationUser> userManager,
+            IMediator mediator)
         {
             _userManager = userManager;
-            _mapper = mapper;
+            _mediator = mediator;
         }
+
+        public ICollection<NavUserDTO> Users { get; set; }
+
 
         [BindProperty(SupportsGet = true)]
         public string Filter { get; set; }
 
+        
         [BindProperty(SupportsGet = true)]
         public int PageNumber { get; set; }
+
 
         public int PageSize { get; set; } = 20;
 
@@ -42,29 +43,11 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
 
         public async Task<IActionResult> OnGetAsync()
         {
-            if (Filter.IsNullOrEmpty())
-            {
-                TotalUsersNumber = _userManager.Users.Count();
-                Users = await _userManager.Users.Where(u => Filter == null || u.UserName.Contains(Filter))
-                    .AsNoTracking()
-                    .Select(u => new ViewUserDTO { Id = u.Id, UserName = u.UserName, Email = u.Email })
-                    .OrderBy(u => u.UserName)
-                    .Skip(PageSize * (PageNumber - 1))
-                    .Take(PageSize)
-                    .ToListAsync();
-            }
-            else
-            {
-                Users = await _userManager.Users.Where(u => Filter == null || u.UserName.Contains(Filter))
-                    .AsNoTracking()
-                    .Select(u => new ViewUserDTO { Id = u.Id, UserName = u.UserName, Email = u.Email })
-                    .OrderBy(u => u.UserName)
-                    .Skip(PageSize * (PageNumber - 1))
-                    .Take(PageSize)
-                    .ToListAsync();
+            TotalUsersNumber = await _userManager.GetNumberOfUsersCountAsync();
 
-                TotalUsersNumber = Users.Count();
-            }
+            // Use MediatR to Send the Command - ListFilteredUsersQuery
+            var command = new ListFilteredUsersQuery { Filter = Filter, PageNumber = PageNumber, PageSize = PageSize };
+            Users = await _mediator.Send(command);
 
             PreviousNumber = (PageNumber - 1 < 1) ? 1 : PageNumber - 1;
             NextNumber = PageNumber + 1;

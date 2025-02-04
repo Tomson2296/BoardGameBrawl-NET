@@ -2,6 +2,7 @@
 using BoardGameBrawl.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Immutable;
 using System.Security.Claims;
 
 namespace BoardGameBrawl.Persistence.Stores
@@ -128,7 +129,10 @@ namespace BoardGameBrawl.Persistence.Stores
             }
         }
 
-        private bool _disposed = false; 
+        private bool _disposed = false;
+
+        public IQueryable<ApplicationUser> Users => _context.Users.AsNoTracking();
+
         public void Dispose()
         {
             Dispose(true);

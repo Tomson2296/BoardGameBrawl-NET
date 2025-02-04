@@ -1,12 +1,37 @@
-﻿using BoardGameBrawl.Application.Contracts.Entities.Identity_Related;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using BoardGameBrawl.Application.Contracts.Entities.Identity_Related;
+using BoardGameBrawl.Application.DTOs.Entities.Identity_Related;
 using BoardGameBrawl.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace BoardGameBrawl.Persistence.Extensions
 {
     public static class UserManagerExtensionMethods
     {
         // custom UserManager extension methods //
+
+        public static Task<int> GetNumberOfUsersCountAsync(this UserManager<ApplicationUser> userManager,
+            CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return Task.FromResult(userManager.Users.Count());
+        }
+
+        public static Task<int> GetNumberOfUsersUnconfirmedCountAsync(this UserManager<ApplicationUser> userManager,
+            CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return Task.FromResult(userManager.Users.Where(u => u.EmailConfirmed == false).Count());
+        }
+
+        public static Task<int> GetNumberOfUsersLockedOutCountAsync(this UserManager<ApplicationUser> userManager,
+            CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return Task.FromResult(userManager.Users.Where(u => u.AccessFailedCount == 5).Count());
+        }
 
         public static async Task<bool> CheckIfUserHasCreatedPlayerAccountAsync(this UserManager<ApplicationUser> userManager,
             IApplicationUserStore<ApplicationUser> applicationUserStore,

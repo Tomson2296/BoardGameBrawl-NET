@@ -1,10 +1,7 @@
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-
+using BoardGameBrawl.App.Areas.Identity.Pages.Admin;
 namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
 {
-    [Authorize(Roles = "Administrator")]
-    public class IndexModel : PageModel
+    public class IndexModel : AdminPageModel
     {
         public void OnGet()
         {

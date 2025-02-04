@@ -1,18 +1,16 @@
 #nullable disable
 
+using BoardGameBrawl.App.Areas.Identity.Pages.Admin;
 using BoardGameBrawl.Application.Contracts.Entities.Identity_Related;
 using BoardGameBrawl.Domain.Entities;
 using BoardGameBrawl.Persistence.Extensions;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.ComponentModel.DataAnnotations;
 
 namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
 {
-    [Authorize(Roles = "Administrator")]
-    public class CreateUserModel : PageModel
+    public class CreateUserModel : AdminPageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IApplicationUserStore<ApplicationUser> _userStore;

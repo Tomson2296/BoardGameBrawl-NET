@@ -11,6 +11,7 @@
   "profiles": {
     "http": {
       "commandName": "Project",
+      "hotReloadProfile": "aspnetcore",
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "applicationUrl": "http://localhost:5114",
@@ -20,9 +21,10 @@
     },
     "https": {
       "commandName": "Project",
+      "hotReloadProfile": "aspnetcore",
       "dotnetRunMessages": true,
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:7181;http://localhost:5114",
+      "applicationUrl": "https://localhost:7181",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

@@ -1,13 +1,12 @@
 ﻿
 using AutoMapper;
 using BoardGameBrawl.Application.Contracts.Common;
-using BoardGameBrawl.Application.Exceptions;
-using BoardGameBrawl.Domain.Entities.Player_Related;
+using BoardGameBrawl.Application.Responses;
 using MediatR;
 
 namespace BoardGameBrawl.Application.Features.Player_Related.Players.Commands.RemoveUser
 {
-    public class RemovePlayerCommandHandler : IRequestHandler<RemovePlayerCommand, Unit>
+    public class RemovePlayerCommandHandler : IRequestHandler<RemovePlayerCommand, BaseCommandResponse>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -18,23 +17,30 @@ namespace BoardGameBrawl.Application.Features.Player_Related.Players.Commands.Re
             _mapper = mapper;
         }
 
-        public async Task<Unit> Handle(RemovePlayerCommand request, CancellationToken cancellationToken)
+        public async Task<BaseCommandResponse> Handle(RemovePlayerCommand request, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            var player = _mapper.Map<Player>(request.Id);
 
-            var playerInDB = await _unitOfWork.PlayerRepository.GetEntity(player.Id, cancellationToken);
-
+            var response = new BaseCommandResponse();
+            var playerInDB = await _unitOfWork.PlayerRepository.GetEntity(request.Id, cancellationToken);
+            
             if (playerInDB == null)
             {
-                throw new NotFoundException(nameof(playerInDB), player.Id);
+                response.Success = false;
+                response.Message = "Removing Process Unsuccessful - Player not found";
+                response.Id = request.Id; 
+                return response;
             }
             else
             {
-                await _unitOfWork.PlayerRepository.DeleteEntity(player, cancellationToken);
+                await _unitOfWork.PlayerRepository.DeleteEntity(playerInDB, cancellationToken);
                 await _unitOfWork.CommitChangesAsync();
-                return Unit.Value;
+
+                response.Success = true;
+                response.Message = "Removing Process Successful";
+                response.Id = request.Id;
             }
+            return response;
         }
     }
 }

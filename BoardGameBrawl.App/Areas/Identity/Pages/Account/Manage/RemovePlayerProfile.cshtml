@@ -1,0 +1,21 @@
+﻿@page "{Id:Guid}"
+@model BoardGameBrawl.App.Areas.Identity.Pages.Account.Manage.RemovePlayerProfileModel
+@{
+    ViewData["Title"] = "Do you really want to remove Player's profile?";
+    ViewData["ActivePage"] = ManageNavPages.PlayerProfile;
+}
+
+<h3>@ViewData["Title"]</h3>
+<partial name="_StatusMessage" for="StatusMessage" />
+<div class="container">
+    <div class="row justify-content-center align-items-center">
+        <form id="removeAccount" method="post">
+            <div class="p-5">
+                <button asp-page-handler="RemovePlayerProfile" id="remove-submit" type="submit" class="w-100 btn btn-lg btn-danger"> Remove </button>
+                <br />
+                <br />
+                <button asp-page-handler="Cancel" id="change-submit" type="submit" class="w-100 btn btn-lg btn-primary"> Back </button>
+            </div>
+        </form>
+    </div>
+</div>

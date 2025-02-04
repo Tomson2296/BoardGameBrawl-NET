@@ -50,7 +50,6 @@ namespace  BoardGameBrawl.App.Areas.Identity.Pages.Account.Manage
         public static string TwoFactorAuthenticationNavClass(ViewContext viewContext) => PageNavClass(viewContext, TwoFactorAuthentication);
 
         
-        
         public static string PageNavClass(ViewContext viewContext, string page)
         {
             var activePage = viewContext.ViewData["ActivePage"] as string

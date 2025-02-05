@@ -2,25 +2,24 @@
 @using Microsoft.AspNetCore.Identity
 @model DeleteUserModel
 @{
-    ViewData["Title"] = "Delete that user's data";
+    ViewData["Title"] = "Delete user";
     ViewData["ActivePage"] = AdminWorkflowsPages.ManageUsers;
 }
-
-<div asp-validation-summary="All" class="text-danger m-2"></div>
 
 <div class="container">
     <div class="row">
         <div class="p-3">
             <form method="post">
-                <h5 class="text-center m-2">
-                    Do you want to delete @Model.ApplicationUser.Email?
-                    <input type="hidden" name="id" value="@Model.ApplicationUser.Id" />
+                <h5 class="text-center m-2 p-2">
+                    Do you really want to delete user:  @Model.TargetUser.UserName?
+                    <input type="hidden" name="id" value="@Model.TargetUser.Id" />
                 </h5>
-                <div class="d-flex flex-row align-items-center justify-content-around text-center p-2">
-                    <button type="submit" class="btn btn-danger btn-block w-25">Delete</button>
-                    <a asp-page="ManageUsers" asp-route-PageNumber="1" class="btn btn-secondary btn-block w-25">Cancel</a>
-                </div>
             </form>
+            <br />
+            <div class="d-flex flex-row align-items-center justify-content-around text-center">
+                <button type="submit" class="btn btn-danger btn-block w-25" disabled="@Model.IsAdmin">Delete</button>
+                <a asp-page="ManageUsers" asp-route-PageNumber="1" class="btn btn-secondary btn-block w-25">Cancel</a>
+            </div>
         </div>
     </div>
 </div>

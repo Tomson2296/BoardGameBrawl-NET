@@ -19,7 +19,9 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
         [BindProperty(SupportsGet = true)]
         public string Id { get; set; }
 
-        public ApplicationUser ApplicationUser;
+        public bool IsAdmin { get; set; }
+        
+        public ApplicationUser TargetUser { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -28,7 +30,8 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
                 return RedirectToPage("./ListUsers");
             }
 
-            ApplicationUser = await _userManager.FindByIdAsync(Id);
+            TargetUser = await _userManager.FindByIdAsync(Id);
+            IsAdmin = await _userManager.IsInRoleAsync(TargetUser, "Administrator");
             return Page();
         }
 
@@ -36,8 +39,8 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
         {
             if (!string.IsNullOrEmpty(Id) && ModelState.IsValid)
             {
-                ApplicationUser = await _userManager.FindByIdAsync(Id);
-                IdentityResult result = await _userManager.DeleteAsync(ApplicationUser);
+                TargetUser = await _userManager.FindByIdAsync(Id);
+                IdentityResult result = await _userManager.DeleteAsync(TargetUser);
 
                 if (result.Succeeded)
                 {

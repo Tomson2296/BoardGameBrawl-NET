@@ -129,9 +129,9 @@ namespace BoardGameBrawl.Persistence.Stores
             }
         }
 
-        private bool _disposed = false;
-
         public IQueryable<ApplicationUser> Users => _context.Users.AsNoTracking();
+
+        private bool _disposed = false;
 
         public void Dispose()
         {
@@ -376,12 +376,17 @@ namespace BoardGameBrawl.Persistence.Stores
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            ArgumentNullException.ThrowIfNullOrWhiteSpace(roleName);
+            
+            if (string.IsNullOrWhiteSpace(roleName))
+            {
+                throw new ArgumentException("Role name cannot be null or whitespace.", nameof(roleName));
+            }
 
-            var query = from user in _context.Users
-                        join role in _context.Roles on user.Id equals role.Id
-                        where role.Name == roleName
-                        select user;
+            var query = from userroles in _context.UserRoles
+                        join users in _context.Users on userroles.UserId equals users.Id
+                        join roles in _context.Roles on userroles.RoleId equals roles.Id
+                        where roles.Name == roleName
+                        select users;
 
             return await query.ToListAsync(cancellationToken);
         }

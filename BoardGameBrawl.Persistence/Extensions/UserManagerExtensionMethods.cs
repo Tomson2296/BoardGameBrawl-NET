@@ -1,10 +1,6 @@
-﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
-using BoardGameBrawl.Application.Contracts.Entities.Identity_Related;
-using BoardGameBrawl.Application.DTOs.Entities.Identity_Related;
+﻿using BoardGameBrawl.Application.Contracts.Entities.Identity_Related;
 using BoardGameBrawl.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 
 namespace BoardGameBrawl.Persistence.Extensions
 {
@@ -16,6 +12,8 @@ namespace BoardGameBrawl.Persistence.Extensions
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(userManager);
+            
             return Task.FromResult(userManager.Users.Count());
         }
 
@@ -23,6 +21,8 @@ namespace BoardGameBrawl.Persistence.Extensions
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(userManager);
+            
             return Task.FromResult(userManager.Users.Where(u => u.EmailConfirmed == false).Count());
         }
 
@@ -30,7 +30,34 @@ namespace BoardGameBrawl.Persistence.Extensions
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(userManager);
+
             return Task.FromResult(userManager.Users.Where(u => u.AccessFailedCount == 5).Count());
+        }
+
+        public static async Task<bool> CheckIfUserProfileCanBeCreatedAsync(this UserManager<ApplicationUser> userManager,
+            IApplicationUserStore<ApplicationUser> applicationUserStore,
+            ApplicationUser applicationUser,
+            CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(userManager);
+            ArgumentNullException.ThrowIfNull(applicationUserStore);
+            ArgumentNullException.ThrowIfNull(applicationUser);
+
+            var isUsernameTaken = await applicationUserStore.CheckIfUsernameAlreadyTakenAsync(applicationUser.UserName).ConfigureAwait(false);
+            if (isUsernameTaken == false)
+            {
+                return false;
+            }
+
+            var isEmailTaken = await applicationUserStore.CheckIfEmailAlreadyTakenAsync(applicationUser.Email).ConfigureAwait(false);
+            if (isEmailTaken == false)
+            {
+                return false;   
+            }
+
+            return true;
         }
 
         public static async Task<bool> CheckIfUserHasCreatedPlayerAccountAsync(this UserManager<ApplicationUser> userManager,

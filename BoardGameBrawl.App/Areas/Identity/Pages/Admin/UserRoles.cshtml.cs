@@ -4,6 +4,7 @@ using BoardGameBrawl.App.Areas.Identity.Pages.Admin;
 using BoardGameBrawl.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
 {
@@ -11,7 +12,7 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
     {
         public UserManager<ApplicationUser> _userManager;
         public RoleManager<ApplicationRole> _roleManager;
-
+        
         public UserRolesModel(UserManager<ApplicationUser> userManager,
             RoleManager<ApplicationRole> roleManager)
         {
@@ -19,17 +20,26 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
             _roleManager = roleManager;
         }
 
-        public class ViewUserModel
-        {
-            public string Id { get; set; }
-            public string Email { get; set; }
-        }
-
         [TempData]
         public string StatusMessage { get; set; }
 
-        public void OnGet()
+        public IDictionary<string, int> Roles { get; set; } = new Dictionary<string, int>();
+
+        public async Task<IActionResult> OnGet()
         {
+            await GetApplicationRolesAsync(Roles);
+            return Page();
+        }
+
+        private async Task GetApplicationRolesAsync(IDictionary<string, int> roles)
+        {
+            var applicationRoles = await _roleManager.Roles.ToArrayAsync();
+            
+            foreach (var role in applicationRoles)
+            {
+                var users = await _userManager.GetUsersInRoleAsync(role.Name);
+                roles.Add(role.Name, users.Count);
+            }
         }
 
         public async Task<IActionResult> OnPostDeleteFromListAsync(string role)

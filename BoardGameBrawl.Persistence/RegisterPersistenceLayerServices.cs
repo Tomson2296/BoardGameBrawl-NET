@@ -57,8 +57,9 @@ namespace BoardGameBrawl.Persistence
             //services.AddScoped<IUserSecurityStampStore<ApplicationUser>, ApplicationUserStore>();
             //services.AddScoped<IRoleClaimStore<ApplicationRole>, ApplicationRoleStore>();
 
-            // Register ApplicationUserQuery Service
+            // Register ApplicationUserQuery and ApplicationUserCommand Service
             services.AddScoped<IApplicationUserQueryService, ApplicationUserQueryService>();
+            services.AddScoped<IApplicationUserCommandService, ApplicationUserCommandService>();
 
             return Task.FromResult(services);
         }

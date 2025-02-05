@@ -1,5 +1,4 @@
 #nullable disable
-
 using BoardGameBrawl.App.Areas.Identity.Pages.Admin;
 using BoardGameBrawl.Application.Contracts.Entities.Identity_Related;
 using BoardGameBrawl.Domain.Entities;
@@ -7,6 +6,7 @@ using BoardGameBrawl.Persistence.Extensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 
 namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
 {
@@ -15,7 +15,7 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IApplicationUserStore<ApplicationUser> _userStore;
         private readonly ILogger<CreateUserModel> _logger;
-
+        
         public CreateUserModel(UserManager<ApplicationUser> userManager,
             IApplicationUserStore<ApplicationUser> userStore,
             ILogger<CreateUserModel> logger)
@@ -43,18 +43,6 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
             [Required]
             [DataType(DataType.Password)]
             public string Password { get; set; }
-
-            [Phone]
-            [DataType(DataType.PhoneNumber)]
-            public string Phone { get; set; }   
-
-            public string FirstName { get; set; }
-
-            public string LastName { get; set; }
-
-            public string BGGUsername { get; set; }
-            
-            public string UserDescription { get; set; }
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -71,46 +59,63 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
         {
             if (ModelState.IsValid)
             {
-                var user = CreateUser();
+                ApplicationUser user = CreateUser();
                 var creationDate = DateOnly.FromDateTime(DateTime.Now);
 
                 // Set obligatory data about new user - Username, Email, Password
                 await _userStore.SetUserNameAsync(user, Input.Username, CancellationToken.None);
                 await _userStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-                await _userManager.AddPasswordAsync(user, Input.Password);
+
+                // Check if set Username and Email already exists in database 
+                var ifUserCanBeCreated = await _userManager.CheckIfUserProfileCanBeCreatedAsync(_userStore, user);
+                if (ifUserCanBeCreated == false)
+                {
+                    StatusMessage = "Error during cration process. Username or Email already exists in database.";
+                    return Page();
+                }
+
+                var hashedPassword = _userManager.PasswordHasher.HashPassword(user, Input.Password);
+                await _userManager.AddPasswordAsync(user, hashedPassword);
 
                 // Set creation Time 
                 await _userStore.SetUserCreatedDateAsync(user, creationDate);
 
-                // set email
+                // Set email confirmation to true and try to create user
                 user.EmailConfirmed = true;
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
-                // create deafult instance of userSchedule
-                //UserSchedule userSchedule = CreateUserSchedule();
-                //await _userScheduleStore.SetUserByAsync(userSchedule, user);
-                //await _userScheduleStore.CreateScheduleAsync(userSchedule);
-                //_logger.LogInformation("Default UserSchedule has been added to account.");
-
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User created a new user.");
+                    _logger.LogInformation("User created.");
 
                     // Adding newly created user to User role in application 
                     await _userManager.AddToRoleAsync(user, "User");
-                    _logger.LogInformation("Default credentials to account (Role : User) has been added to account.");
+                    _logger.LogInformation($"Default credentials to account {user.UserName} - (Role : User) has been added.");
+
+                    // Adding default claims to the User
+                    List<Claim> userClaims =
+                       [
+                        new (ClaimTypes.NameIdentifier, user.Id.ToString()),
+                        new (ClaimTypes.Name, user.UserName),
+                        new (ClaimTypes.Role, "User"),
+                        new (ClaimTypes.Email, user.Email)
+                       ];
+                    await _userManager.AddClaimsAsync(user, userClaims);
+                    _logger.LogInformation($"Default claims for account {user.UserName} has been added.");
 
                     StatusMessage = "User has been created successfully";
-                    return Page();
+                    return RedirectToPage();
                 }
-                foreach (var error in result.Errors)
+                else
                 {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                    StatusMessage = "Error during cration process. Try again.";
-                    return Page();
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(string.Empty, error.Description);
+                        StatusMessage = "Error during cration process. Try again.";
+                        return Page();
+                    }
                 }
             }
-
             return Page();
         }
 
@@ -125,16 +130,5 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
                 throw new InvalidOperationException($"Can't create an instance of '{nameof(ApplicationUser)}'.");
             }
         }
-        //private UserSchedule CreateUserSchedule()
-        //{
-            //try
-            //{
-                //return Activator.CreateInstance<UserSchedule>();
-            //}
-            //catch
-            //{
-                //throw new InvalidOperationException($"Can't create an instance of '{nameof(UserSchedule)}'.");
-            //}
-        //}
     }
 }

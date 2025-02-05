@@ -1,5 +1,6 @@
 ﻿#nullable disable
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Reflection.Metadata;
 
 namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
 {
@@ -19,7 +20,9 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
 
         public static string UserRoles => "UserRoles";
 
-        public static string UserClaims => "UserClaims";
+        public static string UserLogins => "UserLogins";
+
+        public static string PlayerProfiles => "PlayerProfiles";
 
 
 
@@ -37,7 +40,9 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
 
         public static string UserRolesNavClass(ViewContext viewContext) => PageNavAdminClass(viewContext, UserRoles);
 
-        public static string UserClaimsNavClass(ViewContext viewContext) => PageNavAdminClass(viewContext, UserClaims);
+        public static string UserLoginsNavClass(ViewContext viewContext) => PageNavAdminClass(viewContext, UserLogins);
+
+        public static string PlayerProfilesNavClass(ViewContext viewContext) => PageNavAdminClass(viewContext, PlayerProfiles);
 
 
 

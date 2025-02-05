@@ -1,6 +1,9 @@
 #nullable disable
 using BoardGameBrawl.App.Areas.Identity.Pages.Admin;
+using BoardGameBrawl.Application.DTOs.Entities.Identity_Related;
+using BoardGameBrawl.Application.Features.Identity_Related.AppUsers.Queries.ListUserProperties;
 using BoardGameBrawl.Domain.Entities;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,25 +12,27 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
     public class ViewUserModel : AdminPageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        
-        public ViewUserModel(UserManager<ApplicationUser> userManager)
+        private readonly IMediator _mediator;
+
+        public ViewUserModel(UserManager<ApplicationUser> userManager, IMediator mediator)
         {
             _userManager = userManager;
+            _mediator = mediator;
         }
 
         [BindProperty(SupportsGet = true)]
         public string Id { get; set; }
 
-        public ApplicationUser ApplicationUser { get; set; }  
+        public ViewUserDTO ViewUser { get; set; }  
 
         // get property names for ApplicationUser and save in IEnumerable object
         public IEnumerable<string> PropertyNames
-            => typeof(ApplicationUser).GetProperties()
+            => typeof(ViewUserDTO).GetProperties()
                 .Select(prop => prop.Name);
 
         // get value of the property 
         public string GetValue(string name)
-            => typeof(ApplicationUser).GetProperty(name).GetValue(ApplicationUser)?.ToString();
+            => typeof(ViewUserDTO).GetProperty(name).GetValue(ViewUser)?.ToString();
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -36,11 +41,15 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
                 return RedirectToPage("ManageUsers");
             }
 
-            ApplicationUser = await _userManager.FindByIdAsync(Id);
-            if(ApplicationUser == null)
+            var user = await _userManager.FindByIdAsync(Id);
+            if(user == null)
             {
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
+
+            // Use MediatR to Send the Command - ListUserProperties
+            var command = new ListUserPropertiesQuery { Id = user.Id };
+            ViewUser = await _mediator.Send(command);
 
             return Page();
         }

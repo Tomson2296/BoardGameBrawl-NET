@@ -5,18 +5,20 @@
     ViewData["ActivePage"] = AdminWorkflowsPages.Dashboard;
 }
 
-<h3> @ViewData["Title"] </h3>
-
-<div class="container-fluid">
+<div class="container">
     <div class="row">
-        <div class="p-3 mb-3">
+        <div class="col p-3">
+            <h3> @ViewData["Title"] </h3>
+            </br>
             <table class="table table-sm table-striped table-bordered"> 
-                <thead> Overview </thead>
-                <br />
-                <tbody>
-                    <tr><th>Users in store:</th><td>@Model.UsersCount</td></tr> 
-                    <tr><th>Unconfirmed accounts:</th><td>@Model.UsersUnconfirmed</td></tr> 
-                </tbody>
+                <tr>
+                    <th>Users in store:</th>
+                    <td>@Model.UsersCount</td>
+                </tr> 
+                <tr>
+                    <th>Unconfirmed accounts:</th>
+                    <td>@Model.UsersUnconfirmed</td>
+                </tr> 
             </table>
         </div>
     </div>

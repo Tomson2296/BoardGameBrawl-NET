@@ -12,41 +12,42 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMailKitEmailSender _mailKitService;
-        private readonly IPasswordHasher<ApplicationUser> _passwordHasher;
 
         public ChangeUserPasswordModel(UserManager<ApplicationUser> userManager,
-            IMailKitEmailSender mailKitService,
-            IPasswordHasher<ApplicationUser> passwordHasher)
+            IMailKitEmailSender mailKitService)
         {
             _userManager = userManager;
             _mailKitService = mailKitService;
-            _passwordHasher = passwordHasher;
         }
-
-        public int PageNumber { get; set; } = 1;
 
         [BindProperty(SupportsGet = true)]
         public string Id { get; set; }
 
         [BindProperty]
-        [DataType(DataType.Password)]
-        [Required]
-        public string NewPassword { get; set; }
+        public PasswordInput Input { get; set; }
 
-        [BindProperty]
-        [DataType(DataType.Password)]
-        [Required]
-        [Compare(nameof(NewPassword))]
-        public string ConfirmationPassword { get; set; }
+        public ApplicationUser TargetUser { get; set; }
+
+        public class PasswordInput
+        {
+            [DataType(DataType.Password)]
+            [Required]
+            public string NewPassword { get; set; }
+
+            [DataType(DataType.Password)]
+            [Required]
+            [Compare(nameof(NewPassword))]
+            public string ConfirmationPassword { get; set; }
+        }
 
         public async Task<IActionResult> OnGetAsync()
         {
             if (string.IsNullOrEmpty(Id))
             {
-                return RedirectToPage("./Passwords", new { PageNumber });
+                return RedirectToPage("./Passwords", new { PageNumber = 1 });
             }
 
-            ApplicationUser User = await _userManager.FindByIdAsync(Id);
+            TargetUser = await _userManager.FindByIdAsync(Id);
             return Page();
         }
 
@@ -54,21 +55,22 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
         {
             if (ModelState.IsValid)
             {
-                ApplicationUser User = await _userManager.FindByIdAsync(Id);
-                if (await _userManager.HasPasswordAsync(User))
+                TargetUser = await _userManager.FindByIdAsync(Id);
+                if (await _userManager.HasPasswordAsync(TargetUser))
                 {
-                    await _userManager.RemovePasswordAsync(User);
+                    await _userManager.RemovePasswordAsync(TargetUser);
                 }
 
                 IdentityResult result =
-                    await _userManager.AddPasswordAsync(User, NewPassword);
+                    await _userManager.AddPasswordAsync(TargetUser, Input.NewPassword);
 
                 if (result.Succeeded)
                 {
-                    await _mailKitService.SendEmailAsync(User.Email, "Message from site Administration. Your password has been changed." +
+                    await _mailKitService.SendEmailAsync(TargetUser.Email, "Message from site Administration. Your password has been changed." +
                         "Please, sign-up to aplication using password sent in that message. You can later change it in your profile panel. " +
-                        "Thank you.", NewPassword);
-                    return RedirectToPage("./Passwords", new { PageNumber });
+                        "Thank you.", Input.NewPassword);
+                    
+                    return RedirectToPage("./Passwords", new { PageNumber = 1 });
                 }
                 else
                 {

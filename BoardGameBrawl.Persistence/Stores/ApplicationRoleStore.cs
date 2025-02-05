@@ -80,6 +80,9 @@ namespace BoardGameBrawl.Persistence.Stores
         }
 
         private bool _disposed = false;
+
+        public IQueryable<ApplicationRole> Roles => _context.Roles.AsNoTracking();
+
         public void Dispose()
         {
             Dispose(true);

@@ -12,7 +12,7 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
     {
         public UserManager<ApplicationUser> _userManager;
         public SignInManager<ApplicationUser> _singInManager;
-
+        
         public ChangeUserClaimsModel(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> singInManager)
         {
@@ -25,8 +25,10 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
 
         [TempData]
         public string StatusMessage { get; set; }
+        
+        public ApplicationUser TargetUser { get; set; }
 
-        public IList<Claim> Claims = new List<Claim>();
+        public IList<Claim> Claims { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -35,32 +37,33 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
                 return RedirectToPage("ManageUsers");
             }
 
-            ApplicationUser user = await _userManager.FindByIdAsync(Id);
-            Claims = await _userManager.GetClaimsAsync(user);
+            TargetUser = await _userManager.FindByIdAsync(Id);
+            Claims = await _userManager.GetClaimsAsync(TargetUser);
             return Page();
         }
 
         public async Task<IActionResult> OnPostEditClaim([Required] string type,
             [Required] string value, [Required] string oldValue)
         {
-            ApplicationUser user = await _userManager.FindByIdAsync(Id);
+            TargetUser = await _userManager.FindByIdAsync(Id);
+            
             if (ModelState.IsValid)
             {
                 var claimNew = new Claim(type, value);
                 var claimOld = new Claim(type, oldValue);
-                var result = await _userManager.ReplaceClaimAsync(user, claimOld, claimNew);
+                var result = await _userManager.ReplaceClaimAsync(TargetUser, claimOld, claimNew);
 
                 if (result.Succeeded)
                 {
                     StatusMessage = "Claim has been successfully edited.";
-                    Claims = await _userManager.GetClaimsAsync(user);
+                    Claims = await _userManager.GetClaimsAsync(TargetUser);
                     return RedirectToPage();
                 }
                 else
                 {
                     foreach (var error in result.Errors)
                     {
-                        StatusMessage = "Error - Claim has not been edited. Try Again.";
+                        StatusMessage = "Error: Claim has not been edited. Try Again.";
                         ModelState.AddModelError(string.Empty, error.Description);
                         return Page();
                     }
@@ -72,16 +75,16 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
         public async Task<IActionResult> OnPostDeleteClaim([Required] string type,
             [Required] string value)
         {
-            ApplicationUser user = await _userManager.FindByIdAsync(Id);
+            TargetUser = await _userManager.FindByIdAsync(Id);
             if (ModelState.IsValid)
             {
                 var claim = new Claim(type, value);
-                var result = await _userManager.RemoveClaimAsync(user, claim);
+                var result = await _userManager.RemoveClaimAsync(TargetUser, claim);
 
                 if (result.Succeeded)
                 {
                     StatusMessage = "Claim has been successfully deleted.";
-                    Claims = await _userManager.GetClaimsAsync(user);
+                    Claims = await _userManager.GetClaimsAsync(TargetUser);
                     return RedirectToPage();
                 }
                 else

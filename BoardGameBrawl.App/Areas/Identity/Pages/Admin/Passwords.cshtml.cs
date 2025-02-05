@@ -15,13 +15,15 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMapper _mapper;
-        public IEnumerable<ViewUserDTO> Users;
 
-        public PasswordsModel(UserManager<ApplicationUser> userManager, IMapper mapper)
+        public PasswordsModel(UserManager<ApplicationUser> userManager, 
+            IMapper mapper)
         {
             _userManager = userManager;
             _mapper = mapper;
         }
+
+        public IEnumerable<ViewUserDTO> Users;
 
         [BindProperty(SupportsGet = true)]
         public string Filter { get; set; }

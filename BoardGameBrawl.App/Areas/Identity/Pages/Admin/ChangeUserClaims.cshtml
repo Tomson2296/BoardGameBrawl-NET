@@ -1,17 +1,17 @@
 ﻿@page "{Id}"
 @model ChangeUserClaimsModel
 @{
-    ViewData["Title"] = "Change user's application claims";
+    ViewData["Title"] = "Change user claims";
     ViewData["ActivePage"] = AdminWorkflowsPages.ManageUsers;
     int identId = 0;
 }
 
 <partial name="_StatusMessage" for="StatusMessage" />
-<div asp-validation-summary="All" class="text-danger m-2"></div>
-<h3>@ViewData["Title"]</h3>
 <div class="container">
     <div class="row">
-        <div class="p-3">
+        <div class="col p-3">
+            <h3>@ViewData["Title"]</h3>
+            <br />
             <table class="table table-sm table-striped table-bordered text-center">
                 <thead><tr><th colspan="4" class="text-center">Identity</th></tr></thead>
                 <tbody>
@@ -44,8 +44,9 @@
                     }
                 </tbody>
             </table>
+            <br />
             <div class="d-flex flex-row align-items-center justify-content-center">
-                <a asp-page="ManageUsers" asp-route-PageNumber="1" class="btn btn-secondary btn-block w-50"> Back </a>
+                <a asp-page="ManageUsers" asp-route-PageNumber="1" class="btn btn-primary btn-block w-50"> Back </a>
             </div>
         </div>
     </div>

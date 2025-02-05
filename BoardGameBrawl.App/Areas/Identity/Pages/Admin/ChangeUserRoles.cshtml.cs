@@ -2,7 +2,6 @@
 
 using BoardGameBrawl.App.Areas.Identity.Pages.Admin;
 using BoardGameBrawl.Domain.Entities;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,19 +25,9 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
         [TempData]
         public string StatusMessage { get; set; }
 
-        public IList<string> CurrentRoles { get; set; } = new List<string>();
+        public IList<string> CurrentRoles { get; set; }
 
-        public IList<string> AvailableRoles { get; set; } = new List<string>();
-
-        private async Task SetRolesLists()
-        {
-            ApplicationUser user = await _userManager.FindByIdAsync(Id);
-            
-            CurrentRoles = await _userManager.GetRolesAsync(user);
-            
-            AvailableRoles = _roleManager.Roles.Select(r => r.Name)
-                .Where(r => !CurrentRoles.Contains(r)).ToList();
-        }
+        public IList<string> AvailableRoles { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -48,6 +37,16 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
             }
             await SetRolesLists();
             return Page();
+        }
+
+        private async Task SetRolesLists()
+        {
+            ApplicationUser user = await _userManager.FindByIdAsync(Id);
+
+            CurrentRoles = await _userManager.GetRolesAsync(user);
+
+            AvailableRoles = _roleManager.Roles.Select(r => r.Name)
+                .Where(r => !CurrentRoles.Contains(r)).ToList();
         }
 
         public async Task<IActionResult> OnPostDeleteFromListAsync(string role)

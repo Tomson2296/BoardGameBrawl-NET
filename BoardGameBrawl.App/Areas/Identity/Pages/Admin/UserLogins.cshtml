@@ -1,0 +1,48 @@
+﻿@page "{PageNumber:int}"
+@using BoardGameBrawl.Domain.Entities
+@model BoardGameBrawl.App.Areas.Identity.Pages.Admin.UserLoginsModel
+@{
+    ViewData["Title"] = "Manage user logins";
+    ViewData["ActivePage"] = AdminWorkflowsPages.UserLogins;
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col p-3">
+            <h3>@ViewData["Title"]</h3>
+            <br />
+            <table class="table table-sm table-striped table-bordered text-center">
+                <thead><tr><th colspan="5" class="text-center">List of External Logins </th></tr></thead>
+                <tbody>
+                    @if (Model.LoginCount == 0)
+                    {
+                        <tr>
+                            <td> There is no registered external logins in application right now </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (ApplicationUserLogin login in Model.UserLogins)
+                        {
+                            <tr>
+                                <td> @login.LoginProvider </td>
+                                <td> @login.ProviderKey </td>
+                                <td> @login.ProviderDisplayName  </td>
+                                <td> @login.UserId </td>
+                                <td>
+                                    <form method="post" asp-page-handler="DeleteExternalLogin">
+                                        <input type="hidden" name="externalLogin" value="@login.UserId" />
+                                        <button type="submit" class="btn btn-sm btn-danger">
+                                            Delete external login
+                                        </button>
+                                    </form>
+                                </td>
+                                }
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

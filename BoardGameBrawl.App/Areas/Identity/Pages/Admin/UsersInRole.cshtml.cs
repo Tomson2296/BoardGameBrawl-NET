@@ -1,8 +1,9 @@
 #nullable disable
-using AutoMapper;
 using BoardGameBrawl.App.Areas.Identity.Pages.Admin;
 using BoardGameBrawl.Application.DTOs.Entities.Identity_Related;
+using BoardGameBrawl.Application.Features.Identity_Related.AppUsers.Queries.ListUsersInRole;
 using BoardGameBrawl.Domain.Entities;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,24 +11,18 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
 {
     public class UsersInRoleModel : AdminPageModel
     {
-        public UserManager<ApplicationUser> _userManager;
-        public RoleManager<ApplicationRole> _roleManager;
-        private readonly IMapper _mapper;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly IMediator _mediator;
 
-        public UsersInRoleModel(UserManager<ApplicationUser> userManager, 
-            RoleManager<ApplicationRole> roleManager, 
-            IMapper mapper)
+        public UsersInRoleModel(UserManager<ApplicationUser> userManager,
+            RoleManager<ApplicationRole> roleManager,
+            IMediator mediator)
         {
             _userManager = userManager;
             _roleManager = roleManager;
-            _mapper = mapper;
+            _mediator = mediator;
         }
-
-        [TempData]
-        public string StatusMessage { get; set; }
-
-        public IList<ViewUserDTO> UsersInRoles { get; set; } 
-
 
         [BindProperty(SupportsGet = true)]
         public string ChosenRole { get; set; }
@@ -36,6 +31,15 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
         [BindProperty(SupportsGet = true)]
         public int PageNumber { get; set; }
 
+        [TempData]
+        public string StatusMessage { get; set; }
+
+
+        public IList<NavUserDTO> UsersInRole { get; set; } 
+
+        public ApplicationRole TargetRole { get; set; }
+
+        
         public int PageSize { get; set; } = 20;
 
         public int TotalUsersNumber { get; set; }
@@ -44,15 +48,16 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
 
         public int NextNumber { get; set; }
 
-        private async Task SetUserList(int batchSize, int batchNumber)
-        {
-            TotalUsersNumber = (await _userManager.GetUsersInRoleAsync(ChosenRole)).Count;
-            //UsersInRoles = _mapper.Map<List<ViewUserDTO>>(await _userManager.GetBatchOfUsersWithTheSameRole(batchSize, batchNumber, ChosenRole));
-        }
 
         public async Task<IActionResult> OnGetAsync()
         {
-            await SetUserList(PageSize, PageNumber);
+            TargetRole = await _roleManager.FindByNameAsync(ChosenRole);
+            TotalUsersNumber = (await _userManager.GetUsersInRoleAsync(ChosenRole)).Count;
+
+            // create MediatR qury object
+            var query = new ListFilteredUsersByRoleQuery { PageNumber = PageNumber, PageSize = PageSize, RoleId = TargetRole.Id };
+            UsersInRole = await _mediator.Send(query);
+
             PreviousNumber = (PageNumber - 1 < 1) ? 1 : PageNumber - 1;
             NextNumber = PageNumber + 1;
             return Page();
@@ -66,7 +71,6 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
             if (result.Succeeded)
             {
                 StatusMessage = "User removed from role successfully.";
-                await SetUserList(PageSize, PageNumber);
                 return RedirectToPage("UsersInRole", new { ChosenRole, PageNumber });
             }
             else
@@ -75,7 +79,7 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
                 {
                     StatusMessage = "Error - user has not been removed from role. Tryagain.";
                     ModelState.AddModelError(string.Empty, error.Description);
-                    return Page();
+                    return RedirectToPage("UsersInRole", new {ChosenRole, PageNumber });
                 }
             }
             return Page();

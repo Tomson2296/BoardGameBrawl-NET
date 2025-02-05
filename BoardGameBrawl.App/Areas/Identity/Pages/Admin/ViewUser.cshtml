@@ -1,15 +1,15 @@
 ﻿@page "{Id}"
 @model ViewUserModel
 @{
-    ViewData["Title"] = "View user's data";
+    ViewData["Title"] = "View user data";
     ViewData["ActivePage"] = AdminWorkflowsPages.ManageUsers;
 }
-
-<h3>@ViewData["Title"]</h3>
 
 <div class="container">
     <div class="row">
         <div class="p-3">
+            <h3>@ViewData["Title"]</h3>
+            <br />
             <table class="table table-sm table-striped table-bordered text-center mb-3">
                 <thead>
                     <tr>
@@ -29,9 +29,9 @@
                     }
                 </tbody>
             </table>
+            <br />
             <div class="d-flex flex-row align-items-center justify-content-around">
-                <a asp-page="EditUser" asp-route-id="@Model.Id" class="btn btn-warning btn-block w-25"> Edit </a>
-                <a asp-page="ManageUsers" asp-route-PageNumber="1" class="btn btn-primary btn-block w-25"> Back </a>
+                <a asp-page="ManageUsers" asp-route-PageNumber="1" class="w-50 btn btn-primary btn-block"> Back </a>
             </div>
         </div>
     </div>

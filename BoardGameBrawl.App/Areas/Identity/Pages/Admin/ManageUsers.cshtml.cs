@@ -51,6 +51,7 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
 
             PreviousNumber = (PageNumber - 1 < 1) ? 1 : PageNumber - 1;
             NextNumber = PageNumber + 1;
+            
             return Page();
         }
 

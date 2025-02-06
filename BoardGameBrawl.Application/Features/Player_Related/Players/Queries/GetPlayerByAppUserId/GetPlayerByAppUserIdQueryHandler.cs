@@ -20,7 +20,7 @@ namespace BoardGameBrawl.Application.Features.Player_Related.Players.Queries.Get
         public async Task<PlayerDTO> Handle(GetPlayerByAppUserIdQuery request, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            var player = await _unitofwork.PlayerRepository.GetPlayerByApplicationUserIdAsync(request.ApplicationId, cancellationToken);
+            var player = await _unitofwork.PlayerRepository.GetPlayerByApplicationUserIdAsync(request.ApplicationUserId, cancellationToken);
             
             return _mapper.Map<PlayerDTO>(player);
         }

@@ -3,8 +3,8 @@ using System.Xml.Serialization;
 
 namespace BoardGameBrawl.Domain.Value_objects
 {
-    [XmlRoot("items")]
-    public class BoardGameCollection
+    [XmlRoot(ElementName = "items")]
+    public class BoardgameCollectionResponse
     {
         [XmlAttribute("totalitems")]
         public int TotalItems { get; set; }
@@ -15,13 +15,13 @@ namespace BoardGameBrawl.Domain.Value_objects
 
         [XmlIgnore]
         [XmlAttribute("pubdate")]
-        public DateTime PubDate { get; set; }
+        public string PublicationDate { get; set; }
 
-        [XmlElement("item")]
-        public List<Game> Games { get; set; }
+        [XmlElement(ElementName = "item")]
+        public List<CollectionItem> Items { get; set; }
     }
 
-    public class Game
+    public class CollectionItem
     {
         [XmlIgnore]
         [XmlAttribute("objecttype")]
@@ -36,10 +36,10 @@ namespace BoardGameBrawl.Domain.Value_objects
 
         [XmlIgnore]
         [XmlAttribute("collid")]
-        public int CollId { get; set; }
+        public int CollectionId { get; set; }
 
         [XmlElement("name")]
-        public Name Name { get; set; }
+        public BoardgameName Name { get; set; }
 
         [XmlElement("yearpublished")]
         public int YearPublished { get; set; }
@@ -58,14 +58,14 @@ namespace BoardGameBrawl.Domain.Value_objects
         public int NumPlays { get; set; }
     }
 
-    public class Name 
+    public class BoardgameName
     {
         [XmlIgnore]
         [XmlAttribute("sortindex")]
         public int SortIndex { get; set; }
 
         [XmlText]
-        public string GameName { get; set; }
+        public string Value { get; set; }
     }
 
     public class Status
@@ -74,7 +74,7 @@ namespace BoardGameBrawl.Domain.Value_objects
         public int Own { get; set; }
 
         [XmlAttribute("prevowned")]
-        public int PrevOwned { get; set; }
+        public int PreviouslyOwned { get; set; }
 
         [XmlAttribute("fortrade")]
         public int ForTrade { get; set; }
@@ -95,6 +95,6 @@ namespace BoardGameBrawl.Domain.Value_objects
         public int Preordered { get; set; }
 
         [XmlAttribute("lastmodified")]
-        public DateTime LastModified { get; set; }
+        public string LastModified { get; set; }
     }
 }

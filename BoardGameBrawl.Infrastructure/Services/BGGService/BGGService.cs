@@ -1,7 +1,6 @@
-﻿#nullable disable
-using BoardGameBrawl.Domain.Value_objects;
-using Microsoft.AspNetCore.Http;
+﻿using BoardGameBrawl.Domain.Value_objects;
 using Microsoft.Extensions.Logging;
+using System.Net;
 using System.Xml.Serialization;
 
 namespace BoardGameBrawl.Infrastructure.Services.BGGService
@@ -18,39 +17,40 @@ namespace BoardGameBrawl.Infrastructure.Services.BGGService
             _logger = logger;
         }
 
-        public async Task<BoardgameItem> GetBGGBoardGameInfoAsync(int BGGBoardGameID)
+        public async Task<BoardgameItemResponse?> GetBGGBoardGameInfoAsync(int bggBoardgameId)
         {
-            string apiUrl = $"https://boardgamegeek.com/xmlapi2/thing?type=boardgame&stats=1&videos=1&id={BGGBoardGameID}";
+            var retryCount = 0;
+            const int maxRetries = 5;
+            const int initialDelayMs = 1000;
+
+            string apiUrl = $"https://boardgamegeek.com/xmlapi2/thing?type=boardgame&stats=1&id={bggBoardgameId}";
 
             try
             {
-                HttpClient httpClient = _httpClientFactory.CreateClient("BoardGameGeekClient");
-                HttpResponseMessage responseMessage = await httpClient.GetAsync(apiUrl);
+                using var client = _httpClientFactory.CreateClient("BoardGameGeekClient");
 
-                if (responseMessage.IsSuccessStatusCode)
+                while (true)
                 {
-                    while (responseMessage.StatusCode.Equals(StatusCodes.Status202Accepted))
+                    var response = await client.GetAsync(apiUrl);
+
+                    if (response.IsSuccessStatusCode)
                     {
-                        // Sometimes calling API returns 202 code in order to prepare 
-                        // response message - make 1000ms delay and make another request
-                        await Task.Delay(1000);
-                        responseMessage = await httpClient.GetAsync(apiUrl);
+                        await using var stream = await response.Content.ReadAsStreamAsync();
+                        return DeserializeBoardGame(stream);
                     }
 
-                    using (var stream = await responseMessage.Content.ReadAsStreamAsync())
+                    if (response.StatusCode != HttpStatusCode.Accepted || retryCount >= maxRetries)
                     {
-                        var serializer = new XmlSerializer(typeof(BoardgameItem));
-                        using (var reader = new StreamReader(stream))
-                        {
-                            var BoardgameInfo = (BoardgameItem)serializer.Deserialize(stream);
-                            return BoardgameInfo;
-                        }
+                        LogErrorResponseAsync(response);
+                        return null;
                     }
-                }
-                else
-                {
-                    _logger.LogError($"Error: {responseMessage.StatusCode}");
-                    return null;
+
+                    var delay = initialDelayMs * (int)Math.Pow(2, retryCount);
+                    _logger.LogWarning("Retry {RetryCount} for BGG ID {BggId}. Delaying {Delay}ms",
+                        retryCount + 1, bggBoardgameId, delay);
+
+                    await Task.Delay(delay);
+                    retryCount++;
                 }
             }
             catch (Exception ex)
@@ -60,46 +60,105 @@ namespace BoardGameBrawl.Infrastructure.Services.BGGService
             }
         }
 
-        public async Task<BoardGameCollection> GetUserBGGCollectionInfoAsync(string BGGUserName)
+        private BoardgameItemResponse? DeserializeBoardGame(Stream stream)
         {
-            string lowerCasedUserName = BGGUserName.ToLower();
-            string apiUrl = $"https://boardgamegeek.com//xmlapi2/collection?username={lowerCasedUserName}&excludesubtype=boardgameexpansion";
+            try
+            {
+                var serializer = new XmlSerializer(typeof(BoardgameItemResponse));
+                using var reader = new StreamReader(stream);
+                return (BoardgameItemResponse?)serializer.Deserialize(reader);
+            }
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogError(ex, "XML deserialization failed");
+                return null;
+            }
+        }
+
+        private async void LogErrorResponseAsync(HttpResponseMessage response)
+        {
+            try
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                _logger.LogError("BGG API Error: {StatusCode} - {Content}",
+                    response.StatusCode, content);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to read error content");
+            }
+        }
+
+
+        public async Task<BoardgameCollectionResponse?> GetUserBGGCollectionInfoAsync(string bggUsername)
+        {
+            const int maxRetries = 5;
+            const int initialDelayMs = 1000;
+            var retryCount = 0;
+            var lowerUserName = bggUsername.ToLowerInvariant();
+            var apiPath = $"collection?username={lowerUserName}&own=1&subtype=boardgame&excludesubtype=boardgameexpansion";
 
             try
             {
-                HttpClient httpClient = _httpClientFactory.CreateClient("BoardGameGeekClient");
-                HttpResponseMessage responseMessage = await httpClient.GetAsync(apiUrl);
+                using var client = _httpClientFactory.CreateClient("BoardGameGeekClient");
 
-                if (responseMessage.IsSuccessStatusCode)
+                while (true)
                 {
-                    while (responseMessage.StatusCode.Equals(StatusCodes.Status202Accepted))
+                    var response = await client.GetAsync(apiPath);
+
+                    if (response.IsSuccessStatusCode)
                     {
-                        // Sometimes calling API returns 202 code in order to prepare 
-                        // response message - make 1000ms delay and make another request
-                        await Task.Delay(1000);
-                        responseMessage = await httpClient.GetAsync(apiUrl);
+                        await using var stream = await response.Content.ReadAsStreamAsync();
+                        return DeserializeBoardGameCollection(stream);
                     }
 
-                    using (var stream = await responseMessage.Content.ReadAsStreamAsync())
+                    if (response.StatusCode != HttpStatusCode.Accepted || retryCount >= maxRetries)
                     {
-                        var serializer = new XmlSerializer(typeof(BoardGameCollection));
-                        using (var reader = new StreamReader(stream))
-                        {
-                            var BoardgameCollection = (BoardGameCollection)serializer.Deserialize(stream);
-                            return BoardgameCollection;
-                        }
+                        await LogCollectionError(response, bggUsername);
+                        return null;
                     }
-                }
-                else
-                {
-                    _logger.LogError($"Error: {responseMessage.StatusCode}");
-                    return new BoardGameCollection();
+
+                    var delay = initialDelayMs * (int)Math.Pow(2, retryCount);
+                    _logger.LogWarning("Retrieving collection for {UserName} - Retry {RetryCount} in {Delay}ms",
+                        bggUsername, retryCount + 1, delay);
+
+                    await Task.Delay(delay);
+                    retryCount++;
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex.Message, ex);
-                return new BoardGameCollection();
+                _logger.LogError(ex, "Failed to fetch BGG collection for user {UserName}", bggUsername);
+                return null;
+            }
+        }
+
+        private BoardgameCollectionResponse? DeserializeBoardGameCollection(Stream stream)
+        {
+            try
+            {
+                var serializer = new XmlSerializer(typeof(BoardgameCollectionResponse));
+                using var reader = new StreamReader(stream);
+                return (BoardgameCollectionResponse?)serializer.Deserialize(reader);
+            }
+            catch (InvalidOperationException ex)
+            {
+                _logger.LogError(ex, "XML deserialization failed for collection data");
+                return null;
+            }
+        }
+
+        private async Task LogCollectionError(HttpResponseMessage response, string userName)
+        {
+            try
+            {
+                var content = await response.Content.ReadAsStringAsync();
+                _logger.LogError("BGG Collection API Error for {UserName}: {StatusCode} - {Content}",
+                    userName, response.StatusCode, content);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Failed to read error content for user {UserName}", userName);
             }
         }
     }

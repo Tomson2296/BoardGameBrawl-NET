@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
+	<HotReloadEnabled>true</HotReloadEnabled>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>a4523478-7bc6-4e33-97b3-bc92a37d69f1</UserSecretsId>

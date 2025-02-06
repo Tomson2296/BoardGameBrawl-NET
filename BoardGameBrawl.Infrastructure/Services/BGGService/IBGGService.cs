@@ -4,8 +4,8 @@ namespace BoardGameBrawl.Infrastructure.Services.BGGService
 {
     public interface IBGGService
     {
-        public Task<BoardgameItem> GetBGGBoardGameInfoAsync(int BGGBoardGameID);
+        public Task<BoardgameItemResponse?> GetBGGBoardGameInfoAsync(int bggBoardGameId);
         
-        public Task<BoardGameCollection> GetUserBGGCollectionInfoAsync(string BGGUserName);
+        public Task<BoardgameCollectionResponse?> GetUserBGGCollectionInfoAsync(string bggUsername);
     }
 }

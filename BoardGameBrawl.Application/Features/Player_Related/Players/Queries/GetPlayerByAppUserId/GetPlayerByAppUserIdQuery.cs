@@ -5,6 +5,6 @@ namespace BoardGameBrawl.Application.Features.Player_Related.Players.Queries.Get
 {
     public class GetPlayerByAppUserIdQuery : IRequest<PlayerDTO>
     {
-        public Guid ApplicationId { get; set; }
+        public Guid ApplicationUserId { get; set; }
     }
 }

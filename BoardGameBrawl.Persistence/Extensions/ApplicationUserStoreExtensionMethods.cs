@@ -1,8 +1,6 @@
 ﻿using BoardGameBrawl.Application.Contracts.Entities.Identity_Related;
 using BoardGameBrawl.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client;
-using System;
 
 namespace BoardGameBrawl.Persistence.Extensions
 {

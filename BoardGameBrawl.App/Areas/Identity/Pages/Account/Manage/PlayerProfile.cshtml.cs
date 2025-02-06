@@ -85,7 +85,7 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account.Manage
         private async Task LoadPlayerProfileAsync(ApplicationUser user)
         {
             // Use MediatR to Send the Command
-            var command = new GetPlayerByAppUserIdQuery { ApplicationId = user.Id };
+            var command = new GetPlayerByAppUserIdQuery { ApplicationUserId = user.Id };
             var playerProfile = await _mediator.Send(command);
 
             Input = new InputModel

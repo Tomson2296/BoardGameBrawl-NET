@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
 using BoardGameBrawl.Domain.Entities;
 using BoardGameBrawl.Application.Contracts.Entities.Identity_Related;
 using BoardGameBrawl.Persistence.Extensions;

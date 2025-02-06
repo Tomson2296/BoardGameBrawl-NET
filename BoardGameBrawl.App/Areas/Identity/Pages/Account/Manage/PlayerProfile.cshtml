@@ -65,6 +65,12 @@
         <br />
         <div class="row">
             <div class="col-md-6">
+                <a asp-page="./ChangePlayerAvatar" asp-route-id="@Model.Input.Id" id="change-avatar-submit" type="submit" class="w-100 btn btn-lg btn-secondary">Change Player Avatar </a>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-6">
                 <form id="removePlayerForm" method="get">
                     <button asp-page="./RemovePlayerProfile" asp-route-id="@Model.Input.Id" id="remove-submit" type="submit" class="w-100 btn btn-lg btn-danger">Remove Player Profile</button>
                 </form>

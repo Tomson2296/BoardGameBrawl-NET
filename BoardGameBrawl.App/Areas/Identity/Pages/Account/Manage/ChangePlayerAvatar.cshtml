@@ -1,0 +1,52 @@
+﻿@page "{Id:Guid}"
+@model BoardGameBrawl.App.Areas.Identity.Pages.Account.Manage.ChangePlayerAvatarModel
+@{
+    ViewData["Title"] = "Manage Player Avatar";
+    ViewData["ActivePage"] = ManageNavPages.PlayerProfile;
+}
+
+<h3>@ViewData["Title"]</h3>
+<partial name="_StatusMessage" for="StatusMessage" />
+<br />
+<div class="container">
+    <form id="account" method="post" enctype="multipart/form-data">
+        <div class="row">
+            <div class="col-md-6">
+                <h4> Old Avatar </h4>
+                @if (Model.TargetPlayerProfile.UserAvatar != null)
+                {
+                    <img id="profilePicture" class="img-fluid img-thumbnail" src="data:image/*;base64,@(Convert.ToBase64String(Model.TargetPlayerProfile.UserAvatar))">
+                }
+                else
+                {
+                    <img id="profilePicture" class="img-fluid img-thumbnail" src="">
+                }
+            </div>
+            <div class="col-md-6">
+                <h4> New Avatar </h4>
+                <input type="file" asp-for="Input.ProfileAvatar" class="form-control" style="border:0px!important;padding: 0px;padding-top: 10px;padding-bottom: 30px"
+                       onchange="document.getElementById('profilePicture').src = window.URL.createObjectURL(this.files[0])" />
+                <span asp-validation-for="Input.ProfileAvatar" class="text-danger"></span>
+                @if (Model.Input.ProfileAvatar != null)
+                {
+                    <img id="profilePicture" class="img-fluid img-thumbnail" src="data:image/*;base64,@(Convert.ToBase64String(Model.Input.ProfileAvatar))">
+                }
+                else
+                {
+                    <img id="profilePicture" class="img-fluid img-thumbnail" src="">
+                }
+            </div>
+        </div>
+        <div class="row">
+            <div class="d-flex flex-row align-items-center justify-content-around">
+                <button id="change-submit" type="submit" class="w-50 btn btn-lg btn-secondary">Change Player Avatar</button>
+            </div>
+        </div>
+    </form>
+    <br />
+    <div class="row">
+        <div class="d-flex flex-row align-items-center justify-content-around">
+            <a asp-page="./PlayerProfile" asp-route-id="@Model.TargetPlayerProfile.Id" class="w-50 btn btn-primary btn-block"> Back </a>
+        </div>
+    </div>
+</div>

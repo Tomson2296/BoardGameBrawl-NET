@@ -8,6 +8,8 @@ using BoardGameBrawl.Domain.Entities;
 using BoardGameBrawl.Application.Services;
 using BoardGameBrawl.Persistence.Stores;
 using System.Net;
+using Polly;
+using Polly.Extensions.Http;
 
 namespace BoardGameBrawl.App
 {
@@ -89,22 +91,23 @@ namespace BoardGameBrawl.App
                 {
                     client.BaseAddress = new Uri("https://boardgamegeek.com/");
                     client.DefaultRequestHeaders.Add("Accept", "application/xml");
-                    client.Timeout = TimeSpan.FromSeconds(30);
+                    client.Timeout = TimeSpan.FromSeconds(45);
                 })
                 .ConfigurePrimaryHttpMessageHandler(() =>
                 {
                     return new SocketsHttpHandler
                     {
                         // Preventing Connection Pooling
-                        MaxConnectionsPerServer = 100,
-                        PooledConnectionIdleTimeout = TimeSpan.FromMinutes(1),
+                        MaxConnectionsPerServer = 20,
+                        PooledConnectionIdleTimeout = TimeSpan.FromMinutes(2),
                         // Force DNS Refresh
-                        PooledConnectionLifetime = TimeSpan.FromMinutes(5),
+                        PooledConnectionLifetime = TimeSpan.FromMinutes(15),
                         AutomaticDecompression = DecompressionMethods.All,
                         UseCookies = false
                     };
                 })
-                .SetHandlerLifetime(TimeSpan.FromMinutes(5));
+                .SetHandlerLifetime(Timeout.InfiniteTimeSpan)
+                .AddPolicyHandler(GetRetryPolicy());
 
             builder.Services.RegisterPersistenceServices();
 
@@ -113,6 +116,16 @@ namespace BoardGameBrawl.App
             builder.Services.RegisterInfraServices();
 
             return builder;
+        }
+
+        private static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
+        {
+            // Retry policy based on BoardGameGeek XML API v2 community guidelines
+            return HttpPolicyExtensions
+             .HandleTransientHttpError()
+             .OrResult(msg => msg.StatusCode == HttpStatusCode.Accepted)
+             .WaitAndRetryAsync(3, retryAttempt =>
+                 TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)));
         }
     }
 }

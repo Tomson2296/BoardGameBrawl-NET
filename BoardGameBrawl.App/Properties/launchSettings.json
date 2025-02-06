@@ -12,6 +12,7 @@
     "http": {
       "commandName": "Project",
       "hotReloadProfile": "aspnetcore",
+      "hotReloadEnabled": true,
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "applicationUrl": "http://localhost:5114",
@@ -22,6 +23,7 @@
     "https": {
       "commandName": "Project",
       "hotReloadProfile": "aspnetcore",
+      "hotReloadEnabled": true,
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "applicationUrl": "https://localhost:7181",

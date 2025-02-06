@@ -1,5 +1,6 @@
 ﻿using BoardGameBrawl.Infrastructure.DatabaseSeed;
 using BoardGameBrawl.Infrastructure.EmailSender;
+using BoardGameBrawl.Infrastructure.Services.BGGService;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BoardGameBrawl.Infrastructure
@@ -16,6 +17,9 @@ namespace BoardGameBrawl.Infrastructure
 
             services.AddScoped<BoardgamesDatabaseSeed>();
 
+            // Register BGGService
+            services.AddTransient<IBGGService, BGGService>();
+         
             return Task.FromResult(services);
         }
     }

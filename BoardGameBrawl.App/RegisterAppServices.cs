@@ -7,6 +7,7 @@ using BoardGameBrawl.Application;
 using BoardGameBrawl.Domain.Entities;
 using BoardGameBrawl.Application.Services;
 using BoardGameBrawl.Persistence.Stores;
+using System.Net;
 
 namespace BoardGameBrawl.App
 {
@@ -82,7 +83,29 @@ namespace BoardGameBrawl.App
                     options.LoginPath = "/Identity/Account/Login";
                     options.LogoutPath = "/Identity/Account/Logout";
                 });
-            
+
+            builder.Services.AddHttpClient("BoardGameGeekClient")
+                .ConfigureHttpClient(client =>
+                {
+                    client.BaseAddress = new Uri("https://boardgamegeek.com/");
+                    client.DefaultRequestHeaders.Add("Accept", "application/xml");
+                    client.Timeout = TimeSpan.FromSeconds(30);
+                })
+                .ConfigurePrimaryHttpMessageHandler(() =>
+                {
+                    return new SocketsHttpHandler
+                    {
+                        // Preventing Connection Pooling
+                        MaxConnectionsPerServer = 100,
+                        PooledConnectionIdleTimeout = TimeSpan.FromMinutes(1),
+                        // Force DNS Refresh
+                        PooledConnectionLifetime = TimeSpan.FromMinutes(5),
+                        AutomaticDecompression = DecompressionMethods.All,
+                        UseCookies = false
+                    };
+                })
+                .SetHandlerLifetime(TimeSpan.FromMinutes(5));
+
             builder.Services.RegisterPersistenceServices();
 
             builder.Services.RegisterApplicationServices();

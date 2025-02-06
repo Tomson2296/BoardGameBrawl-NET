@@ -23,8 +23,18 @@ namespace BoardGameBrawl.Domain.Entities.Player_Related
 
         public byte[]? UserAvatar { get; set; }
 
+
+        // Entity relationship collections 
+
+        public PlayerCollection? PlayerCollection { get; set; }
+
         public ICollection<GroupParticipant>? GroupParticipants { get; set; }
 
-        public ICollection<PlayerRreference>? UserRatings { get; set; }
+        public ICollection<PlayerRreference>? PlayerRatings { get; set; }
+
+        public ICollection<PlayerFriend>? Friendships { get; set; }  
+
+        public ICollection<PlayerFriend>? FriendOfFriendships { get; set; } 
+
     }
 }

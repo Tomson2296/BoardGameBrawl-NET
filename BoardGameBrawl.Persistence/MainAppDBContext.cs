@@ -42,6 +42,7 @@ namespace BoardGameBrawl.Persistence
             //Player-related entities configuration
             modelBuilder.ApplyConfiguration(new PlayerConfiguration());
             modelBuilder.ApplyConfiguration(new PlayerPreferenceConfiguration());
+            modelBuilder.ApplyConfiguration(new PlayerFriendConfiguration());
 
             //Tournament-related entities configuration
             modelBuilder.ApplyConfiguration(new TournamentConfiguration());
@@ -73,6 +74,9 @@ namespace BoardGameBrawl.Persistence
         public DbSet<GroupParticipant> GroupParticipants { get; set; }
 
         public DbSet<PlayerRreference> PlayerRreferences { get; set; }
+
+        public DbSet<PlayerFriend> PlayerFriends { get; set; }
+
 
 
         public DbSet<Match> Matches { get; set; }

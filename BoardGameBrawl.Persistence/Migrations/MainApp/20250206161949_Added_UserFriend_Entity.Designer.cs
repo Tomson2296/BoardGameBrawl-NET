@@ -4,6 +4,7 @@ using BoardGameBrawl.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BoardGameBrawl.Persistence.Migrations.MainApp
 {
     [DbContext(typeof(MainAppDBContext))]
-    partial class MainAppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250206161949_Added_UserFriend_Entity")]
+    partial class Added_UserFriend_Entity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -420,40 +423,6 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
                     b.ToTable("Players", "dbo");
                 });
 
-            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Player_Related.PlayerCollection", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("BoardgameCollection")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<DateTime>("LastModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("PlayerId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PlayerId")
-                        .IsUnique();
-
-                    b.ToTable("PlayerCollection", "dbo");
-                });
-
             modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Player_Related.PlayerFriend", b =>
                 {
                     b.Property<Guid>("RequesterId")
@@ -470,9 +439,7 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("FriendshipDate")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime2")
-                        .HasDefaultValueSql("getdate()");
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("Id")
                         .HasColumnType("uniqueidentifier");
@@ -484,9 +451,8 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
                     b.Property<DateTime>("LastModifiedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.HasKey("RequesterId", "AddresseeId");
 
@@ -697,17 +663,6 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Player_Related.PlayerCollection", b =>
-                {
-                    b.HasOne("BoardGameBrawl.Domain.Entities.Player_Related.Player", "Player")
-                        .WithOne("PlayerCollection")
-                        .HasForeignKey("BoardGameBrawl.Domain.Entities.Player_Related.PlayerCollection", "PlayerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Player");
-                });
-
             modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Player_Related.PlayerFriend", b =>
                 {
                     b.HasOne("BoardGameBrawl.Domain.Entities.Player_Related.Player", "Addressee")
@@ -736,7 +691,7 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
                         .IsRequired();
 
                     b.HasOne("BoardGameBrawl.Domain.Entities.Player_Related.Player", "Player")
-                        .WithMany("PlayerRatings")
+                        .WithMany("UserRatings")
                         .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -810,9 +765,7 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
 
                     b.Navigation("GroupParticipants");
 
-                    b.Navigation("PlayerCollection");
-
-                    b.Navigation("PlayerRatings");
+                    b.Navigation("UserRatings");
                 });
 
             modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Tournament_Related.Tournament", b =>

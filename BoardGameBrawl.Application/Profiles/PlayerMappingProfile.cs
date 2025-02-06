@@ -10,7 +10,10 @@ namespace BoardGameBrawl.Application.Profiles
         {
             CreateMap<PlayerDTO, Player>()
                .ForMember(dest => dest.GroupParticipants, opt => opt.Ignore())
-               .ForMember(dest => dest.UserRatings, opt => opt.Ignore())
+               .ForMember(dest => dest.PlayerRatings, opt => opt.Ignore())
+               .ForMember(dest => dest.PlayerCollection, opt => opt.Ignore())
+               .ForMember(dest => dest.Friendships, opt => opt.Ignore())
+               .ForMember(dest => dest.FriendOfFriendships, opt => opt.Ignore())
                .ReverseMap();
 
             CreateMap<NavPlayerDTO, Player>()
@@ -27,7 +30,10 @@ namespace BoardGameBrawl.Application.Profiles
                .ForMember(dest => dest.ApplicationUserId, opt => opt.Ignore())
 
                .ForMember(dest => dest.GroupParticipants, opt => opt.Ignore())
-               .ForMember(dest => dest.UserRatings, opt => opt.Ignore())
+               .ForMember(dest => dest.PlayerRatings, opt => opt.Ignore())
+               .ForMember(dest => dest.PlayerCollection, opt => opt.Ignore())
+               .ForMember(dest => dest.Friendships, opt => opt.Ignore())
+               .ForMember(dest => dest.FriendOfFriendships, opt => opt.Ignore())
                .ReverseMap();
 
             CreateMap<PlayerPreferenceDTO, PlayerRreference>()

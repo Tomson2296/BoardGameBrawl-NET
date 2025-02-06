@@ -27,8 +27,9 @@ namespace BoardGameBrawl.Persistence
             // Register Player-Related repositories
 
             services.AddScoped<IPlayerRepository, PlayerRepository>();
-            services.AddScoped<IGroupParticipantRepository, GroupParticipantRepository>();
             services.AddScoped<IPlayerPreferenceRepository, PlayerPreferenceRepository>();
+            services.AddScoped<IPlayerFriendRepository, PlayerFriendRepository>();
+            services.AddScoped<IPlayerCollectionRepository, PlayerCollectionRepository>();
 
             // Register Boardgames-Related repositories
 
@@ -41,6 +42,7 @@ namespace BoardGameBrawl.Persistence
             // Register Group-Related repositories
 
             services.AddScoped<IGroupRepository, GroupRepository>();
+            services.AddScoped<IGroupParticipantRepository, GroupParticipantRepository>();
 
             // Register Custom Identity Stores
 

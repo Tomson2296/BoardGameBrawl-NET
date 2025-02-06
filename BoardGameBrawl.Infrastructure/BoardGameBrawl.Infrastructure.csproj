@@ -20,15 +20,18 @@
     <PackageReference Include="MailKit" Version="4.9.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.11" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="8.0.12" />
+    <PackageReference Include="Polly" Version="8.5.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BoardGameBrawl.Domain\BoardGameBrawl.Domain.csproj" />
+    <ProjectReference Include="..\BoardGameBrawl.Persistence\BoardGameBrawl.Persistence.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="HttpClient\" />
-    <Folder Include="XML_Objects\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\BoardGameBrawl.Persistence\BoardGameBrawl.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

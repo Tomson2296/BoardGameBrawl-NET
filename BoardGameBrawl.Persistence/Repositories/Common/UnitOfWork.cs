@@ -17,8 +17,9 @@ namespace BoardGameBrawl.Persistence.Repositories.Common
         protected readonly IHttpContextAccessor _contextAccessor;
 
         private IPlayerRepository _playerRepository;
-        private IGroupParticipantRepository _groupParticipantRepository;
         private IPlayerPreferenceRepository _playerPreferenceRepository;
+        private IPlayerFriendRepository _playerFriendRepository;
+        private IPlayerCollectionRepository _playerCollectionRepository;
 
         private IBoardgameRepository _boardgameRepository;
         private IBoardgameCategoriesRepository _boardgameCategoriesRepository;
@@ -27,6 +28,7 @@ namespace BoardGameBrawl.Persistence.Repositories.Common
         private IBoardgameMechanicTagsRepository _boardgameMechanicTagsRepository;
 
         private IGroupRepository _groupRepository;
+        private IGroupParticipantRepository _groupParticipantRepository;
 
         public UnitOfWork(MainAppDBContext context, 
             IHttpContextAccessor contextAccessor)
@@ -42,6 +44,12 @@ namespace BoardGameBrawl.Persistence.Repositories.Common
 
         public IPlayerPreferenceRepository PlayerPreferenceRepository =>
             _playerPreferenceRepository ??= new PlayerPreferenceRepository(_context);
+
+        public IPlayerFriendRepository PlayerFriendRepository =>
+            _playerFriendRepository ??= new PlayerFriendRepository(_context);
+
+        public IPlayerCollectionRepository PlayerCollectionRepository =>
+            _playerCollectionRepository ??= new PlayerCollectionRepository(_context);
 
 
         // Boardgame-related repositories

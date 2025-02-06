@@ -25,7 +25,7 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
 
         public IDictionary<string, int> Roles { get; set; } = new Dictionary<string, int>();
 
-        public async Task<IActionResult> OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
             await GetApplicationRolesAsync(Roles);
             return Page();
@@ -45,7 +45,7 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
         public async Task<IActionResult> OnPostDeleteFromListAsync(string role)
         {
             ApplicationRole idRole = await _roleManager.FindByNameAsync(role);
-            IdentityResult result = await _roleManager.DeleteAsync(idRole);
+            var result = await _roleManager.DeleteAsync(idRole);
 
             if (result.Succeeded)
             {

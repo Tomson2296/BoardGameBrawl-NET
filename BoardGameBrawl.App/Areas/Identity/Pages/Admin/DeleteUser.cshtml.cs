@@ -25,12 +25,24 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
 
         public async Task<IActionResult> OnGetAsync()
         {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
             if (string.IsNullOrEmpty(Id))
             {
                 return RedirectToPage("./ListUsers");
             }
 
             TargetUser = await _userManager.FindByIdAsync(Id);
+
+            if (TargetUser == null)
+            {
+                return NotFound();
+            }
+
             IsAdmin = await _userManager.IsInRoleAsync(TargetUser, "Administrator");
             return Page();
         }

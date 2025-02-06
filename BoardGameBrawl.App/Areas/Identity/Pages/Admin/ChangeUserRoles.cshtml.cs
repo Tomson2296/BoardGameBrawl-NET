@@ -29,34 +29,43 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
 
         public IList<string> AvailableRoles { get; set; }
 
+        public ApplicationUser TargetUser { get; set; }
+
         public async Task<IActionResult> OnGetAsync()
         {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
             if (string.IsNullOrEmpty(Id))
             {
                 return RedirectToPage("ManageUsers");
             }
-            await SetRolesLists();
-            return Page();
-        }
 
-        private async Task SetRolesLists()
-        {
-            ApplicationUser user = await _userManager.FindByIdAsync(Id);
+            TargetUser = await _userManager.FindByIdAsync(Id);
+
+            if (TargetUser == null)
+            {
+                return NotFound();
+            }
 
             CurrentRoles = await _userManager.GetRolesAsync(user);
 
             AvailableRoles = _roleManager.Roles.Select(r => r.Name)
                 .Where(r => !CurrentRoles.Contains(r)).ToList();
+
+            return Page();
         }
 
         public async Task<IActionResult> OnPostDeleteFromListAsync(string role)
         {
             ApplicationRole idRole = await _roleManager.FindByNameAsync(role);
-            IdentityResult result = await _roleManager.DeleteAsync(idRole);
+            var result = await _roleManager.DeleteAsync(idRole);
 
             if (result.Succeeded)
             {
-                await SetRolesLists();
                 return RedirectToPage();
             }
             else
@@ -67,6 +76,7 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
                     return Page();
                 }
             }
+
             return Page();
         }
 
@@ -77,10 +87,9 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
                 Name = role
             };
 
-            IdentityResult result = await _roleManager.CreateAsync(newRole);
+            var result = await _roleManager.CreateAsync(newRole);
             if (result.Succeeded)
             {
-                await SetRolesLists();
                 return RedirectToPage();
             }
             else
@@ -97,17 +106,18 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
         public async Task<IActionResult> OnPostDeleteUserFromRoleAsync(string role)
         {
             ApplicationUser user = await _userManager.FindByIdAsync(Id);
-            IdentityResult result = await _userManager.RemoveFromRoleAsync(user, role);
+            var result = await _userManager.RemoveFromRoleAsync(user, role);
 
             if (result.Succeeded)
             {
-                await SetRolesLists();
+                StatusMessage = "User has been removed from chosen role successfully";
                 return RedirectToPage();
             }
             else
             {
                 foreach (var error in result.Errors)
                 {
+                    StatusMessage = "Error - User has not been removed from chosen role";
                     ModelState.AddModelError(string.Empty, error.Description);
                     return Page();
                 }
@@ -121,17 +131,18 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
 
             if (!await _userManager.IsInRoleAsync(user, role))
             {
-                IdentityResult result = await _userManager.AddToRoleAsync(user, role);
+                var result = await _userManager.AddToRoleAsync(user, role);
                
                 if (result.Succeeded)
                 {
-                    await SetRolesLists();
+                    StatusMessage = "User has been added to chosen role successfully";
                     return RedirectToPage();
                 }
                 else
                 {
                     foreach (var error in result.Errors)
                     {
+                        StatusMessage = "Error - User has not been added to chosen role";
                         ModelState.AddModelError(string.Empty, error.Description);
                         return Page();
                     }

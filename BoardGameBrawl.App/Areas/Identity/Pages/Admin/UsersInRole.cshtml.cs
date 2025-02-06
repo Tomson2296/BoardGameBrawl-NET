@@ -78,7 +78,6 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
                 foreach (var error in result.Errors)
                 {
                     StatusMessage = "Error - user has not been removed from role. Tryagain.";
-                    ModelState.AddModelError(string.Empty, error.Description);
                     return RedirectToPage("UsersInRole", new {ChosenRole, PageNumber });
                 }
             }

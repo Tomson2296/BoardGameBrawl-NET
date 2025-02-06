@@ -43,15 +43,20 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
 
         public async Task<IActionResult> OnGetAsync()
         {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
             TotalUsersNumber = await _userManager.GetNumberOfUsersCountAsync();
 
             // Use MediatR to Send the Command - ListFilteredUsersQuery
             var command = new ListFilteredUsersQuery { Filter = Filter, PageNumber = PageNumber, PageSize = PageSize };
             Users = await _mediator.Send(command);
-
+            
             PreviousNumber = (PageNumber - 1 < 1) ? 1 : PageNumber - 1;
             NextNumber = PageNumber + 1;
-            
             return Page();
         }
 

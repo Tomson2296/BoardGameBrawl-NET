@@ -34,6 +34,12 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Admin
 
             var query = new GetPlayerQuery { Id = Id };
             TargetPlayerProfile = await _mediator.Send(query);
+
+            if (TargetPlayerProfile == null)
+            {
+                return NotFound();
+            }
+
             return Page();
         }
     }

@@ -32,12 +32,24 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
 
         public async Task<IActionResult> OnGetAsync()
         {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
             if (string.IsNullOrEmpty(Id))
             {
                 return RedirectToPage("ManageUsers");
             }
 
             TargetUser = await _userManager.FindByIdAsync(Id);
+
+            if (TargetUser == null)
+            {
+                return NotFound();
+            }
+            
             Claims = await _userManager.GetClaimsAsync(TargetUser);
             return Page();
         }

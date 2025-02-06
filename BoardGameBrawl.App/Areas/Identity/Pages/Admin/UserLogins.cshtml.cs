@@ -29,16 +29,18 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Admin
 
         public async Task<IActionResult> OnGetAsync()
         {
+            ApplicationUser user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
             // Create new query MediatR object
             var query = new ListOfAllExternalUserLoginsQuery { PageNumber = PageNumber, PageSize = 20 };
             UserLogins = await _mediator.Send(query);
             LoginCount = UserLogins.Count;
+            
             return Page();
         }
-
-        //public async Task<IActionResult> OnPostDeleteExternalLoginAsync()
-        //{
-            
-        //}
     }
 }

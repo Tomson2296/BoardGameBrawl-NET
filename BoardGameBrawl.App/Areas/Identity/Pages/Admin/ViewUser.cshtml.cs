@@ -37,20 +37,25 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
 
         public async Task<IActionResult> OnGetAsync()
         {
+            var user = await _userManager.FindByIdAsync(Id);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
             if (string.IsNullOrEmpty(Id))
             {
                 return RedirectToPage("ManageUsers");
             }
 
-            var user = await _userManager.FindByIdAsync(Id);
-            if(user == null)
-            {
-                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-            }
-
             // Use MediatR to Send the Command - ListUserProperties
             var command = new ListUserPropertiesQuery { Id = user.Id };
             ViewUser = await _mediator.Send(command);
+
+            if (ViewUser == null)
+            {
+                return NotFound();
+            }
 
             return Page();
         }

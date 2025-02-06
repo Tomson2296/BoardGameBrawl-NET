@@ -37,6 +37,12 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Admin
 
         public async Task<IActionResult> OnGetAsync()
         {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
+
             var query = new GetPlayerQuery { Id = Id };
             TargetPlayerProfile = await _mediator.Send(query);
 

@@ -38,12 +38,14 @@ namespace BoardGameBrawl.Persistence.Services
             }
         }
 
-        public Task<bool> RemoveExternalLoginAsync(string? LoginProvider, 
-            string? ProviderKey, 
-            Guid userId, 
+        public async Task RemoveExternalLoginAsync(ApplicationUserLogin userLogin,
             CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(userLogin);
+
+            _context.UserLogins.Remove(userLogin);
+            await _context.SaveChangesAsync();
         }
     }
 }

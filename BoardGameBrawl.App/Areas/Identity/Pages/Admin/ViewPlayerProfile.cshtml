@@ -1,0 +1,63 @@
+﻿@page "{Id:Guid}" 
+@model BoardGameBrawl.App.Areas.Identity.Pages.Admin.ViewPlayerProfileModel
+@{
+    ViewData["Title"] = "Manage Player Profle";
+    ViewData["ActivePage"] = AdminWorkflowsPages.PlayerProfiles;
+    ViewData["UserImg"] = "Player's Avatar Image";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 p-3">
+            <h3>@ViewData["Title"]</h3>
+            <br />
+            <form id="plazerProfile">
+                <div class="form-floating mb-3">
+                    <input asp-for="TargetPlayerProfile.Id" class="form-control" readonly="readonly" aria-required="true" />
+                    <label asp-for="TargetPlayerProfile.Id" class="form-label">Id</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="TargetPlayerProfile.UserName" class="form-control" readonly="readonly" aria-required="true" />
+                    <label asp-for="TargetPlayerProfile.UserName" class="form-label">UserName</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="TargetPlayerProfile.Email" class="form-control" readonly="readonly" aria-required="true" />
+                    <label asp-for="TargetPlayerProfile.Email" class="form-label">Email</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="TargetPlayerProfile.FirstName" class="form-control" readonly="readonly" />
+                    <label asp-for="TargetPlayerProfile.FirstName" class="form-label">FirstName</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="TargetPlayerProfile.LastName" class="form-control" readonly="readonly" />
+                    <label asp-for="TargetPlayerProfile.LastName" class="form-label">LastName</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="TargetPlayerProfile.BGGUsername" class="form-control" readonly="readonly" />
+                    <label asp-for="TargetPlayerProfile.BGGUsername" class="form-label">BGGUsername</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="TargetPlayerProfile.UserDescription" class="form-control" readonly="readonly" />
+                    <label asp-for="TargetPlayerProfile.UserDescription" class="form-label">UserDescription</label>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6 p-3">
+            <div class="form-group">
+                <h4>@ViewData["UserImg"]</h4>
+                @if (Model.TargetPlayerProfile.UserAvatar != null)
+                {
+                    <img id="profilePicture" class="img-fluid img-thumbnail" src="data:image/*;base64,@(Convert.ToBase64String(Model.TargetPlayerProfile.UserAvatar))">
+                }
+                else
+                {
+                    <img id="profilePicture" class="img-fluid img-thumbnail" src="">
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

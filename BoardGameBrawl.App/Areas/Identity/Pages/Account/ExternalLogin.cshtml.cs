@@ -95,7 +95,7 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account
             if (result.Succeeded)
             {
                 //Update LastLogin information
-                DateOnly loginDate = DateOnly.FromDateTime(DateTime.UtcNow);
+                DateOnly loginDate = DateOnly.FromDateTime(DateTime.Now);
                 ApplicationUser user = await _userManager.GetUserAsync(HttpContext.User);
                 await _userStore.SetUserLastLoginAsync(user, loginDate);
                 await _userManager.UpdateAsync(user);

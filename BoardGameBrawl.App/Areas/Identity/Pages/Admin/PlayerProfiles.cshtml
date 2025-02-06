@@ -1,16 +1,69 @@
-﻿@page
+﻿@page "{PageNumber:int}"
 @model BoardGameBrawl.App.Areas.Identity.Pages.Admin.PlayerProfilesModel
 @{
-    ViewData["Title"] = "Manage Player Profiles";
+    ViewData["Title"] = "Manage player profiles";
     ViewData["ActivePage"] = AdminWorkflowsPages.PlayerProfiles;
 }
 
+<partial name="_StatusMessage" for="StatusMessage" />
 <div class="container">
     <div class="row">
         <div class="p-3">
             <h3>@ViewData["Title"]</h3>
             <br />
-            
+            <table class="table table-sm table-striped table-bordered text-center">
+                <thead><tr><th colspan="3" class="text-center">Player Profiles</th></tr></thead>
+                <tbody>
+                    @{
+                        @if (Model.TotalProfilesNumber == 0)
+                        {
+                            <tr>
+                                <td colspan="3" class="text-center">
+                                    There is no player profiles existing in database right now
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            @for (int i = 0; i < Model.TotalProfilesNumber; i++)
+                            {
+                                <tr>
+                                    <td>
+                                        <strong> @Model.PlayerProfiles[i].Username </strong>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-primary btn-block w-100" asp-page="ViewPlayerProfile" asp-route-id="@Model.PlayerProfiles[i].Id"> View Player Profile </a>
+                                    </td>
+                                    <td>
+                                        <a class="btn btn-danger btn-block w-100" asp-page="DeletePlayerProfile" asp-route-id="@Model.PlayerProfiles[i].Id"> Delete Player Profile </a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    }
+                </tbody>
+            </table>
+            <br />
+            @if (Model.PageNumber == 1 && Model.TotalProfilesNumber < Model.PageSize)
+            {
+                <a asp-page="PlayerProfiles" asp-route-PageNumber="@Model.PageNumber"> @Model.PageNumber </a>
+            }
+            else if (Model.PageNumber == 1 && Model.TotalProfilesNumber >= Model.PageSize)
+            {
+                <a asp-page="PlayerProfiles" asp-route-PageNumber="@Model.PageNumber"> @Model.PageNumber </a>
+                <a asp-page="PlayerProfiles" asp-route-PageNumber="@Model.NextNumber"> @Model.NextNumber </a>
+            }
+            else if ((Model.TotalProfilesNumber - Model.PageNumber * Model.PageSize) >= Model.PageSize)
+            {
+                <a asp-page="PlayerProfiles" asp-route-PageNumber="@Model.PreviousNumber"> @Model.PreviousNumber </a>
+                <a asp-page="PlayerProfiles" asp-route-PageNumber="@Model.PageNumber"> @Model.PageNumber </a>
+                <a asp-page="PlayerProfiles" asp-route-PageNumber="@Model.NextNumber"> @Model.NextNumber </a>
+            }
+            else
+            {
+                <a asp-page="PlayerProfiles" asp-route-PageNumber="@Model.PreviousNumber"> @Model.PreviousNumber </a>
+                <a asp-page="PlayerProfiles" asp-route-PageNumber="@Model.PageNumber"> @Model.PageNumber </a>
+            }
         </div>
     </div>
 </div>

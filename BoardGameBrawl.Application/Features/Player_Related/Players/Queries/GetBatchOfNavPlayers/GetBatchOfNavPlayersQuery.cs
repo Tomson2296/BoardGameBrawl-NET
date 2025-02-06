@@ -1,9 +1,9 @@
 ﻿using BoardGameBrawl.Application.DTOs.Entities.Player_Related;
 using MediatR;
 
-namespace BoardGameBrawl.Application.Features.Player_Related.Players.Queries.GetBatchOfPlayers
+namespace BoardGameBrawl.Application.Features.Player_Related.Players.Queries.GetBatchOfNavPlayers
 {
-    public class GetBatchOfPlayersQuery : IRequest<IList<PlayerDTO>>
+    public class GetBatchOfNavPlayersQuery : IRequest<IList<NavPlayerDTO>>
     {
         public int Size { get; set; }
 

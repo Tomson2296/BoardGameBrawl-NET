@@ -9,6 +9,7 @@ using BoardGameBrawl.Application.Contracts.Entities.Identity_Related;
 using BoardGameBrawl.Application.DTOs.Entities.Player_Related;
 using BoardGameBrawl.Application.Features.Player_Related.Players.Commands.AddPlayer;
 using BoardGameBrawl.Persistence.Extensions;
+using Azure;
 
 namespace BoardGameBrawl.App.Areas.Identity.Pages.Account.Manage
 {
@@ -68,6 +69,7 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account.Manage
             {
                 return NotFound($"Unable to load user with ID '{ _userManager.GetUserId(User)}'.");
             }
+
             await LoadAsync(user);
             return Page();
         }
@@ -98,49 +100,58 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-            // create new PlayerDTO object
-            PlayerDTO playerDTO = new()
+            try
             {
-                Id = Guid.NewGuid(),
-                ApplicationUserId = user.Id,
-                UserName = Input.UserName,
-                Email = Input.Email,
-                FirstName = Input.FirstName,
-                LastName = Input.LastName,
-                BGGUsername = Input.BGGUsername,
-                UserDescription = Input.UserDescription
-            };
-
-            if (Request.Form.Files.Count > 0)
-            {
-                IFormFile file = Request.Form.Files.FirstOrDefault();
-                var avatarResult = await ProcessFileUploadAsync(file);
-
-                if (!avatarResult.Success)
+                // create new PlayerDTO object
+                PlayerDTO playerDTO = new()
                 {
-                    ModelState.AddModelError("File", avatarResult.ErrorMessage);
-                    StatusMessage = "Error: " + avatarResult.ErrorMessage;
+                    Id = Guid.NewGuid(),
+                    ApplicationUserId = user.Id,
+                    UserName = Input.UserName,
+                    Email = Input.Email,
+                    FirstName = Input.FirstName,
+                    LastName = Input.LastName,
+                    BGGUsername = Input.BGGUsername,
+                    UserDescription = Input.UserDescription
+                };
+
+                if (Request.Form.Files.Count > 0)
+                {
+                    IFormFile file = Request.Form.Files.FirstOrDefault();
+                    var avatarResult = await ProcessFileUploadAsync(file);
+
+                    if (!avatarResult.Success)
+                    {
+                        ModelState.AddModelError("File", avatarResult.ErrorMessage);
+                        StatusMessage = "Error: " + avatarResult.ErrorMessage;
+                        return Page();
+                    }
+
+                    playerDTO.UserAvatar = avatarResult.FileData;
+                }
+
+                // Use MediatR to Send the Command
+                var command = new AddPlayerCommand { PlayerDTO = playerDTO };
+                var response = await _mediator.Send(command);
+
+                if (!response.Success)
+                {
+                    ModelState.AddModelError("Command", response.Message);
+                    StatusMessage = "Error: " + response.Message;
                     return Page();
                 }
 
-                playerDTO.UserAvatar = avatarResult.FileData;
+                await _userStore.SetUserIsPlayerAccountCreatedAsync(user, true);
+                await _userManager.UpdateAsync(user);
+
+                StatusMessage = "Player Profile Created Successfully";
+                return RedirectToPage("/Account/Manage/Index", new { area = "Identity" });
             }
-
-            // Use MediatR to Send the Command
-            var command = new AddPlayerCommand { PlayerDTO = playerDTO };
-            var response = await _mediator.Send(command);
-
-            if (!response.Success)
+            catch (Exception ex)
             {
-                ModelState.AddModelError("Command", response.Message);
-                StatusMessage = "Error: " + response.Message;
-                return Page();
+                StatusMessage = "Error - An unexpected error occurred while creating player profile: " + ex.Message;
+                return RedirectToPage("/Account/Manage/Index", new { area = "Identity" });
             }
-
-            await _userStore.SetUserIsPlayerAccountCreatedAsync(user, true);
-            await _userManager.UpdateAsync(user);
-            StatusMessage = "Player Profile Created Successfully";
-            return RedirectToPage("/Account/Manage/Index", new { area = "Identity" });
         }
 
         public class FileUploadResult

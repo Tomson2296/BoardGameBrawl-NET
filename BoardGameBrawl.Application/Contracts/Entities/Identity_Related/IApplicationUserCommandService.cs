@@ -1,10 +1,10 @@
-﻿namespace BoardGameBrawl.Application.Contracts.Entities.Identity_Related
+﻿using BoardGameBrawl.Domain.Entities;
+
+namespace BoardGameBrawl.Application.Contracts.Entities.Identity_Related
 {
     public interface IApplicationUserCommandService : IDisposable
     {
-        Task<bool> RemoveExternalLoginAsync(string? LoginProvider,
-            string? ProviderKey,
-            Guid userId, 
+        Task RemoveExternalLoginAsync(ApplicationUserLogin userLogin,
             CancellationToken cancellationToken = default);  
     }
 }

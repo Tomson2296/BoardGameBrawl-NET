@@ -4,9 +4,9 @@
     {
         Task<T> GetEntity(Guid id, CancellationToken cancellationToken = default);
 
-        Task<ICollection<T>> GetBatchOfEntities(int size, int skip = 0, CancellationToken cancellationToken = default);
+        Task<IList<T>> GetBatchOfEntities(int size, int skip = 0, CancellationToken cancellationToken = default);
 
-        Task<ICollection<T>> GetAllEntities(CancellationToken cancellationToken = default);
+        Task<IList<T>> GetAllEntities(CancellationToken cancellationToken = default);
 
         Task AddEntity(T entity, CancellationToken cancellationToken = default);
         

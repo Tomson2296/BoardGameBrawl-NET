@@ -24,7 +24,9 @@ namespace BoardGameBrawl.Persistence.Repositories.Common
             return await _context.Set<T>().FindAsync(id, cancellationToken);    
         }
 
-        public async Task<ICollection<T>> GetBatchOfEntities(int size, int skip = 0, CancellationToken cancellationToken = default)
+        public async Task<IList<T>> GetBatchOfEntities(int size, 
+            int skip = 0,
+            CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -34,6 +36,7 @@ namespace BoardGameBrawl.Persistence.Repositories.Common
             try
             {
                 return await _context.Set<T>()
+                    .AsNoTracking()
                     .Skip(skip)
                     .Take(size)
                     .ToListAsync(cancellationToken);
@@ -44,7 +47,7 @@ namespace BoardGameBrawl.Persistence.Repositories.Common
             }
         }
 
-        public async Task<ICollection<T>> GetAllEntities(CancellationToken cancellationToken = default)
+        public async Task<IList<T>> GetAllEntities(CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             

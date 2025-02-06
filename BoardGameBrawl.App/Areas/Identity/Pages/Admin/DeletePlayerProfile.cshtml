@@ -1,0 +1,25 @@
+﻿@page "{Id:Guid}"
+@model BoardGameBrawl.App.Areas.Identity.Pages.Admin.DeletePlayerProfileModel
+@{
+    ViewData["Title"] = "Delete player profile";
+    ViewData["ActivePage"] = AdminWorkflowsPages.PlayerProfiles;
+}
+
+<partial name="_StatusMessage" for="StatusMessage" />
+<div class="container">
+    <div class="row">
+        <div class="p-3">
+            <form method="post">
+                <h5 class="text-center m-2 p-2">
+                    Do you really want to delete Player Profile:  @Model.TargetPlayerProfile.UserName?
+                    <input type="hidden" name="id" value="@Model.TargetPlayerProfile.Id" />
+                </h5>
+                <br />
+                <div class="d-flex flex-row align-items-center justify-content-around text-center">
+                    <button type="submit" class="btn btn-danger btn-block w-25">Delete</button>
+                    <a asp-page="PlayerProfiles" asp-route-PageNumber="1" class="btn btn-secondary btn-block w-25">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

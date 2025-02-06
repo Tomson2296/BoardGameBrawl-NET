@@ -14,7 +14,8 @@ namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMediator _mediator;
 
-        public ViewUserModel(UserManager<ApplicationUser> userManager, IMediator mediator)
+        public ViewUserModel(UserManager<ApplicationUser> userManager,
+            IMediator mediator)
         {
             _userManager = userManager;
             _mediator = mediator;

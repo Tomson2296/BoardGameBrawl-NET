@@ -16,7 +16,7 @@ namespace BoardGameBrawl.Application.Features.Identity_Related.AppUsers.Queries.
         public async Task<IList<ApplicationUserLogin>> Handle(GetListOfUserExternalLoginsQuery request, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            return await _applicationUserQueryService.GetExternalLoginByUserIdAsync(
+            return await _applicationUserQueryService.GetExternalLoginsByUserIdAsync(
                 request.UserId,
                 cancellationToken);
         }

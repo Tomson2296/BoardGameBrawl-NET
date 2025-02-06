@@ -1,7 +1,6 @@
 #nullable disable
 
 using AutoMapper;
-using BoardGameBrawl.App.Areas.Identity.Pages.Admin;
 using BoardGameBrawl.Application.DTOs.Entities.Identity_Related;
 using BoardGameBrawl.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
@@ -9,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
-namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
+namespace BoardGameBrawl.App.Areas.Admin.Pages
 {
     public class PasswordsModel : AdminPageModel
     {

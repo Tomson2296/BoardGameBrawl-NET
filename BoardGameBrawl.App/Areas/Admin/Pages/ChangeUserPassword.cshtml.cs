@@ -1,12 +1,11 @@
 #nullable disable
-using BoardGameBrawl.App.Areas.Identity.Pages.Admin;
 using BoardGameBrawl.Domain.Entities;
 using BoardGameBrawl.Infrastructure.EmailSender;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 
-namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
+namespace BoardGameBrawl.App.Areas.Admin.Pages
 {
     public class ChangeUserPasswordModel : AdminPageModel
     {

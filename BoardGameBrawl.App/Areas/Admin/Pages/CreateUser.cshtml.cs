@@ -1,5 +1,4 @@
 #nullable disable
-using BoardGameBrawl.App.Areas.Identity.Pages.Admin;
 using BoardGameBrawl.Application.Contracts.Entities.Identity_Related;
 using BoardGameBrawl.Domain.Entities;
 using BoardGameBrawl.Persistence.Extensions;
@@ -8,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 
-namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
+namespace BoardGameBrawl.App.Areas.Admin.Pages
 {
     public class CreateUserModel : AdminPageModel
     {

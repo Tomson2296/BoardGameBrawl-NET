@@ -6,7 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BoardGameBrawl.App.Areas.Identity.Pages.Admin
+namespace BoardGameBrawl.App.Areas.Admin.Pages
 {
     public class PlayerProfilesModel : AdminPageModel
     {

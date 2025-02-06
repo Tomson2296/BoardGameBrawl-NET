@@ -1,5 +1,4 @@
 #nullable disable
-using BoardGameBrawl.App.Areas.Identity.Pages.Admin;
 using BoardGameBrawl.Application.DTOs.Entities.Identity_Related;
 using BoardGameBrawl.Application.Features.Identity_Related.AppUsers.Queries.ListFilteredUsers;
 using BoardGameBrawl.Domain.Entities;
@@ -8,7 +7,7 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
+namespace BoardGameBrawl.App.Areas.Admin.Pages
 {
     public class ManageUsersModel : AdminPageModel
     {

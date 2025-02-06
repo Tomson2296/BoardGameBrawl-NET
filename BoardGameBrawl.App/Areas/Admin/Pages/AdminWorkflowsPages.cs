@@ -1,8 +1,7 @@
 ﻿#nullable disable
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Reflection.Metadata;
 
-namespace BoardGameBrawl.Areas.Identity.Pages.Account.Admin
+namespace BoardGameBrawl.App.Areas.Admin.Pages
 {
     public static class AdminWorkflowsPages
     {

@@ -29,10 +29,16 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<float>("AverageBGGWeight")
+                        .HasColumnType("real");
+
+                    b.Property<float>("AverageRating")
+                        .HasColumnType("real");
+
                     b.Property<int>("BGGId")
                         .HasColumnType("int");
 
-                    b.Property<float>("BGGWeight")
+                    b.Property<float>("BayesRating")
                         .HasColumnType("real");
 
                     b.Property<string>("CreatedBy")
@@ -74,6 +80,9 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
                         .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<int>("Owned")
+                        .HasColumnType("int");
 
                     b.Property<short>("PlayingTime")
                         .HasColumnType("smallint");
@@ -141,6 +150,55 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
                     b.HasIndex("CategoryId");
 
                     b.ToTable("BoardgameCategoryTags", "dbo");
+                });
+
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Boardgame_Related.BoardgameDomain", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Domain")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTime>("LastModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Domain")
+                        .IsUnique()
+                        .HasDatabaseName("DomainIndex");
+
+                    b.ToTable("BoardgameDomains", "dbo");
+                });
+
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Boardgame_Related.BoardgameDomainTag", b =>
+                {
+                    b.Property<Guid>("BoardgameId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("DomainId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("BoardgameId", "DomainId");
+
+                    b.HasIndex("DomainId");
+
+                    b.ToTable("BoardgameDomainTags", "dbo");
                 });
 
             modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Boardgame_Related.BoardgameMechanic", b =>
@@ -463,6 +521,20 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
                     b.Property<Guid>("BoardgameId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTime>("LastModifiedDate")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("PlayerId", "BoardgameId");
 
                     b.HasIndex("BoardgameId");
@@ -518,6 +590,20 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
 
                     b.Property<Guid>("BoardgameId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTime>("LastModifiedDate")
+                        .HasColumnType("datetime2");
 
                     b.Property<byte>("Rating")
                         .HasColumnType("tinyint");
@@ -655,6 +741,25 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
                     b.Navigation("Boardgame");
 
                     b.Navigation("BoardgameCategory");
+                });
+
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Boardgame_Related.BoardgameDomainTag", b =>
+                {
+                    b.HasOne("BoardGameBrawl.Domain.Entities.Boardgame_Related.Boardgame", "Boardgame")
+                        .WithMany("BoardgameDomainTags")
+                        .HasForeignKey("BoardgameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BoardGameBrawl.Domain.Entities.Boardgame_Related.BoardgameDomain", "Domain")
+                        .WithMany("BoardgameDomainTags")
+                        .HasForeignKey("DomainId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Boardgame");
+
+                    b.Navigation("Domain");
                 });
 
             modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Boardgame_Related.BoardgameMechanicTag", b =>
@@ -809,6 +914,8 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
                 {
                     b.Navigation("BoardgameCategoryTags");
 
+                    b.Navigation("BoardgameDomainTags");
+
                     b.Navigation("BoardgameMechanicTags");
 
                     b.Navigation("BoardgameRules");
@@ -827,6 +934,11 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
             modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Boardgame_Related.BoardgameCategory", b =>
                 {
                     b.Navigation("BoardgameCategoryTags");
+                });
+
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Boardgame_Related.BoardgameDomain", b =>
+                {
+                    b.Navigation("BoardgameDomainTags");
                 });
 
             modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Boardgame_Related.BoardgameMechanic", b =>

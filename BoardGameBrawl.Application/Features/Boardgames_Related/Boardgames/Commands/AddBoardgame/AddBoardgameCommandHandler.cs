@@ -42,8 +42,6 @@ namespace BoardGameBrawl.Application.Features.Boardgames_Related.Boardgames.Comm
                 await _unitOfWork.BoardgameRepository.AddEntity(boardgame, cancellationToken);
                 await _unitOfWork.CommitChangesAsync();
 
-
-
                 response.Success = true;
                 response.Message = "Creation Successful";
                 response.Id = boardgame.Id;

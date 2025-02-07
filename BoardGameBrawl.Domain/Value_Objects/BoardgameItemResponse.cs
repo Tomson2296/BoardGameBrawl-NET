@@ -73,11 +73,9 @@ namespace BoardGameBrawl.Domain.Value_objects
 
     public class BoardGameName
     {
-        [XmlIgnore]
         [XmlAttribute("type")]
         public string Type { get; set; }
 
-        [XmlIgnore]
         [XmlAttribute("sortindex")]
         public int SortIndex { get; set; }
 

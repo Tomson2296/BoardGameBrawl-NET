@@ -20,7 +20,7 @@ namespace BoardGameBrawl.Application.Features.Boardgames_Related.Boardgames.Quer
         public async Task<bool> Handle(CheckIfBoardgameExistsQuery request, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            return await _unitOfWork.BoardgameRepository.Exists(request.Id);
+            return await _unitOfWork.BoardgameRepository.Exists(request.Id, cancellationToken);
         }
     }
 }

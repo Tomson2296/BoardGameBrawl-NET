@@ -35,6 +35,8 @@ namespace BoardGameBrawl.Persistence
             // Register Boardgames-Related repositories
 
             services.AddScoped<IBoardgameRepository, BoardgameRepository>();
+            services.AddScoped<IBoardgameDomainsRepository, BoardgameDomainsRepository>();
+            services.AddScoped<IBoardgameDomainTagsRepository, BoardgameDomainTagsRepository>();
             services.AddScoped<IBoardgameCategoriesRepository, BoardgameCategoriesRepository>();
             services.AddScoped<IBoardgameCategoryTagsRepository, BoardgameCategoryTagsRepository>();
             services.AddScoped<IBoardgameMechanicsRepository, BoardgameMechanicsRepository>();

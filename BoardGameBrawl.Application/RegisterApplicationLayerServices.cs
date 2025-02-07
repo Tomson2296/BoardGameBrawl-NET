@@ -4,6 +4,7 @@ using BoardGameBrawl.Application.Services;
 using BoardGameBrawl.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using System.Reflection;
 
 namespace BoardGameBrawl.Application
@@ -34,6 +35,9 @@ namespace BoardGameBrawl.Application
             services.AddScoped<ILookupNormalizer, ApplicationLookupNormalizer>();
             //services.AddScoped<IUserClaimsPrincipalFactory<ApplicationUser>, ApplicationUserClaimsPrincipalFactory>();
             services.AddScoped<IPasswordHasher<ApplicationUser>, ApplicationPasswordHasher>();
+
+            // Register IStringCleaner Service
+            services.AddScoped<IStringCleaner, StringCleaner>();
 
             return Task.FromResult(services);
         }

@@ -20,7 +20,7 @@ namespace BoardGameBrawl.Application.Features.Boardgames_Related.Boardgames.Quer
             CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            var entities = await _unitOfWork.BoardgameCategoryTagsRepository.GetBoardgameCategoriesByGameAsync(request.BoardgameId);
+            var entities = await _unitOfWork.BoardgameCategoryTagsRepository.GetBoardgameCategoriesByGameAsync(request.BoardgameId, cancellationToken);
             return _mapper.Map<ICollection<BoardgameCategoryDTO>>(entities);
         }
     }

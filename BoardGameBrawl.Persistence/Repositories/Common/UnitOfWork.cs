@@ -23,6 +23,8 @@ namespace BoardGameBrawl.Persistence.Repositories.Common
         private IPlayerFavouriteBGRepository _playerFavouriteGBRepository;
 
         private IBoardgameRepository _boardgameRepository;
+        private IBoardgameDomainsRepository _boardgameDomainsRepository;
+        private IBoardgameDomainTagsRepository _boardgameDomainTagsRepository;
         private IBoardgameCategoriesRepository _boardgameCategoriesRepository;
         private IBoardgameCategoryTagsRepository _boardgameCategoryTagsRepository;
         private IBoardgameMechanicsRepository _boardgameMechanicsRepository;
@@ -61,21 +63,27 @@ namespace BoardGameBrawl.Persistence.Repositories.Common
         public IBoardgameRepository BoardgameRepository =>
             _boardgameRepository ??= new BoardgameRepository(_context);
 
+        public IBoardgameDomainsRepository BoardgameDomainsRepository =>
+            _boardgameDomainsRepository ??= new BoardgameDomainsRepository(_context);
+
+        public IBoardgameDomainTagsRepository BoardgameDomainTagsRepository =>
+            _boardgameDomainTagsRepository ??= new BoardgameDomainTagsRepository(_context);
+
+        public IBoardgameCategoriesRepository BoardgameCategoriesRepository =>
+            _boardgameCategoriesRepository ??= new BoardgameCategoriesRepository(_context);
+
+        public IBoardgameCategoryTagsRepository BoardgameCategoryTagsRepository =>
+            _boardgameCategoryTagsRepository ??= new BoardgameCategoryTagsRepository(_context);
+
         public IBoardgameMechanicsRepository BoardgameMechanicsRepository =>
             _boardgameMechanicsRepository ??= new BoardgameMechanicsRepository(_context);
 
         public IBoardgameMechanicTagsRepository BoardgameMechanicsTagsRepository =>
             _boardgameMechanicTagsRepository ??= new BoardgameMechanicTagsRepository(_context);
 
-        public IBoardgameCategoriesRepository BoardgameCategoryRepository =>
-            _boardgameCategoriesRepository ??= new BoardgameCategoriesRepository(_context);
 
-        public IBoardgameCategoryTagsRepository BoardgameCategoryTagsRepository =>
-            _boardgameCategoryTagsRepository ??= new BoardgameCategoryTagsRepository(_context);
-
-        
         // Group-related repositories
-        
+
         public IGroupRepository GroupRepository =>
             _groupRepository ??= new GroupRepository(_context);
 

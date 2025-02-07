@@ -1,5 +1,4 @@
-﻿using BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related;
-using BoardGameBrawl.Application.DTOs.Entities.Boardgame_Related;
+﻿using BoardGameBrawl.Application.DTOs.Entities.Boardgame_Related;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
@@ -11,12 +10,8 @@ namespace BoardGameBrawl.Application.Validators.Boardgames_Related.BoardgameCate
 {
     public class AddBoardgameCategoryTagsValidator : AbstractValidator<BoardgameCategoryTagDTO>
     {
-        private readonly IBoardgameCategoryTagsRepository _boardgameCategoryTagsRepository;
-
-        public AddBoardgameCategoryTagsValidator(IBoardgameCategoryTagsRepository boardgameCategoryTagsRepository)
+        public AddBoardgameCategoryTagsValidator()
         {
-            _boardgameCategoryTagsRepository = boardgameCategoryTagsRepository;
-
             RuleFor(tag => tag.BoardgameId)
                .NotNull()
                .NotEmpty().WithMessage("{PropertyName} cannot be empty");

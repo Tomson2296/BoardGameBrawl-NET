@@ -1,7 +1,9 @@
 ﻿using BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related;
+using BoardGameBrawl.Application.Exceptions;
 using BoardGameBrawl.Domain.Entities.Boardgame_Related;
 using BoardGameBrawl.Persistence.Repositories.Common;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
 {
@@ -9,6 +11,16 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
     {
         public BoardgameRepository(MainAppDBContext context) : base(context)
         { }
+
+
+        // custom BoardgameRepository methods //
+
+        public async Task<Boardgame?> GetEntityByBGGId(int id, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            var boardgame = await Context.Boardgames.FirstOrDefaultAsync(b => b.BGGId == id, cancellationToken);
+            return boardgame;
+        }
 
         public async Task<bool> Exists(int bggid, CancellationToken cancellationToken = default)
         {
@@ -34,7 +46,7 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(boardgame);
 
-            return Task.FromResult(boardgame.BGGWeight);
+            return Task.FromResult(boardgame.AverageBGGWeight);
         }
 
         public Task<string?> GetDescriptionAsync(Boardgame boardgame,
@@ -45,7 +57,6 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
 
             return Task.FromResult(boardgame.Description);
         }
-
         public Task<byte[]?> GetImageAsync(Boardgame boardgame,
             CancellationToken cancellationToken = default)
         {
@@ -127,7 +138,7 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
             ArgumentNullException.ThrowIfNull(boardgame);
             ArgumentNullException.ThrowIfNull(weight);
 
-            boardgame.BGGWeight = weight;
+            boardgame.AverageBGGWeight = weight;
             return Task.CompletedTask;
         }
     }

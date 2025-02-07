@@ -23,7 +23,13 @@ namespace BoardGameBrawl.Application.DTOs.Entities.Boardgame_Related
 
         public short MaximumPlayingTime { get; set; }
 
-        public float BGGWeight { get; set; }
+        public float AverageBGGWeight { get; set; }
+
+        public float AverageRating { get; set; }
+
+        public float BayesRating { get; set; }
+
+        public int Owned { get; set; }
 
         public byte[]? Image { get; set; }
 

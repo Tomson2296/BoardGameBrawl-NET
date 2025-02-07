@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
 using BoardGameBrawl.Application.Contracts.Common;
 using BoardGameBrawl.Application.Responses;
-using BoardGameBrawl.Application.Validators.Boardgames_Related;
 using BoardGameBrawl.Application.Validators.Boardgames_Related.BoardgameCategories;
-using BoardGameBrawl.Application.Validators.Boardgames_Related.Boardgames;
 using BoardGameBrawl.Domain.Entities.Boardgame_Related;
 using MediatR;
 using System;
@@ -28,7 +26,7 @@ namespace BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameCatego
         public async Task<BaseCommandResponse> Handle(AddBoardgameCategoryCommand request, CancellationToken cancellationToken)
         {
             var response = new BaseCommandResponse();
-            var validator = new AddBoardgameCategoryValidator(_unitOfWork.BoardgameCategoryRepository);
+            var validator = new AddBoardgameCategoryValidator(_unitOfWork.BoardgameCategoriesRepository);
             var validationResult = await validator.ValidateAsync(request.BoardgameCategoryDTO, cancellationToken);
 
             if (!validationResult.IsValid)
@@ -44,7 +42,7 @@ namespace BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameCatego
             {
                 var boardgameCategory = _mapper.Map<BoardgameCategory>(request.BoardgameCategoryDTO);
 
-                await _unitOfWork.BoardgameCategoryRepository.AddEntity(boardgameCategory, cancellationToken);
+                await _unitOfWork.BoardgameCategoriesRepository.AddEntity(boardgameCategory, cancellationToken);
                 await _unitOfWork.CommitChangesAsync();
 
                 response.Success = true;

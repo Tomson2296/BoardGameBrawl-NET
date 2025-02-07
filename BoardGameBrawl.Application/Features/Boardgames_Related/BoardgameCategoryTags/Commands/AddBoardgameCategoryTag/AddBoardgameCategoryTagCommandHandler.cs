@@ -27,7 +27,7 @@ namespace BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameCatego
         public async Task<BaseCommandResponse> Handle(AddBoardgameCategoryTagCommand request, CancellationToken cancellationToken)
         {
             var response = new BaseCommandResponse();
-            var validator = new AddBoardgameCategoryTagsValidator(_unitOfWork.BoardgameCategoryTagsRepository);
+            var validator = new AddBoardgameCategoryTagsValidator();
             var validationResult = await validator.ValidateAsync(request.BoardgameCategoryTagDTO, cancellationToken);
 
             if (!validationResult.IsValid)

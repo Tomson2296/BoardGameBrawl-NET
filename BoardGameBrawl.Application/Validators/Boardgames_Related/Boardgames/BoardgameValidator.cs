@@ -51,7 +51,19 @@ namespace BoardGameBrawl.Application.Validators.Boardgames_Related.Boardgames
                 .NotNull()
                 .NotEmpty().WithMessage("{PropertyName} cannot be empty");
 
-            RuleFor(boardgame => boardgame.BGGWeight)
+            RuleFor(boardgame => boardgame.AverageBGGWeight)
+                .NotNull()
+                .NotEmpty().WithMessage("{PropertyName} cannot be empty");
+
+            RuleFor(boardgame => boardgame.AverageRating)
+                .NotNull()
+                .NotEmpty().WithMessage("{PropertyName} cannot be empty");
+
+            RuleFor(boardgame => boardgame.BayesRating)
+                .NotNull()
+                .NotEmpty().WithMessage("{PropertyName} cannot be empty");
+
+            RuleFor(boardgame => boardgame.Owned)
                 .NotNull()
                 .NotEmpty().WithMessage("{PropertyName} cannot be empty");
 

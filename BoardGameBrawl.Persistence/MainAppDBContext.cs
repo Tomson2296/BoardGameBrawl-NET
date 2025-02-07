@@ -26,6 +26,8 @@ namespace BoardGameBrawl.Persistence
 
             //Boardgame-related entities configuration
             modelBuilder.ApplyConfiguration(new BoardgameConfiguration());
+            modelBuilder.ApplyConfiguration(new BoardgameDomainConfiguration());
+            modelBuilder.ApplyConfiguration(new BoardgameDomainTagConfiguration());
             modelBuilder.ApplyConfiguration(new BoardgameCategoryConfiguration());
             modelBuilder.ApplyConfiguration(new BoardgameCategoryTagConfiguration());
             modelBuilder.ApplyConfiguration(new BoardgameMechanicConfiguration());
@@ -59,6 +61,10 @@ namespace BoardGameBrawl.Persistence
         public DbSet<Boardgame> Boardgames { get; set; }
 
         public DbSet<MatchRule> MatchRules { get; set; }
+
+        public DbSet<BoardgameDomain> BoardgameDomains { get; set; }
+
+        public DbSet<BoardgameDomainTag> BoardgameDomainTags { get; set; }
 
         public DbSet<BoardgameCategory> BoardgameCategories { get; set; }
 

@@ -1,5 +1,4 @@
-﻿using BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related;
-using BoardGameBrawl.Application.DTOs.Entities.Boardgame_Related;
+﻿using BoardGameBrawl.Application.DTOs.Entities.Boardgame_Related;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
@@ -11,12 +10,8 @@ namespace BoardGameBrawl.Application.Validators.Boardgames_Related.BoardgameMech
 {
     public class AddBoardgameMechanicTagsValidator : AbstractValidator<BoardgameMechanicTagDTO>
     {
-        private readonly IBoardgameMechanicTagsRepository _boardgameMechanicTagsRepository;
-
-        public AddBoardgameMechanicTagsValidator(IBoardgameMechanicTagsRepository boardgameMechanicTagsRepository)
+        public AddBoardgameMechanicTagsValidator()
         {
-            _boardgameMechanicTagsRepository = boardgameMechanicTagsRepository;
-
             RuleFor(tag => tag.BoardgameId)
                .NotNull()
                .NotEmpty().WithMessage("{PropertyName} cannot be empty");

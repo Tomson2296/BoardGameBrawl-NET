@@ -18,8 +18,8 @@ namespace BoardGameBrawl.Infrastructure
                     
                     var serviceProvider = scope.ServiceProvider;
 
-                    var appUserSeed = serviceProvider.GetRequiredService<ApplicationUserDatabaseSeed>();
-                    await appUserSeed.SeedDatabaseAsync();
+                    //var appUserSeed = serviceProvider.GetRequiredService<ApplicationUserDatabaseSeed>();
+                    //await appUserSeed.SeedDatabaseAsync();
 
                     var boardgameSeed = serviceProvider.GetRequiredService<BoardgamesDatabaseSeed>();
                     await boardgameSeed.SeedDatabaseAsync();

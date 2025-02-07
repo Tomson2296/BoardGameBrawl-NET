@@ -25,7 +25,7 @@ namespace BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameMechan
         {
             cancellationToken.ThrowIfCancellationRequested();
             var boardgameMechanic = _mapper.Map<BoardgameMechanic>(request.BoardgameMechanicDTO);
-            return await _unitOfWork.BoardgameMechanicsRepository.Exists(boardgameMechanic);
+            return await _unitOfWork.BoardgameMechanicsRepository.Exists(boardgameMechanic, cancellationToken);
         }
     }
 }

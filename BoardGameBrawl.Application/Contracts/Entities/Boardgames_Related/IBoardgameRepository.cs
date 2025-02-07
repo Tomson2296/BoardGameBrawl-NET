@@ -7,6 +7,8 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related
     {
         // custom refined methods //
         
+        Task<Boardgame?> GetEntityByBGGId(int id, CancellationToken cancellationToken = default);
+        
         Task<bool> Exists(int bggid, CancellationToken cancellationToken = default);
 
 

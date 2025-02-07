@@ -30,8 +30,4 @@
     <ProjectReference Include="..\BoardGameBrawl.Persistence\BoardGameBrawl.Persistence.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="HttpClient\" />
-  </ItemGroup>
-
 </Project>

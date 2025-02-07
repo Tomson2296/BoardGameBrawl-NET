@@ -20,7 +20,7 @@ namespace BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameCatego
         public async Task<Guid> Handle(GetBoardgameCategoryIdQuery request, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            return await _unitOfWork.BoardgameCategoryRepository.GetBoardgameCategoryIdAsync(request.CategoryName, cancellationToken);
+            return await _unitOfWork.BoardgameCategoriesRepository.GetBoardgameCategoryIdAsync(request.CategoryName, cancellationToken);
         }
     }
 }

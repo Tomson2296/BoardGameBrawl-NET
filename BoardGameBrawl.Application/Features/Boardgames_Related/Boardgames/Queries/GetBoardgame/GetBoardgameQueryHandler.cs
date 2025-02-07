@@ -20,7 +20,7 @@ namespace BoardGameBrawl.Application.Features.Boardgames_Related.Boardgames.Quer
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var boardgame = await _unitOfWork.BoardgameRepository.GetEntity(request.Id);
+            var boardgame = await _unitOfWork.BoardgameRepository.GetEntity(request.Id, cancellationToken);
             return _mapper.Map<BoardgameDTO>(boardgame);
         }
     }

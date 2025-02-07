@@ -18,13 +18,16 @@ namespace BoardGameBrawl.Application.Contracts.Common
         IBoardgameRepository BoardgameRepository { get; }
         IBoardgameMechanicsRepository BoardgameMechanicsRepository { get; }
         IBoardgameMechanicTagsRepository BoardgameMechanicsTagsRepository { get; }
-        IBoardgameCategoriesRepository BoardgameCategoryRepository { get; }
+        IBoardgameCategoriesRepository BoardgameCategoriesRepository { get; }
         IBoardgameCategoryTagsRepository BoardgameCategoryTagsRepository { get; }
+        IBoardgameDomainsRepository BoardgameDomainsRepository { get; }
+        IBoardgameDomainTagsRepository BoardgameDomainTagsRepository { get; }
 
 
         // Group-related repositories
         IGroupRepository GroupRepository { get; }
         IGroupParticipantRepository GroupParticipantRepository { get; }
+
 
         Task CommitChangesAsync();
     }

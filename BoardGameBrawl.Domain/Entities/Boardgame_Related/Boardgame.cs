@@ -25,16 +25,25 @@ namespace BoardGameBrawl.Domain.Entities.Boardgame_Related
 
         public short MaximumPlayingTime { get; set; }
 
-        public float BGGWeight { get; set; }
+        public float AverageBGGWeight { get; set; }
+
+        public float AverageRating { get; set; }
+
+        public float BayesRating { get; set; }
+        
+        public int Owned { get; set; }
 
         public byte[]? Image { get; set; }
         
         public string? Description { get; set; }
 
 
+        public ICollection<BoardgameDomainTag>? BoardgameDomainTags { get; set; }
+
         public ICollection<BoardgameCategoryTag>? BoardgameCategoryTags { get; set; }
 
         public ICollection<BoardgameMechanicTag>? BoardgameMechanicTags { get; set; }
+
 
         public ICollection<MatchRule>? BoardgameRules { get; set; }
 

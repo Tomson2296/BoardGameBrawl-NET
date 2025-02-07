@@ -27,7 +27,7 @@ namespace BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameMechan
         public async Task<BaseCommandResponse> Handle(AddBoardgameMechanicTagCommand request, CancellationToken cancellationToken)
         {
             var response = new BaseCommandResponse();
-            var validator = new AddBoardgameMechanicTagsValidator(_unitOfWork.BoardgameMechanicsTagsRepository);
+            var validator = new AddBoardgameMechanicTagsValidator();
             var validationResult = await validator.ValidateAsync(request.BoardgameMechanicTagDTO, cancellationToken);
 
             if (!validationResult.IsValid)

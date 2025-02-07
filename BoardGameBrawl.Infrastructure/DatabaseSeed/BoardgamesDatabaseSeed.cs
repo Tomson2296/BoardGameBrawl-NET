@@ -11,16 +11,19 @@ namespace BoardGameBrawl.Infrastructure.DatabaseSeed
         private readonly IImageStream _imageStream;
 
         private readonly IBoardgameRepository _boardgameRepository;
+        private readonly IBoardgameDomainsRepository _boardgameDomainsRepository;
+        private readonly IBoardgameDomainTagsRepository _boardgameDomainTagsRepository;
         private readonly IBoardgameCategoriesRepository _boardgameCategoriesRepository;
         private readonly IBoardgameCategoryTagsRepository _boardgameCategoryTagsRepository;
         private readonly IBoardgameMechanicsRepository _boardgameMechanicsRepository;
         private readonly IBoardgameMechanicTagsRepository _boardgameMechanicTagsRepository;
 
-        public BoardgamesDatabaseSeed(
-            MainAppDBContext context, 
-            IImageStream imageStream, 
-            IBoardgameRepository boardgameRepository, 
-            IBoardgameCategoriesRepository boardgameCategoriesRepository, 
+        public BoardgamesDatabaseSeed(MainAppDBContext context,
+            IImageStream imageStream,
+            IBoardgameRepository boardgameRepository,
+            IBoardgameDomainsRepository boardgameDomainsRepository,
+            IBoardgameDomainTagsRepository boardgameDomainTagsRepository,
+            IBoardgameCategoriesRepository boardgameCategoriesRepository,
             IBoardgameCategoryTagsRepository boardgameCategoryTagsRepository,
             IBoardgameMechanicsRepository boardgameMechanicsRepository,
             IBoardgameMechanicTagsRepository boardgameMechanicTagsRepository)
@@ -28,6 +31,8 @@ namespace BoardGameBrawl.Infrastructure.DatabaseSeed
             _context = context;
             _imageStream = imageStream;
             _boardgameRepository = boardgameRepository;
+            _boardgameDomainsRepository = boardgameDomainsRepository;
+            _boardgameDomainTagsRepository = boardgameDomainTagsRepository;
             _boardgameCategoriesRepository = boardgameCategoriesRepository;
             _boardgameCategoryTagsRepository = boardgameCategoryTagsRepository;
             _boardgameMechanicsRepository = boardgameMechanicsRepository;
@@ -36,7 +41,7 @@ namespace BoardGameBrawl.Infrastructure.DatabaseSeed
 
         public async Task SeedDatabaseAsync()
         {
-            await _context.Database.EnsureCreatedAsync();
+            //await _context.Database.EnsureCreatedAsync();
 
             string catalog = Directory.GetCurrentDirectory().ToString();
             string filePath = catalog + "\\Resources\\top100_boardgames_data.csv";
@@ -65,18 +70,23 @@ namespace BoardGameBrawl.Infrastructure.DatabaseSeed
                     bool minPlayingTime_parse = short.TryParse(values[6], out short minPlayingTime);
                     bool maxPlayingTime_parse = short.TryParse(values[7], out short maxPPlayingTime);
                     bool averageWeight_parse = float.TryParse(values[8], out float BGGWeight);
+                    bool rank_parse = int.TryParse(values[9], out int rank);
+                    bool averageRating_parse = float.TryParse(values[10], out float averageRating);
+                    bool bayesRating_parse = float.TryParse(values[11], out float bayesRating);
+                    bool owning_parse = int.TryParse(values[12], out int owning);
 
-                    string[] categories = values[9].Split(",");
-                    string[] mechanics = values[10].Split(",");
-                    string imagePathFile = values[11];
+                    string[] domains = values[13].Split(',');
+                    string[] categories = values[14].Split(",");
+                    string[] mechanics = values[15].Split(",");
+                    string imagePathFile = values[16];
                     string desc;
 
-                    if (count > 13)
+                    if (count > 18)
                     {
                         // recreate boardgame description 
                         StringBuilder descriptionBuilder = new StringBuilder();
-                        descriptionBuilder.Append(values[12]);
-                        for (int j = 13; j < count; j++)
+                        descriptionBuilder.Append(values[17]);
+                        for (int j = 17; j < count; j++)
                         {
                             descriptionBuilder.Append(";" + values[j].Trim());
                         }
@@ -85,7 +95,7 @@ namespace BoardGameBrawl.Infrastructure.DatabaseSeed
                     else
                     {
                         // no ; separation - copy description w/o problems
-                        desc = values[12];
+                        desc = values[17];
                     }
 
                     byte[] image = await _imageStream.ReadImageStreamAsync(imagePathFile);
@@ -101,12 +111,46 @@ namespace BoardGameBrawl.Infrastructure.DatabaseSeed
                         PlayingTime = playingTime,
                         MinimumPlayingTime = minPlayingTime,
                         MaximumPlayingTime = maxPPlayingTime,
-                        BGGWeight = BGGWeight,
+                        AverageBGGWeight = BGGWeight,
+                        AverageRating = averageRating,
+                        BayesRating = bayesRating,
+                        Owned = owning,
                         Description = desc,
                         Image = image
                     };
 
                     await _boardgameRepository.AddEntity(entry);
+
+                    // adding downloaded distinct boardgame domains
+                    // adding relationship boardgame-boardgameDomain
+
+                    foreach (var domain in domains)
+                    {
+                        BoardgameDomain newDomain = new()
+                        {
+                            Domain = domain.Trim()
+                        };
+                        Guid domainId;
+
+                        if (await _boardgameDomainsRepository.Exists(newDomain) == false)
+                        {
+                            domainId = newDomain.Id;
+                            await _boardgameDomainsRepository.AddEntity(newDomain);
+                        }
+                        else
+                        {
+                            domainId = await _boardgameDomainsRepository.GetBoardgameDomainIdAsync(newDomain.Domain);
+                        }
+
+                        BoardgameDomainTag newBoardgameDomainTag = new()
+                        {
+                            BoardgameId = entry.Id,
+                            DomainId = domainId
+                        };
+
+                        await _boardgameDomainTagsRepository.AddEntity(newBoardgameDomainTag);
+                    }
+
 
                     // adding downloaded distinct boardgame categories
                     // adding relationship boardgame-boardgameCategory

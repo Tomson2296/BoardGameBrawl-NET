@@ -26,7 +26,7 @@ namespace BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameCatego
         {
             cancellationToken.ThrowIfCancellationRequested();
             var boardgame = _mapper.Map<BoardgameCategory>(request.BoardgameCategoryDTO);
-            return await _unitOfWork.BoardgameCategoryRepository.Exists(boardgame);
+            return await _unitOfWork.BoardgameCategoriesRepository.Exists(boardgame, cancellationToken);
         }
     }
 }

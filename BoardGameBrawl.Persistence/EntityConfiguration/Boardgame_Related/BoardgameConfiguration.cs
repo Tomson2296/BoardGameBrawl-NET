@@ -30,6 +30,7 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Boardgame_Related
                 .HasMaxLength(4096)
                 .IsRequired();
 
+
             // Each Boardgame have multiple rules associated with them
 
             entity.HasMany(e => e.BoardgameRules)

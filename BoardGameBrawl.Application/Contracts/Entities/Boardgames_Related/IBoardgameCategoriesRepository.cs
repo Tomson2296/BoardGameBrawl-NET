@@ -9,6 +9,7 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related
         
         Task<bool> Exists(BoardgameCategory boardgameCategory,
             CancellationToken cancellationToken = default);
+
         
         // basic fields getter methods //
 

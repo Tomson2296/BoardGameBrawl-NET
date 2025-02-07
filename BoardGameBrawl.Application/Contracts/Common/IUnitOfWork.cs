@@ -11,6 +11,7 @@ namespace BoardGameBrawl.Application.Contracts.Common
         IPlayerPreferenceRepository PlayerPreferenceRepository { get; }
         IPlayerFriendRepository PlayerFriendRepository { get; }
         IPlayerCollectionRepository PlayerCollectionRepository { get; }
+        IPlayerFavouriteBGRepository PlayerFavouriteBGRepository { get; }
 
 
         // Boardgame-related repositories

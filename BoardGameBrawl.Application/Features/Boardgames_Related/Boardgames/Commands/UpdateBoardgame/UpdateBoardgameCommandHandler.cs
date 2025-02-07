@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using BoardGameBrawl.Application.Contracts.Common;
 using BoardGameBrawl.Application.Exceptions;
-using BoardGameBrawl.Application.Validators.Boardgames_Related;
+using BoardGameBrawl.Application.Validators.Boardgames_Related.Boardgames;
 using BoardGameBrawl.Domain.Entities.Boardgame_Related;
 using MediatR;
 using System;

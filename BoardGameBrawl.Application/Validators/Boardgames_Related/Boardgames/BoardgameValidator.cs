@@ -7,12 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BoardGameBrawl.Application.Validators.Boardgames_Related
+namespace BoardGameBrawl.Application.Validators.Boardgames_Related.Boardgames
 {
     public class BoardgameValidator : AbstractValidator<BoardgameDTO>
     {
         private readonly IBoardgameRepository _boardgameRepository;
-        
+
         public BoardgameValidator(IBoardgameRepository boardgameRepository)
         {
             _boardgameRepository = boardgameRepository;

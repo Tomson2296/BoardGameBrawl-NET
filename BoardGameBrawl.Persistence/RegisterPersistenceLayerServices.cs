@@ -30,6 +30,7 @@ namespace BoardGameBrawl.Persistence
             services.AddScoped<IPlayerPreferenceRepository, PlayerPreferenceRepository>();
             services.AddScoped<IPlayerFriendRepository, PlayerFriendRepository>();
             services.AddScoped<IPlayerCollectionRepository, PlayerCollectionRepository>();
+            services.AddScoped<IPlayerFavouriteBGRepository, PlayerFavouriteBGRepository>();
 
             // Register Boardgames-Related repositories
 

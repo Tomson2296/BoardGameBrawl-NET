@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BoardGameBrawl.Application.Contracts.Entities.Player_Related
 {
-    public interface IPlayerCollectionRepository : IGenericRepository<PlayerCollection>
+    public interface IPlayerCollectionRepository : IGenericRepository<PlayerCollection>, IAuditableRepository<PlayerCollection>
     {
 
     }

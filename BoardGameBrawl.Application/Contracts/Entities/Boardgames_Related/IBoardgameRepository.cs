@@ -5,6 +5,11 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related
 {
     public interface IBoardgameRepository : IGenericRepository<Boardgame>, IAuditableRepository<Boardgame>
     {
+        // custom refined methods //
+        
+        Task<bool> Exists(int bggid, CancellationToken cancellationToken = default);
+
+
         // basic fields getter methods //
 
         Task<string?> GetNameAsync(Boardgame boardgame,

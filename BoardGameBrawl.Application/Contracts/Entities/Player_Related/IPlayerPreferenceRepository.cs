@@ -3,10 +3,10 @@ using BoardGameBrawl.Domain.Entities.Player_Related;
 
 namespace BoardGameBrawl.Application.Contracts.Entities.Player_Related
 {
-    public interface IPlayerPreferenceRepository : IGenericRepository<PlayerRreference>
+    public interface IPlayerPreferenceRepository : IGenericRepository<PlayerRreference>, IAuditableRepository<PlayerRreference>
     {
         // refined methods //
-
+        
         Task<bool> Exists(Guid playerId,
             Guid boardgameId, CancellationToken cancellationToken = default);
 

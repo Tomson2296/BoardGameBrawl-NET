@@ -12,6 +12,7 @@ namespace BoardGameBrawl.Application.Profiles
                .ForMember(dest => dest.GroupParticipants, opt => opt.Ignore())
                .ForMember(dest => dest.PlayerRatings, opt => opt.Ignore())
                .ForMember(dest => dest.PlayerCollection, opt => opt.Ignore())
+               .ForMember(dest => dest.PlayerFavouriteBGs, opt => opt.Ignore())
                .ForMember(dest => dest.Friendships, opt => opt.Ignore())
                .ForMember(dest => dest.FriendOfFriendships, opt => opt.Ignore())
                .ReverseMap();
@@ -32,6 +33,7 @@ namespace BoardGameBrawl.Application.Profiles
                .ForMember(dest => dest.GroupParticipants, opt => opt.Ignore())
                .ForMember(dest => dest.PlayerRatings, opt => opt.Ignore())
                .ForMember(dest => dest.PlayerCollection, opt => opt.Ignore())
+               .ForMember(dest => dest.PlayerFavouriteBGs, opt => opt.Ignore())
                .ForMember(dest => dest.Friendships, opt => opt.Ignore())
                .ForMember(dest => dest.FriendOfFriendships, opt => opt.Ignore())
                .ReverseMap();

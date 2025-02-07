@@ -28,6 +28,8 @@ namespace BoardGameBrawl.Domain.Entities.Player_Related
 
         public PlayerCollection? PlayerCollection { get; set; }
 
+        public ICollection<PlayerFavouriteBG>? PlayerFavouriteBGs { get; set; }
+
         public ICollection<GroupParticipant>? GroupParticipants { get; set; }
 
         public ICollection<PlayerRreference>? PlayerRatings { get; set; }

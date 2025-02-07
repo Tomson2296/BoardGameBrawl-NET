@@ -43,6 +43,8 @@ namespace BoardGameBrawl.Persistence
             modelBuilder.ApplyConfiguration(new PlayerConfiguration());
             modelBuilder.ApplyConfiguration(new PlayerPreferenceConfiguration());
             modelBuilder.ApplyConfiguration(new PlayerFriendConfiguration());
+            modelBuilder.ApplyConfiguration(new PlayerCollectionConfiguration());
+            modelBuilder.ApplyConfiguration(new PlayerFavouriteBGConfiguration());
 
             //Tournament-related entities configuration
             modelBuilder.ApplyConfiguration(new TournamentConfiguration());
@@ -69,13 +71,19 @@ namespace BoardGameBrawl.Persistence
 
         public DbSet<Player> Players { get; set; }
 
-        public DbSet<Group> Groups { get; set; }
-
-        public DbSet<GroupParticipant> GroupParticipants { get; set; }
-
         public DbSet<PlayerRreference> PlayerRreferences { get; set; }
 
         public DbSet<PlayerFriend> PlayerFriends { get; set; }
+
+        public DbSet<PlayerCollection> PlayerCollections { get; set; }
+
+        public DbSet<PlayerFavouriteBG> PlayerFavouriteBGs { get; set; }
+
+
+
+        public DbSet<Group> Groups { get; set; }
+
+        public DbSet<GroupParticipant> GroupParticipants { get; set; }
 
 
 

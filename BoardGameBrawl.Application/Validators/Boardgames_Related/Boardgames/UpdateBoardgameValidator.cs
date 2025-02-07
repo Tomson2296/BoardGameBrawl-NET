@@ -8,21 +8,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BoardGameBrawl.Application.Validators.Boardgames_Related
+namespace BoardGameBrawl.Application.Validators.Boardgames_Related.Boardgames
 {
-    public class AddBoardgameValidator : AbstractValidator<BoardgameDTO>
+    public class UpdateBoardgameValidator : AbstractValidator<BoardgameDTO>
     {
         private readonly IBoardgameRepository _boardgameRepository;
 
-        public AddBoardgameValidator(IBoardgameRepository boardgameRepository)
+        public UpdateBoardgameValidator(IBoardgameRepository boardgameRepository)
         {
             _boardgameRepository = boardgameRepository;
 
             Include(new BoardgameValidator(_boardgameRepository));
 
             RuleFor(boardgame => boardgame.Id)
-                .NotNull()
-                .NotEmpty().WithMessage("{PropertyName} cannot be empty");
+               .MustAsync(async (id, token) =>
+               {
+                   var boardgameExists = await _boardgameRepository.Exists(id, token);
+                   return boardgameExists;
+               })
+               .WithMessage("{PropertyName} does not exist.");
         }
     }
 }

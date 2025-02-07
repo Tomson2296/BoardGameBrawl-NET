@@ -7,6 +7,7 @@ namespace BoardGameBrawl.Domain.Entities.Player_Related
     {
         public Guid Id { get; set; } = Guid.NewGuid();
 
+
         [ForeignKey(nameof(RequesterId))]
         public Player? Requester { get; set; }
 

@@ -40,6 +40,8 @@ namespace BoardGameBrawl.Domain.Entities.Boardgame_Related
 
         public ICollection<PlayerRreference>? UserRatings { get; set; }
 
+        public ICollection<PlayerFavouriteBG>? PlayerFavouriteBGs { get; set; }
+
         public ICollection<Match>? Matches { get; set; }
 
         public ICollection<Tournament>? Tournaments { get; set; }

@@ -36,29 +36,29 @@ namespace BoardGameBrawl.Domain.Value_objects
         public string Description { get; set; }
 
         [XmlElement("yearpublished")]
-        public YearPublished YearPublished { get; set; }
+        public BoardGameAttribute YearPublished { get; set; }
 
         [XmlElement("minplayers")]
-        public MinPlayers MinPlayers { get; set; }
+        public BoardGameAttribute MinPlayers { get; set; }
 
         [XmlElement("maxplayers")]
-        public MaxPlayers MaxPlayers { get; set; }
+        public BoardGameAttribute MaxPlayers { get; set; }
 
         [XmlIgnore]
         [XmlElement("poll")]
         public List<BoardGamePoll> Polls { get; set; }
 
         [XmlElement("playingtime")]
-        public PlayingTime PlayingTime { get; set; }
+        public BoardGameAttribute PlayingTime { get; set; }
 
         [XmlElement("minplaytime")]
-        public MinPlayTime MinPlayTime { get; set; }
+        public BoardGameAttribute MinPlayTime { get; set; }
 
         [XmlElement("maxplaytime")]
-        public MaxPlayTime MaxPlayTime { get; set; }
+        public BoardGameAttribute MaxPlayTime { get; set; }
 
         [XmlElement("minage")]
-        public MinAge MinAge { get; set; }
+        public BoardGameAttribute MinAge { get; set; }
 
         [XmlIgnore]
         [XmlElement("poll-summary")]
@@ -66,6 +66,9 @@ namespace BoardGameBrawl.Domain.Value_objects
 
         [XmlElement("link")]
         public List<BoardGameLink> Links { get; set; }
+
+        [XmlElement("statistics")]
+        public BoardGameStatistics Statistics { get; set; }
     }
 
     public class BoardGameName
@@ -80,24 +83,6 @@ namespace BoardGameBrawl.Domain.Value_objects
 
         [XmlAttribute("value")]
         public string Value { get; set; }
-    }
-
-    public class YearPublished
-    {
-        [XmlAttribute("value")]
-        public int Value { get; set; }
-    }
-
-    public class MinPlayers
-    {
-        [XmlAttribute("value")]
-        public byte Value { get; set; }
-    }
-
-    public class MaxPlayers
-    {
-        [XmlAttribute("value")]
-        public byte Value { get; set; }
     }
 
     public class BoardGamePoll
@@ -136,30 +121,6 @@ namespace BoardGameBrawl.Domain.Value_objects
         public int? Level { get; set; }
     }
 
-    public class PlayingTime
-    {
-        [XmlAttribute("value")]
-        public int Value { get; set; }
-    }
-
-    public class MinPlayTime
-    {
-        [XmlAttribute("value")]
-        public int Value { get; set; }
-    }
-
-    public class MaxPlayTime
-    {
-        [XmlAttribute("value")]
-        public int Value { get; set; }
-    }
-
-    public class MinAge
-    {
-        [XmlAttribute("value")]
-        public int Value { get; set; }
-    }
-
     public class PollSummary
     {
         [XmlElement("result")]
@@ -187,4 +148,90 @@ namespace BoardGameBrawl.Domain.Value_objects
         [XmlAttribute("value")]
         public string Value { get; set; }
     }
+
+    public class BoardGameStatistics
+    {
+        [XmlAttribute("value")]
+        public string Value { get; set; }
+
+        [XmlElement("ratings")]
+        public BoardGameRatings Rating { get; set; }
+    }
+
+    public class BoardGameRatings
+    {
+        [XmlElement("usersrated")]
+        public BoardGameAttribute UsersRated { get; set; }
+
+        [XmlElement("average")]
+        public BoardGameDecimalAttribute Average { get; set; }
+
+        [XmlElement("bayesaverage")]
+        public BoardGameDecimalAttribute BayesAverage { get; set; }
+
+        [XmlArray("ranks")]
+        [XmlArrayItem("rank")]
+        public List<BoardGameRank> Ranks { get; set; }
+
+        [XmlElement("stddev")]
+        public BoardGameDecimalAttribute StandardDeviation { get; set; }
+
+        [XmlElement("median")]
+        public BoardGameAttribute Median { get; set; }
+
+        [XmlElement("owned")]
+        public BoardGameAttribute Owned { get; set; }
+
+        [XmlElement("trading")]
+        public BoardGameAttribute Trading { get; set; }
+
+        [XmlElement("wanting")]
+        public BoardGameAttribute Wanting { get; set; }
+
+        [XmlElement("wishing")]
+        public BoardGameAttribute Wishing { get; set; }
+
+        [XmlElement("numcomments")]
+        public BoardGameAttribute NumComments { get; set; }
+
+        [XmlElement("numweights")]
+        public BoardGameAttribute NumWeights { get; set; }
+
+        [XmlElement("averageweight")]
+        public BoardGameDecimalAttribute AverageWeight { get; set; }
+    }
+
+    public class BoardGameRank
+    {
+        [XmlAttribute("type")]
+        public string Type { get; set; }
+
+        [XmlAttribute("id")]
+        public int Id { get; set; }
+
+        [XmlAttribute("name")]
+        public string Name { get; set; }
+
+        [XmlAttribute("friendlyname")]
+        public string FriendlyName { get; set; }
+
+        [XmlAttribute("value")]
+        public int Value { get; set; }
+
+        [XmlAttribute("bayesaverage")]
+        public double BayesAverage { get; set; }
+    }
+
+    public class BoardGameAttribute
+    {
+        [XmlAttribute("value")]
+        public int Value { get; set; }
+    }
+
+    public class BoardGameDecimalAttribute
+    {
+        [XmlAttribute("value")]
+        public double Value { get; set; }
+    }
+
 }

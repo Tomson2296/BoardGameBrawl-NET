@@ -1,8 +1,9 @@
-﻿using BoardGameBrawl.Domain.Entities.Boardgame_Related;
+﻿using BoardGameBrawl.Domain.Common;
+using BoardGameBrawl.Domain.Entities.Boardgame_Related;
 
 namespace BoardGameBrawl.Domain.Entities.Player_Related
 {
-    public class PlayerRreference
+    public class PlayerRreference : BaseEntity
     {
         public Guid PlayerId { get; set; }
 

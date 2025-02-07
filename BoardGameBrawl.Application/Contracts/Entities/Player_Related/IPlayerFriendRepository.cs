@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BoardGameBrawl.Application.Contracts.Entities.Player_Related
 {
-    public interface IPlayerFriendRepository : IGenericRepository<PlayerFriend>
+    public interface IPlayerFriendRepository : IGenericRepository<PlayerFriend>, IAuditableRepository<PlayerFriend>
     {
         // getter methods //
 

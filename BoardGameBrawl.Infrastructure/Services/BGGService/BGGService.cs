@@ -23,7 +23,7 @@ namespace BoardGameBrawl.Infrastructure.Services.BGGService
             const int maxRetries = 5;
             const int initialDelayMs = 1000;
 
-            string apiUrl = $"https://boardgamegeek.com/xmlapi2/thing?type=boardgame&stats=1&id={bggBoardgameId}";
+            string apiUrl = $"https://boardgamegeek.com/xmlapi2/thing?type=boardgame&id={bggBoardgameId}&stats=1";
 
             try
             {
@@ -96,7 +96,7 @@ namespace BoardGameBrawl.Infrastructure.Services.BGGService
             const int initialDelayMs = 1000;
             var retryCount = 0;
             var lowerUserName = bggUsername.ToLowerInvariant();
-            var apiPath = $"collection?username={lowerUserName}&own=1&subtype=boardgame&excludesubtype=boardgameexpansion";
+            var apiPath = $"https://boardgamegeek.com/xmlapi2/collection?username={lowerUserName}&own=1&subtype=boardgame&excludesubtype=boardgameexpansion";
 
             try
             {

@@ -1,5 +1,7 @@
-﻿using BoardGameBrawl.Domain.Entities.Player_Related;
+﻿#nullable disable
+using BoardGameBrawl.Domain.Entities.Player_Related;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Newtonsoft.Json;
 
@@ -22,10 +24,14 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Player_Related
 
             entity.Property(e => e.BoardgameCollection)
                 .HasConversion(
-                     v => JsonConvert.SerializeObject(v),
-                     v => JsonConvert.DeserializeObject<IList<int>>(v));
+                    v => JsonConvert.SerializeObject(v),
+                    v => JsonConvert.DeserializeObject<IList<int>>(v),
+                    new ValueComparer<IList<int>>(
+                    (c1, c2) => c1.SequenceEqual(c2),
+                    c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                    c => c.ToList()));
 
-            entity.ToTable("UserCollections");
+            entity.ToTable("PlayerCollections");
         }
     }
 }

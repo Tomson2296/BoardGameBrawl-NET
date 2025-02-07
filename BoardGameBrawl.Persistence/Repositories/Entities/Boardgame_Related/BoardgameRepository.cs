@@ -1,6 +1,7 @@
 ﻿using BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related;
 using BoardGameBrawl.Domain.Entities.Boardgame_Related;
 using BoardGameBrawl.Persistence.Repositories.Common;
+using Microsoft.EntityFrameworkCore;
 
 namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
 {
@@ -8,6 +9,12 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
     {
         public BoardgameRepository(MainAppDBContext context) : base(context)
         { }
+
+        public async Task<bool> Exists(int bggid, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return await Context.Boardgames.AnyAsync(b => b.BGGId == bggid, cancellationToken);
+        }
 
 
         // getter methods //

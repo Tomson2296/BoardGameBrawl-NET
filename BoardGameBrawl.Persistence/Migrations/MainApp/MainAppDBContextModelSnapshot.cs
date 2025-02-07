@@ -449,9 +449,25 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
                     b.HasKey("Id");
 
                     b.HasIndex("PlayerId")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasDatabaseName("PlayerIndex");
 
-                    b.ToTable("PlayerCollection", "dbo");
+                    b.ToTable("PlayerCollections", "dbo");
+                });
+
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Player_Related.PlayerFavouriteBG", b =>
+                {
+                    b.Property<Guid>("PlayerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("BoardgameId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("PlayerId", "BoardgameId");
+
+                    b.HasIndex("BoardgameId");
+
+                    b.ToTable("PlayerFavouriteBoardgames", "dbo");
                 });
 
             modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Player_Related.PlayerFriend", b =>
@@ -708,6 +724,25 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
                     b.Navigation("Player");
                 });
 
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Player_Related.PlayerFavouriteBG", b =>
+                {
+                    b.HasOne("BoardGameBrawl.Domain.Entities.Boardgame_Related.Boardgame", "Boardgame")
+                        .WithMany("PlayerFavouriteBGs")
+                        .HasForeignKey("BoardgameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BoardGameBrawl.Domain.Entities.Player_Related.Player", "Player")
+                        .WithMany("PlayerFavouriteBGs")
+                        .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Boardgame");
+
+                    b.Navigation("Player");
+                });
+
             modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Player_Related.PlayerFriend", b =>
                 {
                     b.HasOne("BoardGameBrawl.Domain.Entities.Player_Related.Player", "Addressee")
@@ -780,6 +815,8 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
 
                     b.Navigation("Matches");
 
+                    b.Navigation("PlayerFavouriteBGs");
+
                     b.Navigation("TournamentMatches");
 
                     b.Navigation("Tournaments");
@@ -811,6 +848,8 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
                     b.Navigation("GroupParticipants");
 
                     b.Navigation("PlayerCollection");
+
+                    b.Navigation("PlayerFavouriteBGs");
 
                     b.Navigation("PlayerRatings");
                 });

@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using BoardGameBrawl.Application.Contracts.Common;
 using BoardGameBrawl.Application.Responses;
-using BoardGameBrawl.Application.Validators.Boardgames_Related;
+using BoardGameBrawl.Application.Validators.Boardgames_Related.Boardgames;
 using BoardGameBrawl.Domain.Entities.Boardgame_Related;
 using MediatR;
 
@@ -41,6 +41,8 @@ namespace BoardGameBrawl.Application.Features.Boardgames_Related.Boardgames.Comm
 
                 await _unitOfWork.BoardgameRepository.AddEntity(boardgame, cancellationToken);
                 await _unitOfWork.CommitChangesAsync();
+
+
 
                 response.Success = true;
                 response.Message = "Creation Successful";

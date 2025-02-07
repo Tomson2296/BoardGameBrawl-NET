@@ -1,6 +1,7 @@
 ﻿using BoardGameBrawl.Infrastructure.DatabaseSeed;
 using BoardGameBrawl.Infrastructure.EmailSender;
 using BoardGameBrawl.Infrastructure.Services.BGGService;
+using BoardGameBrawl.Infrastructure.Services.ImageDownloader;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BoardGameBrawl.Infrastructure
@@ -19,6 +20,12 @@ namespace BoardGameBrawl.Infrastructure
 
             // Register BGGService
             services.AddTransient<IBGGService, BGGService>();
+
+            //Register ImageDownloader Service
+            services.AddHttpClient<IImageDownloaderService, ImageDownloaderService>(client =>
+            {
+                client.DefaultRequestHeaders.UserAgent.ParseAdd("BoardGameBrawl-NET");
+            });
          
             return Task.FromResult(services);
         }

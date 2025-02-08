@@ -21,7 +21,24 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
             return entity != null;
         }
 
+
         // getter methods //
+
+        public async Task<PlayerRreference> GetPlayerPreferenceByBoardgameIdAsync(Guid playerId,
+           Guid boardgameId,
+           CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(playerId);
+            ArgumentNullException.ThrowIfNull(boardgameId);
+
+            var playerPreference = await _context.PlayerRreferences.FirstOrDefaultAsync(e => e.PlayerId == playerId && e.BoardgameId == boardgameId, cancellationToken);
+
+            if (playerPreference != null)
+                return playerPreference;
+            else
+                throw new ApplicationException("Entity has not been found");
+        }
 
         public async Task<IDictionary<Guid, byte>> GetAllPlayerPreferencesAsync(Guid playerId,
             CancellationToken cancellationToken = default)
@@ -45,22 +62,27 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
             }
         }
 
-        public async Task<PlayerRreference> GetPlayerPreferenceByBoardgameIdAsync(Guid playerId,
-            Guid boardgameId,
+        public async Task<IDictionary<Guid, byte>> GetAllBoardgamePrefencesAsync(Guid boardgameId, 
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            ArgumentNullException.ThrowIfNull(playerId);
             ArgumentNullException.ThrowIfNull(boardgameId);
 
-            var playerPreference = await _context.PlayerRreferences.FirstOrDefaultAsync(e => e.PlayerId == playerId && e.BoardgameId == boardgameId, cancellationToken);
+            bool isBoardgamePreferenceExists = await _context.PlayerRreferences.AnyAsync(e => e.BoardgameId == boardgameId, cancellationToken);
 
-            if (playerPreference != null)
-                return playerPreference;
+            if (isBoardgamePreferenceExists == false)
+            {
+                throw new ArgumentException("Entity has not been found");
+            }
             else
-                throw new ApplicationException("Entity has not been found");
-        }
+            {
+                var boardgamePreferences = await _context.PlayerRreferences
+                        .Where(e => e.BoardgameId == boardgameId)
+                        .ToDictionaryAsync(e => e.PlayerId, e => e.Rating, cancellationToken);
 
+                return boardgamePreferences;
+            }
+        }
 
         // setter methods //
 

@@ -27,7 +27,7 @@ namespace BoardGameBrawl.App
             app.UseAuthorization();
 
             app.MapRazorPages();
-
+            
             //app.SeedSQLDatabases();
 
             return app;

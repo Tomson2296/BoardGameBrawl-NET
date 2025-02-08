@@ -2,7 +2,7 @@
 using BoardGameBrawl.Application.DTOs.Entities.Player_Related;
 using FluentValidation;
 
-namespace BoardGameBrawl.Application.Validators.Player_Related
+namespace BoardGameBrawl.Application.Validators.Player_Related.Players
 {
     public class AddPlayerValidator : AbstractValidator<PlayerDTO>
     {
@@ -16,7 +16,8 @@ namespace BoardGameBrawl.Application.Validators.Player_Related
 
             RuleFor(player => player.Id)
                 .NotNull()
-                .NotEmpty().WithMessage("{PropertyName} cannot be empty");
+                .NotEmpty()
+                .WithMessage("{PropertyName} cannot be empty");
         }
     }
 }

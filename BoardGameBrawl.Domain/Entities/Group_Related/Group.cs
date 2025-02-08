@@ -6,7 +6,7 @@ namespace BoardGameBrawl.Domain.Entities.Group_Related
     {
         public Guid Id { get; set; } = Guid.NewGuid();
 
-        public string? GroupName { get; set; }
+        public required string GroupName { get; set; }
 
         public string? GroupDescription { get; set; }
 

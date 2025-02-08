@@ -20,6 +20,9 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Player_Related
         Task<IDictionary<Guid, byte>> GetAllPlayerPreferencesAsync(Guid playerId,
             CancellationToken cancellationToken = default);
 
+        Task<IDictionary<Guid, byte>> GetAllBoardgamePrefencesAsync(Guid boardgameId,
+            CancellationToken cancellationToken = default);
+
 
         // setter methods //
 

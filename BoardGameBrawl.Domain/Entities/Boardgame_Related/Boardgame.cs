@@ -9,11 +9,13 @@ namespace BoardGameBrawl.Domain.Entities.Boardgame_Related
     {
         public Guid Id { get; set; } = Guid.NewGuid();
 
-        public string? Name { get; set; }
+        public required string Name { get; set; }
 
         public int BGGId { get; set; }
         
         public short YearPublished { get; set; }
+
+        public byte MinAge { get; set; }
 
         public byte MinPlayers { get; set; }
         
@@ -27,15 +29,17 @@ namespace BoardGameBrawl.Domain.Entities.Boardgame_Related
 
         public float AverageBGGWeight { get; set; }
 
+        public int Rank { get; set; }
+
         public float AverageRating { get; set; }
 
         public float BayesRating { get; set; }
         
         public int Owned { get; set; }
 
-        public byte[]? Image { get; set; }
+        public required byte[] Image { get; set; }
         
-        public string? Description { get; set; }
+        public required string Description { get; set; }
 
 
         public ICollection<BoardgameDomainTag>? BoardgameDomainTags { get; set; }

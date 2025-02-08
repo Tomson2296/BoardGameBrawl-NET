@@ -1,6 +1,5 @@
 ﻿#nullable disable
 using BoardGameBrawl.Application.Contracts.Common;
-using BoardGameBrawl.Domain.Entities.Player_Related;
 using Microsoft.EntityFrameworkCore;
 
 namespace BoardGameBrawl.Persistence.Repositories.Common
@@ -46,7 +45,6 @@ namespace BoardGameBrawl.Persistence.Repositories.Common
                 throw new ApplicationException("An error occurred while retrieving a batch of entities.", ex);
             }
         }
-
         public async Task<IList<T>> GetAllEntities(CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();

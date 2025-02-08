@@ -24,11 +24,19 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Player_Related
                .IsRequired()
                .OnDelete(DeleteBehavior.Cascade);
 
+            entity.Property(e => e.PlayerName)
+                .HasMaxLength(256)
+                .IsRequired();
+
             entity.HasOne(e => e.Boardgame)
                 .WithMany(e => e.PlayerFavouriteBGs)
                 .HasForeignKey(e => e.BoardgameId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
+
+            entity.Property(e => e.BoardgameName)
+                .HasMaxLength(256)
+                .IsRequired();
 
             entity.ToTable("PlayerFavouriteBoardgames");
         }

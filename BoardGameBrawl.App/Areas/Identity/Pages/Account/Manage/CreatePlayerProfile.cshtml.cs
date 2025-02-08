@@ -107,7 +107,7 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account.Manage
                 {
                     Id = Guid.NewGuid(),
                     ApplicationUserId = user.Id,
-                    UserName = Input.UserName,
+                    PlayerName = Input.UserName,
                     Email = Input.Email,
                     FirstName = Input.FirstName,
                     LastName = Input.LastName,

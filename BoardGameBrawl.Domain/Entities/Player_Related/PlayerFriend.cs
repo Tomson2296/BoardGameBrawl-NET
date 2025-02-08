@@ -13,11 +13,15 @@ namespace BoardGameBrawl.Domain.Entities.Player_Related
 
         public Guid RequesterId { get; set; }
 
+        public required string RequesterName { get; set; }
+
 
         [ForeignKey(nameof(AddresseeId))]
         public Player? Addressee { get; set; }
 
         public Guid AddresseeId { get; set; }
+
+        public required string AddresseeName { get; set; }
 
 
         public DateTime FriendshipDate { get; set; }

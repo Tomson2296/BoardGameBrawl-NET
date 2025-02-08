@@ -22,6 +22,10 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Player_Related
                 .HasDatabaseName("PlayerIndex")
                 .IsUnique();
 
+            entity.Property(e => e.PlayerName)
+                .HasMaxLength(256)
+                .IsRequired();
+
             entity.Property(e => e.BoardgameCollection)
                 .HasConversion(
                     v => JsonConvert.SerializeObject(v),

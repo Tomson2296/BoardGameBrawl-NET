@@ -18,6 +18,14 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Group_Related
                 .WithMany(u => u.GroupParticipants)
                 .HasForeignKey(e => e.PlayerId);
 
+            entity.Property(e => e.GroupName)
+                .HasMaxLength(256)
+                .IsRequired();
+
+            entity.Property(e => e.PlayerName)
+                .HasMaxLength(256)
+                .IsRequired();
+
             entity.Property(e => e.IsAdmin)
                 .IsRequired();
 

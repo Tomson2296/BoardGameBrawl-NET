@@ -13,7 +13,7 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Player_Related
             entity.Property(e => e.ApplicationUserId)
                 .IsRequired();
 
-            entity.Property(e => e.UserName)
+            entity.Property(e => e.PlayerName)
                 .HasMaxLength(256)
                 .IsRequired();
 
@@ -47,7 +47,7 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Player_Related
                 .HasDatabaseName("ApplicationUserIdIndex")
                 .IsUnique();
 
-            entity.HasIndex(e => e.UserName)
+            entity.HasIndex(e => e.PlayerName)
                 .HasDatabaseName("UserNameIndex")
                 .IsUnique();
 

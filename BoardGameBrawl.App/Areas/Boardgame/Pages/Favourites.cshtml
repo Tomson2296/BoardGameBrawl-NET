@@ -1,0 +1,77 @@
+﻿@page "{BoardgameId:int}"
+@model BoardGameBrawl.App.Areas.Boardgame.Pages.FavouritesModel
+@{
+    ViewData["title"] = "Rate this game / add to favourites";
+}
+
+<partial name="_BoardgameNavPartial" model="@Model.TargetBoardgame" />
+<partial name="_StatusMessage" for="StatusMessage" />
+
+<div class="container">
+    <h3> @ViewData["title"] </h3>
+    <br />
+    <div class="row">
+        <form method="post">
+            <div class="star-rating">
+                @for (int i = 1; i <= 5; i++)
+                {
+                    <span class="star" data-value="@i" onclick="setRating(@i)">★</span>
+                }
+            </div>
+            <input type="hidden" asp-for="Rating" id="selectedRating" />
+            <button type="submit" class="btn btn-primary mt-3">Submit Rating</button>
+        </form>
+    </div>
+    <div class="row">
+
+    </div>
+</div>
+
+<style>
+    .star-rating {
+        font-size: 2em;
+        cursor: pointer;
+    }
+
+    .star {
+        color: #ddd;
+        transition: color 0.2s;
+    }
+
+    .star.highlighted,
+    .star:hover {
+        color: #ffd700;
+    }
+</style>
+
+
+@section Scripts {
+    <script>
+        let currentRating = 0;
+
+        function setRating(rating) {
+            currentRating = rating;
+            document.getElementById('selectedRating').value = rating;
+
+            // Update star display
+            const stars = document.querySelectorAll('.star');
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('highlighted');
+                } else {
+                    star.classList.remove('highlighted');
+                }
+            });
+        }
+
+        // Initialize click handlers
+        document.querySelectorAll('.star').forEach(star => {
+            star.addEventListener('click', function() {
+                // Toggle off if clicking the same rating
+                if (currentRating === parseInt(this.dataset.value)) {
+                    setRating(0);
+                }
+            });
+        });
+    </script>
+}

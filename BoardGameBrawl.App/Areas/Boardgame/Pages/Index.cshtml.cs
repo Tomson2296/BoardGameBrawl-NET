@@ -4,6 +4,10 @@ using BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameCategories
 using BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameCategories.Queries.CheckIfBoardgameCategoryExists;
 using BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameCategories.Queries.GetBoardgameCategoryId;
 using BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameCategoryTags.Commands.AddBoardgameCategoryTag;
+using BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameDomains.Commands.AddBoardgameDomain;
+using BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameDomains.Queries.CheckIfBoardgameDomainExists;
+using BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameDomains.Queries.GetBoardgameDomainId;
+using BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameDomainTags.Commands.AddBoardgameDomainTag;
 using BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameMechanics.Commands.AddBoardgameMechanic;
 using BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameMechanics.Queries.CheckIfBoardgameMechanicExists;
 using BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameMechanics.Queries.GetBoardgameMechanicId;
@@ -11,7 +15,7 @@ using BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameMechanicTa
 using BoardGameBrawl.Application.Features.Boardgames_Related.Boardgames.Commands.AddBoardgame;
 using BoardGameBrawl.Application.Features.Boardgames_Related.Boardgames.Queries.CheckIfBoardgameExists;
 using BoardGameBrawl.Application.Features.Boardgames_Related.Boardgames.Queries.GetBoardgameByBGGId;
-using BoardGameBrawl.Application.Services;
+using BoardGameBrawl.Application.Services.String;
 using BoardGameBrawl.Domain.Entities;
 using BoardGameBrawl.Domain.Value_objects;
 using BoardGameBrawl.Infrastructure.Services.BGGService;
@@ -30,18 +34,20 @@ namespace BoardGameBrawl.App.Areas.Boardgame.Pages
         private readonly IImageDownloaderService _imageDownloaderService;
         private readonly IMediator _mediator;
         private readonly IStringCleaner _stringCleaner;
+        private readonly IStringFormatter _stringFormatter;
 
         public IndexModel(UserManager<ApplicationUser> userManager,
             IBGGService bGGAPIService,
             IImageDownloaderService imageDownloaderService,
-            IMediator mediator,
-            IStringCleaner stringCleaner)
+            IMediator mediator, IStringCleaner stringCleaner,
+            IStringFormatter stringFormatter)
         {
             _userManager = userManager;
             _BGGAPIService = bGGAPIService;
             _imageDownloaderService = imageDownloaderService;
             _mediator = mediator;
             _stringCleaner = stringCleaner;
+            _stringFormatter = stringFormatter;
         }
 
         [BindProperty(SupportsGet = true)]
@@ -50,8 +56,6 @@ namespace BoardGameBrawl.App.Areas.Boardgame.Pages
         [TempData]
         public string StatusMessage { get; set; }
         
-        public BoardgameItemResponse Boardgame { get; set; }
-
         public BoardgameDTO BoardgameDTO { get; set; }
 
         public bool IsBoardgameExistsInDB { get; set; }
@@ -85,33 +89,49 @@ namespace BoardGameBrawl.App.Areas.Boardgame.Pages
             return Page();
         }
 
+        private async Task<IList<string>> GetBoardgameDescription(string boardgameDesc)
+        {
+            IList<string> modifiedDescString = new List<string>();
+
+            string breakingLineString = "\n";
+            if (boardgameDesc.Contains(breakingLineString))
+            {
+                modifiedDescString = boardgameDesc.Split(breakingLineString);
+            }
+            return await Task.FromResult(modifiedDescString);
+        }
+
         private async Task<IActionResult> AddBoardgameToDatabase()
         {
             try
             {
                 // add new boardgame to database
-                Boardgame = await _BGGAPIService.GetBGGBoardGameInfoAsync(BoardgameId);
-                string boardgameDescription = _stringCleaner.CleanDescription(Boardgame.Item.Description);
-                string gameName = Boardgame.Item.Names.Where(l => l.Type == "primary").First().Value;
+                BoardgameItemResponse boardgame = await _BGGAPIService.GetBGGBoardGameInfoAsync(BoardgameId);
+                string boardgameDescription = _stringCleaner.CleanDescription(boardgame.Item.Description);
+                string gameName = boardgame.Item.Names.Where(l => l.Type == "primary").First().Value;
 
                 // create boardgameDTO object 
                 BoardgameDTO boardgameObject = new()
                 {
                     Id = Guid.NewGuid(),
                     Name = gameName,
-                    BGGId = Boardgame.Item.Id,
+                    BGGId = boardgame.Item.Id,
                     Description = boardgameDescription,
-                    AverageBGGWeight = ((float)Boardgame.Item.Statistics.Rating.AverageWeight.Value),
-                    MaximumPlayingTime = ((short)Boardgame.Item.MaxPlayTime.Value),
-                    MaxPlayers = ((byte)Boardgame.Item.MaxPlayers.Value),
-                    MinimumPlayingTime = ((short)Boardgame.Item.MinPlayTime.Value),
-                    MinPlayers = ((byte)Boardgame.Item.MinPlayers.Value),
-                    PlayingTime = ((short)Boardgame.Item.PlayingTime.Value),
-                    YearPublished = ((short)Boardgame.Item.YearPublished.Value)
+                    AverageBGGWeight = ((float)boardgame.Item.Statistics.Rating.AverageWeight.Value),
+                    MaximumPlayingTime = ((short)boardgame.Item.MaxPlayTime.Value),
+                    MaxPlayers = ((byte)boardgame.Item.MaxPlayers.Value),
+                    MinimumPlayingTime = ((short)boardgame.Item.MinPlayTime.Value),
+                    MinPlayers = ((byte)boardgame.Item.MinPlayers.Value),
+                    PlayingTime = ((short)boardgame.Item.PlayingTime.Value),
+                    MinAge = ((byte)boardgame.Item.MinAge.Value),
+                    YearPublished = ((short)boardgame.Item.YearPublished.Value),
+                    AverageRating = ((float)boardgame.Item.Statistics.Rating.Average.Value),
+                    BayesRating = ((float)boardgame.Item.Statistics.Rating.BayesAverage.Value),
+                    Owned = boardgame.Item.Statistics.Rating.Owned.Value
                 };
 
                 // download boardgame image
-                string boardgameImageUrl = Boardgame.Item.Image;
+                string boardgameImageUrl = boardgame.Item.Image;
                 byte[] image = await _imageDownloaderService.DownloadImageAsync(boardgameImageUrl);
                 boardgameObject.Image = image;
 
@@ -126,9 +146,65 @@ namespace BoardGameBrawl.App.Areas.Boardgame.Pages
                     return Page();
                 }
 
-                // add boardgamecategories first
+                // add boardgame domains - format boardgamedomains before adding to database using StringFormatter
+                List<string> boardgameDomains = boardgame.Item.Statistics.Rating.Ranks.Where(r => r.Type == "family").Select(r => r.Name).ToList();
+                
+                List<string> formattedDomains = new List<string>();
+                foreach (var domainDesc in boardgameDomains)
+                {
+                    var formattedString = _stringFormatter.FormatString(domainDesc);
+                    formattedDomains.Add(formattedString);
+                }
+
+                foreach (var domain in formattedDomains)
+                {
+                    BoardgameDomainDTO boardgameDomain = new()
+                    {
+                        Domain = domain
+                    };
+
+                    var checkQuery = new CheckIfBoardgameDomainExistsQuery { BoardgameDomainDTO = boardgameDomain };
+                    bool domainExists = await _mediator.Send(checkQuery);
+
+                    if (domainExists)
+                    {
+                        var getDomainId = new GetBoardgameDomainIdQuery { DomainName = domain };
+                        boardgameDomain.Id = await _mediator.Send(getDomainId);
+                    }
+                    else
+                    {
+                        boardgameDomain.Id = Guid.NewGuid();
+                        var addDomainCommand = new AddBoardgameDomainCommand{ BoardgameDomainDTO = boardgameDomain };
+                        var addBoardgameDomainResult = await _mediator.Send(addDomainCommand);
+
+                        if (!addBoardgameDomainResult.Success)
+                        {
+                            ModelState.AddModelError("Command", addBoardgameDomainResult.Message);
+                            StatusMessage = "Error: " + addBoardgameDomainResult.Message;
+                            return Page();
+                        }
+                    }
+
+                    BoardgameDomainTagDTO newBoardgameDomainTag = new()
+                    {
+                        BoardgameId = boardgameObject.Id,
+                        DomainId = boardgameDomain.Id
+                    };
+
+                    var addBoardgameDomainTagCommand = new AddBoardgameDomainTagCommand { BoardgameDomainTagDTO = newBoardgameDomainTag };
+                    var addBoardgameDomainTagResult = await _mediator.Send(addBoardgameDomainTagCommand);
+
+                    if (!addBoardgameDomainTagResult.Success)
+                    {
+                        ModelState.AddModelError("Command", addBoardgameDomainTagResult.Message);
+                        StatusMessage = "Error: " + addBoardgameDomainTagResult.Message;
+                        return Page();
+                    }
+                }
+
+                // add boardgamecategories
                 // get list of boardgame categories 
-                List<string> boardgameCategories = Boardgame.Item.Links.Where(l => l.Type == "boardgamecategory").Select(l => l.Value).ToList();
+                List<string> boardgameCategories = boardgame.Item.Links.Where(l => l.Type == "boardgamecategory").Select(l => l.Value).ToList();
 
                 // iterate on every category
                 foreach (var category in boardgameCategories)
@@ -183,7 +259,7 @@ namespace BoardGameBrawl.App.Areas.Boardgame.Pages
                 }
                 
                 // add boardgame mechanics second
-                List<string> boardgameMechanics = Boardgame.Item.Links.Where(l => l.Type == "boardgamemechanic").Select(l => l.Value).ToList();
+                List<string> boardgameMechanics = boardgame.Item.Links.Where(l => l.Type == "boardgamemechanic").Select(l => l.Value).ToList();
 
                 foreach (var mechanic in boardgameMechanics)
                 {
@@ -240,26 +316,5 @@ namespace BoardGameBrawl.App.Areas.Boardgame.Pages
                 return Page();
             }
         }
-        
-        //private Task<IList<string>> GetBoardgameDescription(string boardgameDesc)
-        //{
-        //    IList<string> modifiedDescString = new List<string>();
-
-        //    string breakingLineString = "&#10;";
-
-        //    if (boardgameDesc.Contains(breakingLineString))
-        //    {
-        //        modifiedDescString = boardgameDesc.Split(breakingLineString);
-        //    }
-
-        //    for (int i = 0; i < modifiedDescString.Count; i++)
-        //    {
-        //        string oldString = modifiedDescString.ElementAt(i).ToString();
-        //        if (string.IsNullOrEmpty(oldString)) continue;
-        //        string decodedString = System.Web.HttpUtility.HtmlDecode(modifiedDescString.ElementAt(i));
-        //        modifiedDescString[i] = decodedString;
-        //    }
-        //    return Task.FromResult(modifiedDescString);
-        //}
     }
 }

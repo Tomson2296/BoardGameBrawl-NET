@@ -2,7 +2,7 @@
 using BoardGameBrawl.Application.Contracts.Common;
 using BoardGameBrawl.Application.Exceptions;
 using BoardGameBrawl.Application.Responses;
-using BoardGameBrawl.Application.Validators.Player_Related;
+using BoardGameBrawl.Application.Validators.Player_Related.Players;
 using BoardGameBrawl.Domain.Entities.Player_Related;
 using MediatR;
 

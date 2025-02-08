@@ -13,6 +13,10 @@ namespace BoardGameBrawl.Application.DTOs.Entities.Boardgame_Related
     {
         public Guid BoardgameId { get; set; }
 
+        public string? BoardgameName { get; set; }
+
         public Guid CategoryId { get; set; }
+
+        public string? CategoryName { get; set; }
     }
 }

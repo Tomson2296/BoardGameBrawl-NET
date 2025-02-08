@@ -12,6 +12,10 @@ namespace BoardGameBrawl.Domain.Entities.Player_Related
 
         public Guid PlayerId { get; set; }
 
+        public required string PlayerName { get; set; }    
+
         public IList<int>? BoardgameCollection { get; set; }
+
+        public bool IsCollectionCreated { get; set; }
     }
 }

@@ -13,9 +13,17 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Player_Related
                .WithMany(u => u.PlayerRatings)
                .HasForeignKey(e => e.PlayerId);
 
+            entity.Property(e => e.PlayerName)
+               .HasMaxLength(256)
+               .IsRequired();
+
             entity.HasOne(e => e.Boardgame)
                 .WithMany(b => b.UserRatings)
                 .HasForeignKey(e => e.BoardgameId);
+
+            entity.Property(e => e.BoardgameName)
+               .HasMaxLength(256)
+               .IsRequired();
 
             entity.Property(e => e.Rating)
                .IsRequired();

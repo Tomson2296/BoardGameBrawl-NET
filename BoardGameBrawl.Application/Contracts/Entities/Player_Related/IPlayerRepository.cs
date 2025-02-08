@@ -7,6 +7,8 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Player_Related
     {
         // custom PlayerRepository methods //
 
+        Task<IList<Player>> GetFilteredBatchOfPlayersAsync(string filter, int size, int skip = 0, CancellationToken cancellationToken = default);
+
         Task<Player?> GetPlayerByApplicationUserIdAsync(Guid applicationUserId,
             CancellationToken cancellationToken = default);
 
@@ -16,10 +18,10 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Player_Related
         Task<Guid> GetApplicationUserIdAsync(Player player,
             CancellationToken cancellationToken = default);
 
-        Task<string?> GetUsernameAsync(Player player,
+        Task<string> GetUsernameAsync(Player player,
             CancellationToken cancellationToken = default);
 
-        Task<string?> GetEmailAsync(Player player,
+        Task<string> GetEmailAsync(Player player,
             CancellationToken cancellationToken = default);
 
         Task<string?> GetFirstNameAsync(Player player,

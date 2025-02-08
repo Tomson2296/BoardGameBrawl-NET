@@ -1,4 +1,6 @@
-﻿namespace BoardGameBrawl.Application.Contracts.Common
+﻿using System.Runtime.CompilerServices;
+
+namespace BoardGameBrawl.Application.Contracts.Common
 {
     public interface IGenericRepository<T> where T : class
     {

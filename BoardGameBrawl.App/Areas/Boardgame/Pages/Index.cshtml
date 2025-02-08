@@ -5,4 +5,42 @@
 }
 
 <partial name="_StatusMessage" for="StatusMessage" />
+<partial name="_BoardgameNavPartial" model="@Model.BoardgameDTO" />
 
+<div class="container">
+        <div class="row mb-4">
+            <table class="table table-responsible table-bordered table-hover table-striped text-center text-justify">
+                <tbody>
+                    <tr>
+                        <td><strong> Year Published: </strong></td>
+                        <td> @Model.BoardgameDTO.YearPublished </td>
+                        <td><strong> Average Rating: </strong></td>
+                        <td> @Model.BoardgameDTO.AverageRating </td>
+                        <td><strong> Average Game Weight: </strong></td>
+                        <td> @Model.BoardgameDTO.AverageBGGWeight </td>
+                    </tr>
+                    <tr>
+                        <td><strong> Min. number of players: </strong></td>
+                        <td> @Model.BoardgameDTO.MinPlayers </td>
+                        <td><strong> Max. number of players: </strong></td>
+                        <td> @Model.BoardgameDTO.MaxPlayers </td>
+                        <td><strong> Min. Age: </strong></td>
+                        <td> @Model.BoardgameDTO.MinAge </td>
+                    </tr>
+                    <tr>
+                        <td><strong> Playing time: </strong></td>
+                        <td> @Model.BoardgameDTO.PlayingTime </td>
+                        <td><strong> Min. Playing time: </strong></td>
+                        <td> @Model.BoardgameDTO.MinimumPlayingTime </td>
+                        <td><strong> Max. Playing time: </strong></td>
+                        <td> @Model.BoardgameDTO.MaximumPlayingTime </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="row mb-4">
+            <h5> Game Description: </h5>
+            <p> @Model.BoardgameDTO.Description </p>
+        </div>
+</div>

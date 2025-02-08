@@ -17,11 +17,15 @@ namespace BoardGameBrawl.Application.DTOs.Entities.Boardgame_Related
 
         public byte MaxPlayers { get; set; }
 
+        public byte MinAge { get; set; }
+
         public short PlayingTime { get; set; }
 
         public short MinimumPlayingTime { get; set; }
 
         public short MaximumPlayingTime { get; set; }
+
+        public int Rank { get; set; }
 
         public float AverageBGGWeight { get; set; }
 

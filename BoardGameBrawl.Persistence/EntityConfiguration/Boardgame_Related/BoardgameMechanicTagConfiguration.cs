@@ -14,9 +14,17 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Boardgame_Related
                 .WithMany(b => b.BoardgameMechanicTags)
                 .HasForeignKey(e => e.BoardgameId);
 
-            entity.HasOne(e => e.BoardgameMechanic)
+            entity.Property(e => e.BoardgameName)
+                .HasMaxLength(256)
+                .IsRequired();
+
+            entity.HasOne(e => e.Mechanic)
                 .WithMany(m => m.BoardgameMechanicTags)
                 .HasForeignKey(e => e.MechanicId);
+
+            entity.Property(e => e.MechanicName)
+                .HasMaxLength(256)
+                .IsRequired();
 
             entity.ToTable("BoardgameMechanicTags");
         }

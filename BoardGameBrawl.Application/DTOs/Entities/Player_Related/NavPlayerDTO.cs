@@ -5,8 +5,10 @@ using BoardGameBrawl.Domain.Entities.Player_Related;
 namespace BoardGameBrawl.Application.DTOs.Entities.Player_Related
 {
     [AutoMap(typeof(Player))]
-    public class NavPlayerDTO : BaseEntityDTO
+    public class NavPlayerDTO : BaseAuditableEntityDTO
     {
-        public string? Username { get; set; }
+        public string? PlayerName { get; set; }
+
+        public byte[]? UserAvatar { get; set; }
     }
 }

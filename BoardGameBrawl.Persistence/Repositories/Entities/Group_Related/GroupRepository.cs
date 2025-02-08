@@ -1,6 +1,7 @@
 ﻿using BoardGameBrawl.Application.Contracts.Entities.Group_Related;
 using BoardGameBrawl.Domain.Entities.Group_Related;
 using BoardGameBrawl.Persistence.Repositories.Common;
+using Microsoft.EntityFrameworkCore;
 
 namespace BoardGameBrawl.Persistence.Repositories.Entities.Group_Related
 {
@@ -10,10 +11,35 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Group_Related
         {
         }
 
+        // custom methods // 
+
+        public async Task<IList<Group>> GetFilteredBatchOfGroupsAsync(string filter, int size, int skip = 0, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            if (size <= 0)
+                throw new ArgumentException("Batch size must be greater than zero.", nameof(size));
+
+            try
+            {
+                return await Context.Groups
+                    .AsNoTracking()
+                    .Where(g => g.GroupName.Contains(filter))
+                    .OrderBy(g => g.GroupName)
+                    .Skip(skip)
+                    .Take(size)
+                    .ToListAsync(cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("An error occurred while retrieving a batch of entities.", ex);
+            }
+        }
+
 
         // getter methods //
 
-        public Task<string?> GetGroupNameAsync(Group group,
+        public Task<string> GetGroupNameAsync(Group group,
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();

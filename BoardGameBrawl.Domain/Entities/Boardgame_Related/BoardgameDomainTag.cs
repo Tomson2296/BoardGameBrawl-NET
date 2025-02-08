@@ -14,9 +14,13 @@ namespace BoardGameBrawl.Domain.Entities.Boardgame_Related
         [ForeignKey(nameof(BoardgameId))]
         public Boardgame? Boardgame { get; set; }
 
+        public required string BoardgameName { get; set; }
+
         public Guid DomainId { get; set; }
 
         [ForeignKey(nameof(DomainId))]
         public BoardgameDomain? Domain { get; set; }
+
+        public required string DomainName { get; set; }
     }
 }

@@ -9,9 +9,9 @@ namespace BoardGameBrawl.Domain.Entities.Player_Related
 
         public Guid ApplicationUserId { get; set; }
 
-        public string? UserName { get; set; }
+        public required string PlayerName { get; set; }
 
-        public string? Email { get; set; }
+        public required string Email { get; set; }
 
         public string? FirstName { get; set; }
 

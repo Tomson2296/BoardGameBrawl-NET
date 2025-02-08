@@ -2,7 +2,7 @@
 using BoardGameBrawl.Application.DTOs.Entities.Player_Related;
 using FluentValidation;
 
-namespace BoardGameBrawl.Application.Validators.Player_Related
+namespace BoardGameBrawl.Application.Validators.Player_Related.Players
 {
     public class UpdatePlayerValidator : AbstractValidator<PlayerDTO>
     {
@@ -15,7 +15,8 @@ namespace BoardGameBrawl.Application.Validators.Player_Related
             Include(new PlayerValidator(_playerRepository));
 
             RuleFor(player => player.Id)
-               .MustAsync(async (id, token) => {
+               .MustAsync(async (id, token) =>
+               {
                    var playerExists = await _playerRepository.Exists(id, token);
                    return playerExists;
                })

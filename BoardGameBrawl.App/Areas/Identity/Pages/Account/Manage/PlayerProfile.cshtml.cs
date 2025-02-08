@@ -91,7 +91,7 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account.Manage
             Input = new InputModel
             {
                 Id = playerProfile.Id,
-                UserName = playerProfile.UserName,
+                UserName = playerProfile.PlayerName,
                 Email = playerProfile.Email,
                 FirstName = playerProfile.FirstName,
                 LastName = playerProfile.LastName,
@@ -119,7 +119,7 @@ namespace BoardGameBrawl.App.Areas.Identity.Pages.Account.Manage
             {
                 Id = Input.Id,
                 ApplicationUserId = user.Id,
-                UserName = Input.UserName,
+                PlayerName = Input.UserName,
                 Email = Input.Email,
                 FirstName = Input.FirstName,
                 LastName = Input.LastName,

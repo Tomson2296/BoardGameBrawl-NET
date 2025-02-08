@@ -16,9 +16,19 @@ namespace BoardGameBrawl.Application.Validators.Boardgames_Related.BoardgameCate
                .NotNull()
                .NotEmpty().WithMessage("{PropertyName} cannot be empty");
 
+            RuleFor(tag => tag.BoardgameName)
+               .NotNull()
+               .NotEmpty().WithMessage("{PropertyName} cannot be empty")
+               .MaximumLength(256).WithMessage("Username cannot be over {ComparisonValue} characters long");
+
             RuleFor(tag => tag.CategoryId)
                .NotNull()
                .NotEmpty().WithMessage("{PropertyName} cannot be empty");
+
+            RuleFor(tag => tag.CategoryName)
+               .NotNull()
+               .NotEmpty().WithMessage("{PropertyName} cannot be empty")
+               .MaximumLength(256).WithMessage("Username cannot be over {ComparisonValue} characters long");
         }
     }
 }

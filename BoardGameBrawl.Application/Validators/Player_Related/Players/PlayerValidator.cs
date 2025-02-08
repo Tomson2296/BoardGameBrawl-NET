@@ -2,7 +2,7 @@
 using BoardGameBrawl.Application.DTOs.Entities.Player_Related;
 using FluentValidation;
 
-namespace BoardGameBrawl.Application.Validators.Player_Related
+namespace BoardGameBrawl.Application.Validators.Player_Related.Players
 {
     public class PlayerValidator : AbstractValidator<PlayerDTO>
     {
@@ -16,11 +16,11 @@ namespace BoardGameBrawl.Application.Validators.Player_Related
                .NotNull()
                .NotEmpty().WithMessage("{PropertyName} cannot be empty");
 
-            RuleFor(player => player.UserName)
+            RuleFor(player => player.PlayerName)
                .NotNull()
                .NotEmpty().WithMessage("{PropertyName} cannot be empty")
                .MaximumLength(256).WithMessage("Username cannot be over {ComparisonValue} characters long");
-            
+
             RuleFor(player => player.Email)
                .EmailAddress()
                .NotNull()

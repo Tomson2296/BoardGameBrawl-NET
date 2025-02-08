@@ -1,4 +1,5 @@
-﻿using BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related;
+﻿#nullable disable
+using BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related;
 using BoardGameBrawl.Application.Exceptions;
 using BoardGameBrawl.Domain.Entities.Boardgame_Related;
 using BoardGameBrawl.Persistence.Repositories.Common;
@@ -14,8 +15,30 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
 
 
         // custom BoardgameRepository methods //
+        public async Task<IList<Boardgame>> GetFilteredBatchOfBoardgamesAsync(string filter, int size, int skip = 0, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
 
-        public async Task<Boardgame?> GetEntityByBGGId(int id, CancellationToken cancellationToken = default)
+            if (size <= 0)
+                throw new ArgumentException("Batch size must be greater than zero.", nameof(size));
+
+            try
+            {
+                return await Context.Boardgames
+                    .AsNoTracking()
+                    .Where(b => b.Name.Contains(filter))
+                    .OrderBy(b => b.Name)
+                    .Skip(skip)
+                    .Take(size)
+                    .ToListAsync(cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("An error occurred while retrieving a batch of entities.", ex);
+            }
+        }
+
+        public async Task<Boardgame> GetEntityByBGGId(int id, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             var boardgame = await Context.Boardgames.FirstOrDefaultAsync(b => b.BGGId == id, cancellationToken);
@@ -49,7 +72,7 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
             return Task.FromResult(boardgame.AverageBGGWeight);
         }
 
-        public Task<string?> GetDescriptionAsync(Boardgame boardgame,
+        public Task<string> GetDescriptionAsync(Boardgame boardgame,
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -57,7 +80,7 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
 
             return Task.FromResult(boardgame.Description);
         }
-        public Task<byte[]?> GetImageAsync(Boardgame boardgame,
+        public Task<byte[]> GetImageAsync(Boardgame boardgame,
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -102,7 +125,7 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
             return Task.FromResult(boardgame.MinPlayers);
         }
 
-        public Task<string?> GetNameAsync(Boardgame boardgame,
+        public Task<string> GetNameAsync(Boardgame boardgame,
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();

@@ -6,15 +6,17 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related
     public interface IBoardgameRepository : IGenericRepository<Boardgame>, IAuditableRepository<Boardgame>
     {
         // custom refined methods //
+
+        Task<IList<Boardgame>> GetFilteredBatchOfBoardgamesAsync(string filter, int size, int skip = 0, CancellationToken cancellationToken = default);
         
-        Task<Boardgame?> GetEntityByBGGId(int id, CancellationToken cancellationToken = default);
+        Task<Boardgame> GetEntityByBGGId(int id, CancellationToken cancellationToken = default);
         
         Task<bool> Exists(int bggid, CancellationToken cancellationToken = default);
 
 
         // basic fields getter methods //
 
-        Task<string?> GetNameAsync(Boardgame boardgame,
+        Task<string> GetNameAsync(Boardgame boardgame,
            CancellationToken cancellationToken = default);
 
         Task<int> GetBGGIDAsync(Boardgame boardgame,
@@ -41,10 +43,10 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related
         Task<float> GetBGGWeightAsync(Boardgame boardgame,
           CancellationToken cancellationToken = default);
 
-        Task<byte[]?> GetImageAsync(Boardgame boardgame,
+        Task<byte[]> GetImageAsync(Boardgame boardgame,
          CancellationToken cancellationToken = default);
 
-        Task<string?> GetDescriptionAsync(Boardgame boardgame,
+        Task<string> GetDescriptionAsync(Boardgame boardgame,
          CancellationToken cancellationToken = default);
 
         

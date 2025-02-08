@@ -6,8 +6,12 @@
 
         public Boardgame? Boardgame { get; set; }
 
+        public required string BoardgameName { get; set; }
+
         public Guid MechanicId { get; set; }
 
-        public BoardgameMechanic? BoardgameMechanic { get; set; }
+        public BoardgameMechanic? Mechanic { get; set; }
+
+        public required string MechanicName { get; set; }
     }
 }

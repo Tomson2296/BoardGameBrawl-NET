@@ -1,6 +1,8 @@
 ﻿using BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related;
+using BoardGameBrawl.Application.Services.String;
 using BoardGameBrawl.Domain.Entities.Boardgame_Related;
 using BoardGameBrawl.Persistence;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using System.Text;
 
 namespace BoardGameBrawl.Infrastructure.DatabaseSeed
@@ -17,6 +19,7 @@ namespace BoardGameBrawl.Infrastructure.DatabaseSeed
         private readonly IBoardgameCategoryTagsRepository _boardgameCategoryTagsRepository;
         private readonly IBoardgameMechanicsRepository _boardgameMechanicsRepository;
         private readonly IBoardgameMechanicTagsRepository _boardgameMechanicTagsRepository;
+        private readonly IStringCleaner _stringCleaner;
 
         public BoardgamesDatabaseSeed(MainAppDBContext context,
             IImageStream imageStream,
@@ -26,7 +29,8 @@ namespace BoardGameBrawl.Infrastructure.DatabaseSeed
             IBoardgameCategoriesRepository boardgameCategoriesRepository,
             IBoardgameCategoryTagsRepository boardgameCategoryTagsRepository,
             IBoardgameMechanicsRepository boardgameMechanicsRepository,
-            IBoardgameMechanicTagsRepository boardgameMechanicTagsRepository)
+            IBoardgameMechanicTagsRepository boardgameMechanicTagsRepository,
+            IStringCleaner stringCleaner)
         {
             _context = context;
             _imageStream = imageStream;
@@ -37,6 +41,7 @@ namespace BoardGameBrawl.Infrastructure.DatabaseSeed
             _boardgameCategoryTagsRepository = boardgameCategoryTagsRepository;
             _boardgameMechanicsRepository = boardgameMechanicsRepository;
             _boardgameMechanicTagsRepository = boardgameMechanicTagsRepository;
+            _stringCleaner = stringCleaner;
         }
 
         public async Task SeedDatabaseAsync()
@@ -69,33 +74,35 @@ namespace BoardGameBrawl.Infrastructure.DatabaseSeed
                     bool playingTime_parse = short.TryParse(values[5], out short playingTime);
                     bool minPlayingTime_parse = short.TryParse(values[6], out short minPlayingTime);
                     bool maxPlayingTime_parse = short.TryParse(values[7], out short maxPPlayingTime);
-                    bool averageWeight_parse = float.TryParse(values[8], out float BGGWeight);
-                    bool rank_parse = int.TryParse(values[9], out int rank);
-                    bool averageRating_parse = float.TryParse(values[10], out float averageRating);
-                    bool bayesRating_parse = float.TryParse(values[11], out float bayesRating);
-                    bool owning_parse = int.TryParse(values[12], out int owning);
+                    bool minAge_parse = byte.TryParse(values[8], out byte minAge);
+                    bool averageWeight_parse = float.TryParse(values[9], out float BGGWeight);
+                    bool rank_parse = int.TryParse(values[10], out int rank);
+                    bool averageRating_parse = float.TryParse(values[11], out float averageRating);
+                    bool bayesRating_parse = float.TryParse(values[12], out float bayesRating);
+                    bool owning_parse = int.TryParse(values[13], out int owning);
 
-                    string[] domains = values[13].Split(',');
-                    string[] categories = values[14].Split(",");
-                    string[] mechanics = values[15].Split(",");
-                    string imagePathFile = values[16];
+                    string[] domains = values[14].Split(',');
+                    string[] categories = values[15].Split(",");
+                    string[] mechanics = values[16].Split(",");
+                    string imagePathFile = values[17];
                     string desc;
 
-                    if (count > 18)
+                    if (count > 19)
                     {
                         // recreate boardgame description 
                         StringBuilder descriptionBuilder = new StringBuilder();
-                        descriptionBuilder.Append(values[17]);
-                        for (int j = 17; j < count; j++)
+                        descriptionBuilder.Append(values[18]);
+                        for (int j = 19; j < count; j++)
                         {
-                            descriptionBuilder.Append(";" + values[j].Trim());
+                            descriptionBuilder.Append(values[j]);
                         }
-                        desc = descriptionBuilder.ToString();
+                        desc = _stringCleaner.CleanDescription(descriptionBuilder.ToString());
                     }
                     else
                     {
                         // no ; separation - copy description w/o problems
-                        desc = values[17];
+                        // clean string
+                        desc = _stringCleaner.CleanDescription(values[18]);
                     }
 
                     byte[] image = await _imageStream.ReadImageStreamAsync(imagePathFile);
@@ -108,10 +115,12 @@ namespace BoardGameBrawl.Infrastructure.DatabaseSeed
                         YearPublished = yearPublished,
                         MinPlayers = minPlayers,
                         MaxPlayers = maxPlayers,
+                        MinAge = minAge,
                         PlayingTime = playingTime,
                         MinimumPlayingTime = minPlayingTime,
                         MaximumPlayingTime = maxPPlayingTime,
                         AverageBGGWeight = BGGWeight,
+                        Rank = rank,
                         AverageRating = averageRating,
                         BayesRating = bayesRating,
                         Owned = owning,
@@ -145,7 +154,9 @@ namespace BoardGameBrawl.Infrastructure.DatabaseSeed
                         BoardgameDomainTag newBoardgameDomainTag = new()
                         {
                             BoardgameId = entry.Id,
-                            DomainId = domainId
+                            BoardgameName = entry.Name,
+                            DomainId = domainId,
+                            DomainName = newDomain.Domain
                         };
 
                         await _boardgameDomainTagsRepository.AddEntity(newBoardgameDomainTag);
@@ -176,7 +187,9 @@ namespace BoardGameBrawl.Infrastructure.DatabaseSeed
                         BoardgameCategoryTag newBoardgameCategoryTag = new()
                         {
                             BoardgameId = entry.Id,
-                            CategoryId = categoryId
+                            BoardgameName = entry.Name,
+                            CategoryId = categoryId,
+                            CategoryName = newCategory.Category
                         };
 
                         await _boardgameCategoryTagsRepository.AddEntity(newBoardgameCategoryTag);
@@ -206,7 +219,9 @@ namespace BoardGameBrawl.Infrastructure.DatabaseSeed
                         BoardgameMechanicTag newBoardgameMechanicTag = new()
                         {
                             BoardgameId = entry.Id,
-                            MechanicId = mechanicId
+                            BoardgameName = entry.Name,
+                            MechanicId = mechanicId,
+                            MechanicName = newMechanic.Mechanic
                         };
 
                         await _boardgameMechanicTagsRepository.AddEntity(newBoardgameMechanicTag);

@@ -6,8 +6,12 @@
 
         public Boardgame? Boardgame { get; set; }
 
+        public required string BoardgameName { get; set; }
+
         public Guid CategoryId { get; set; }
 
-        public BoardgameCategory? BoardgameCategory { get; set; }
+        public BoardgameCategory? Category { get; set; }
+
+        public required string CategoryName { get; set; }
     }
 }

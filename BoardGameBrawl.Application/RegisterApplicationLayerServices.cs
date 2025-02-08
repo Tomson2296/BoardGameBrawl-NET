@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BoardGameBrawl.Application.Profiles;
 using BoardGameBrawl.Application.Services;
+using BoardGameBrawl.Application.Services.String;
 using BoardGameBrawl.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,6 +39,7 @@ namespace BoardGameBrawl.Application
 
             // Register IStringCleaner Service
             services.AddScoped<IStringCleaner, StringCleaner>();
+            services.AddScoped<IStringFormatter, StringFormatter>();
 
             return Task.FromResult(services);
         }

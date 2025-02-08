@@ -27,11 +27,19 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Player_Related
                     .HasConversion<FriendshipStatusTypeConverter>()
                     .IsRequired();
 
+                entity.Property(e => e.RequesterName)
+                    .HasMaxLength(256)
+                    .IsRequired();
+
+                entity.Property(e => e.AddresseeName)
+                    .HasMaxLength(256)
+                    .IsRequired();
+
                 // Configure relationships
                 entity.HasOne(uf => uf.Requester)
-                    .WithMany(u => u.Friendships)
-                    .HasForeignKey(uf => uf.RequesterId)
-                    .OnDelete(DeleteBehavior.Restrict);  
+                        .WithMany(u => u.Friendships)
+                        .HasForeignKey(uf => uf.RequesterId)
+                        .OnDelete(DeleteBehavior.Restrict);  
 
                 entity.HasOne(uf => uf.Addressee)
                     .WithMany(u => u.FriendOfFriendships)

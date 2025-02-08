@@ -5,9 +5,14 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Group_Related
 {
     public interface IGroupRepository : IGenericRepository<Group>, IAuditableRepository<Group>
     {
+        // custom methods //
+
+        Task<IList<Group>> GetFilteredBatchOfGroupsAsync(string filter, int size, int skip = 0, CancellationToken cancellationToken = default);
+
+
         // getter methods // 
 
-        Task<string?> GetGroupNameAsync(Group group,
+        Task<string> GetGroupNameAsync(Group group,
           CancellationToken cancellationToken = default);
 
         Task<string?> GetGroupDescriptionAsync(Group group,

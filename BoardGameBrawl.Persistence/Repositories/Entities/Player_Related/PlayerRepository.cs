@@ -14,6 +14,29 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
 
         // custom PlayerRepository methods //
 
+        public async Task<IList<Player>> GetFilteredBatchOfPlayersAsync(string filter, int size, int skip = 0, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            if (size <= 0)
+                throw new ArgumentException("Batch size must be greater than zero.", nameof(size));
+
+            try
+            {
+                return await Context.Players
+                    .AsNoTracking()
+                    .Where(p => p.PlayerName.Contains(filter))
+                    .OrderBy(p => p.PlayerName)
+                    .Skip(skip)
+                    .Take(size)
+                    .ToListAsync(cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("An error occurred while retrieving a batch of entities.", ex);
+            }
+        }
+
         public async Task<Player?> GetPlayerByApplicationUserIdAsync(Guid applicationUserId, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -40,7 +63,7 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
             return Task.FromResult(player.BGGUsername);
         }
 
-        public Task<string?> GetEmailAsync(Player player, CancellationToken cancellationToken = default)
+        public Task<string> GetEmailAsync(Player player, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(player);
@@ -80,12 +103,12 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
             return Task.FromResult(player.UserDescription);
         }
 
-        public Task<string?> GetUsernameAsync(Player player, CancellationToken cancellationToken = default)
+        public Task<string> GetUsernameAsync(Player player, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(player);
 
-            return Task.FromResult(player.UserName);
+            return Task.FromResult(player.PlayerName);
         }
 
 
@@ -192,8 +215,9 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
                 throw new ArgumentException("Username cannot be null or whitespace.", nameof(userName));
             }
 
-            player.UserName = userName;
+            player.PlayerName = userName;
             return Task.CompletedTask;
         }
+
     }
 }

@@ -16,10 +16,14 @@ namespace BoardGameBrawl.Domain.Entities.Player_Related
 
         public Guid PlayerId { get; set; }
 
+        public required string PlayerName { get; set; }
+
 
         [ForeignKey(nameof(BoardgameId))]
         public Boardgame? Boardgame { get; set; }
 
         public Guid BoardgameId { get; set; }
+
+        public required string BoardgameName { get; set; }
     }
 }

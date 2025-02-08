@@ -23,6 +23,14 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Boardgame_Related
                 .WithMany(c => c.BoardgameDomainTags)
                 .HasForeignKey(e => e.DomainId);
 
+            entity.Property(e => e.BoardgameName)
+                .HasMaxLength(256)
+                .IsRequired();
+
+            entity.Property(e => e.DomainName)
+                .HasMaxLength(256)
+                .IsRequired();
+
             entity.ToTable("BoardgameDomainTags");
         }
     }

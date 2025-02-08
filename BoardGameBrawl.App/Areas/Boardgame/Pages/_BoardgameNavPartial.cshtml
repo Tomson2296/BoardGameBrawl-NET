@@ -1,0 +1,40 @@
+﻿@model BoardGameBrawl.Application.DTOs.Entities.Boardgame_Related.BoardgameDTO
+@using static BoardGameBrawl.App.Areas.Boardgame.Pages.IndexModel
+
+<div class="row text-center mb-4">
+    <div class="d-inline-flex justify-content-around">
+        <img src="data:image/*;base64,@(Convert.ToBase64String(Model.Image!))" class="img-fluid img-thumbnail img-round" alt=""
+             width="300" height="300" />
+        <div class="flex align-items-center align-self-center">
+            <h3> @Model.Name </h3>
+        </div>
+    </div>
+</div>
+<br />
+<div class="row mb-4">
+    <div class="d-inline-flex align-items-center justify-content-between text-center">
+        <div>
+            Matches
+        </div>
+        <div>
+            Tournaments 
+        </div>
+        <div>
+            <a asp-page="Moderators" asp-route-BoardgameID="@Model.BGGId">
+                Moderators
+            </a>
+        </div>
+        <div>
+            <a asp-page="Favourites" asp-route-BoardgameID="@Model.BGGId">
+                Favourites
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+    a {
+        text-decoration: none;
+        color: black;
+    }
+</style>

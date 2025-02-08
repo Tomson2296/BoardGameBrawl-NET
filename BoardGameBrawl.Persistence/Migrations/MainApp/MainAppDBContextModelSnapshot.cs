@@ -70,6 +70,9 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
                     b.Property<short>("MaximumPlayingTime")
                         .HasColumnType("smallint");
 
+                    b.Property<byte>("MinAge")
+                        .HasColumnType("tinyint");
+
                     b.Property<byte>("MinPlayers")
                         .HasColumnType("tinyint");
 
@@ -86,6 +89,9 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
 
                     b.Property<short>("PlayingTime")
                         .HasColumnType("smallint");
+
+                    b.Property<int>("Rank")
+                        .HasColumnType("int");
 
                     b.Property<short>("YearPublished")
                         .HasColumnType("smallint");
@@ -145,6 +151,16 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
                     b.Property<Guid>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("BoardgameName")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
                     b.HasKey("BoardgameId", "CategoryId");
 
                     b.HasIndex("CategoryId");
@@ -194,6 +210,16 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
                     b.Property<Guid>("DomainId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("BoardgameName")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("DomainName")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
                     b.HasKey("BoardgameId", "DomainId");
 
                     b.HasIndex("DomainId");
@@ -242,6 +268,16 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
 
                     b.Property<Guid>("MechanicId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("BoardgameName")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("MechanicName")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("BoardgameId", "MechanicId");
 
@@ -299,8 +335,18 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
                     b.Property<Guid?>("PlayerId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("GroupName")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
                     b.Property<bool>("IsAdmin")
                         .HasColumnType("bit");
+
+                    b.Property<string>("PlayerName")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("GroupId", "PlayerId");
 
@@ -444,17 +490,17 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<string>("PlayerName")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
                     b.Property<byte[]>("UserAvatar")
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("UserDescription")
                         .HasMaxLength(2048)
                         .HasColumnType("nvarchar(2048)");
-
-                    b.Property<string>("UserName")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
@@ -471,7 +517,7 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
                         .IsUnique()
                         .HasDatabaseName("UserEmailIndex");
 
-                    b.HasIndex("UserName")
+                    b.HasIndex("PlayerName")
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
 
@@ -494,6 +540,9 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsCollectionCreated")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LastModifiedBy")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -503,6 +552,11 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
 
                     b.Property<Guid>("PlayerId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("PlayerName")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("Id");
 
@@ -521,6 +575,11 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
                     b.Property<Guid>("BoardgameId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("BoardgameName")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -534,6 +593,11 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
 
                     b.Property<DateTime>("LastModifiedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("PlayerName")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.HasKey("PlayerId", "BoardgameId");
 
@@ -549,6 +613,11 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
 
                     b.Property<Guid>("AddresseeId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("AddresseeName")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(256)
@@ -572,6 +641,11 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
                     b.Property<DateTime>("LastModifiedDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("RequesterName")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -591,6 +665,11 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
                     b.Property<Guid>("BoardgameId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("BoardgameName")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
                     b.Property<string>("CreatedBy")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -604,6 +683,11 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
 
                     b.Property<DateTime>("LastModifiedDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("PlayerName")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
 
                     b.Property<byte>("Rating")
                         .HasColumnType("tinyint");
@@ -732,7 +816,7 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BoardGameBrawl.Domain.Entities.Boardgame_Related.BoardgameCategory", "BoardgameCategory")
+                    b.HasOne("BoardGameBrawl.Domain.Entities.Boardgame_Related.BoardgameCategory", "Category")
                         .WithMany("BoardgameCategoryTags")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -740,7 +824,7 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
 
                     b.Navigation("Boardgame");
 
-                    b.Navigation("BoardgameCategory");
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Boardgame_Related.BoardgameDomainTag", b =>
@@ -770,7 +854,7 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("BoardGameBrawl.Domain.Entities.Boardgame_Related.BoardgameMechanic", "BoardgameMechanic")
+                    b.HasOne("BoardGameBrawl.Domain.Entities.Boardgame_Related.BoardgameMechanic", "Mechanic")
                         .WithMany("BoardgameMechanicTags")
                         .HasForeignKey("MechanicId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -778,7 +862,7 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
 
                     b.Navigation("Boardgame");
 
-                    b.Navigation("BoardgameMechanic");
+                    b.Navigation("Mechanic");
                 });
 
             modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Group_Related.GroupParticipant", b =>

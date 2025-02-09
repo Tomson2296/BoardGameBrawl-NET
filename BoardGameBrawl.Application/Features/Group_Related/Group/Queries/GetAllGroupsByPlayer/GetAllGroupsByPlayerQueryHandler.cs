@@ -8,20 +8,16 @@ namespace BoardGameBrawl.Application.Features.Group_Related.Group.Queries.GetAll
     public class GetAllGroupsByPlayerQueryHandler : IRequestHandler<GetAllGroupsByPlayerQuery, ICollection<GroupDTO>>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
 
-        public GetAllGroupsByPlayerQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public GetAllGroupsByPlayerQueryHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
         }
 
         public async Task<ICollection<GroupDTO>> Handle(GetAllGroupsByPlayerQuery request, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-
-            var groups = await _unitOfWork.GroupParticipantRepository.GetAllPlayerGroupsByIdAsync(request.PlayerId);
-            return _mapper.Map<ICollection<GroupDTO>>(groups);
+            return await _unitOfWork.GroupParticipantRepository.GetAllPlayerGroupsByIdAsync(request.PlayerId);
         }
     }
 }

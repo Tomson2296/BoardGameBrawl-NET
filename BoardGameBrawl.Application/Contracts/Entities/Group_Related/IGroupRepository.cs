@@ -1,4 +1,5 @@
 ﻿using BoardGameBrawl.Application.Contracts.Common;
+using BoardGameBrawl.Application.DTOs.Entities.Group_Related;
 using BoardGameBrawl.Domain.Entities.Group_Related;
 
 namespace BoardGameBrawl.Application.Contracts.Entities.Group_Related
@@ -7,7 +8,7 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Group_Related
     {
         // custom methods //
 
-        Task<IList<Group>> GetFilteredBatchOfGroupsAsync(string filter, int size, int skip = 0, CancellationToken cancellationToken = default);
+        Task<IList<NavGroupDTO>> GetFilteredBatchOfGroupsAsync(string filter, int size, int skip = 0, CancellationToken cancellationToken = default);
 
 
         // getter methods // 

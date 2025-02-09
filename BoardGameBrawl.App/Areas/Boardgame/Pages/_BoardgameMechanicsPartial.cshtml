@@ -1,0 +1,50 @@
+﻿@model IList<BoardGameBrawl.Application.DTOs.Entities.Boardgame_Related.BoardgameMechanicDTO>
+@using static BoardGameBrawl.App.Areas.Boardgame.Pages.IndexModel
+@{
+    int countElements = Model.Count;
+    int rowElements = countElements / 2;
+}
+
+<div class="row">
+    <div class="d-flex justify-content-start align-items-center">
+        <h5> Boardgame Mechanics  </h5>
+    </div>
+</div>
+
+<div class="row text-center">
+    @if (countElements % 2 == 0)
+    {
+        for (int el = 0; el < countElements; el += 2)
+        {
+            <div class="row">
+                <div class="d-flex justify-content-center align-items-center">
+                    <div class="w-50 box">
+                        <h5> @Model.ElementAt(el).Mechanic </h5>
+                    </div>
+                    <div class="w-50 box">
+                        <h5> @Model.ElementAt(el + 1).Mechanic </h5>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        for (int el = 0; el < countElements - 1; el += 2)
+        {
+            <div class="d-flex justify-content-center align-items-center">
+                <div class="w-50 box">
+                    <h5> @Model.ElementAt(el).Mechanic </h5>
+                </div>
+                <div class="w-50 box">
+                    <h5> @Model.ElementAt(el + 1).Mechanic </h5>
+                </div>
+            </div>
+        }
+        <div class="d-flex justify-content-center align-items-center">
+            <div class="w-100 box">
+                <h5> @Model.ElementAt(countElements - 1).Mechanic </h5>
+            </div>
+        </div>
+    }
+</div>

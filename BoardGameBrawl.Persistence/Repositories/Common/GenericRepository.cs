@@ -45,6 +45,7 @@ namespace BoardGameBrawl.Persistence.Repositories.Common
                 throw new ApplicationException("An error occurred while retrieving a batch of entities.", ex);
             }
         }
+
         public async Task<IList<T>> GetAllEntities(CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();

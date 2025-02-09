@@ -1,4 +1,5 @@
-﻿using BoardGameBrawl.Application.Contracts.Entities.Player_Related;
+﻿using AutoMapper;
+using BoardGameBrawl.Application.Contracts.Entities.Player_Related;
 using BoardGameBrawl.Domain.Entities.Player_Related;
 using BoardGameBrawl.Persistence.Repositories.Common;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,7 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
 {
     public class PlayerPreferenceRepository : GenericRepository<PlayerRreference>, IPlayerPreferenceRepository
     {
+
         public PlayerPreferenceRepository(MainAppDBContext context) : base(context)
         {
         }
@@ -56,6 +58,7 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
             {
                 var playerPreferences = await _context.PlayerRreferences
                         .Where(e => e.PlayerId == playerId)
+                        .AsNoTracking()
                         .ToDictionaryAsync(e => e.BoardgameId, e => e.Rating, cancellationToken);
 
                 return playerPreferences;
@@ -78,6 +81,7 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
             {
                 var boardgamePreferences = await _context.PlayerRreferences
                         .Where(e => e.BoardgameId == boardgameId)
+                        .AsNoTracking()
                         .ToDictionaryAsync(e => e.PlayerId, e => e.Rating, cancellationToken);
 
                 return boardgamePreferences;

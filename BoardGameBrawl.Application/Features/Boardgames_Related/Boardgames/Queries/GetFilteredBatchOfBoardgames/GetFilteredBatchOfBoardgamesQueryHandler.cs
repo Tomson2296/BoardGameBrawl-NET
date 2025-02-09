@@ -14,20 +14,17 @@ namespace BoardGameBrawl.Application.Features.Boardgames_Related.Boardgames.Quer
     public class GetFilteredBatchOfBoardgamesQueryHandler : IRequestHandler<GetFilteredBatchOfBoardgamesQuery, IList<NavBoardgameDTO>>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
 
-        public GetFilteredBatchOfBoardgamesQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public GetFilteredBatchOfBoardgamesQueryHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
         }
 
         public async Task<IList<NavBoardgameDTO>> Handle(GetFilteredBatchOfBoardgamesQuery request, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            var filteredBoardgames = await _unitOfWork.BoardgameRepository.GetFilteredBatchOfBoardgamesAsync(request.Filter, 
+            return await _unitOfWork.BoardgameRepository.GetFilteredBatchOfBoardgamesAsync(request.Filter, 
                 request.Size, request.Skip, cancellationToken);
-            return _mapper.Map<IList<NavBoardgameDTO>>(filteredBoardgames);
         }
     }
 }

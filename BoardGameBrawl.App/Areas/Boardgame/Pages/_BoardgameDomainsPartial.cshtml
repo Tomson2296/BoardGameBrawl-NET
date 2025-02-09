@@ -1,0 +1,62 @@
+﻿@model IList<BoardGameBrawl.Application.DTOs.Entities.Boardgame_Related.BoardgameDomainDTO>
+@using static BoardGameBrawl.App.Areas.Boardgame.Pages.IndexModel
+@{
+    int countElements = Model.Count;
+}
+
+<div class="row">
+    <div class="d-flex justify-content-start align-items-center">
+        <h5> Boardgame Domains </h5>
+    </div>
+</div>
+
+<div class="row text-center">
+    @if (countElements % 2 == 0)
+    {
+        for (int el = 0; el < countElements; el += 2)
+        {
+            <div class="row">
+                <div class="d-flex justify-content-center align-items-center">
+                    <a class="btn btn-block w-100" asp-page="FindSimilar" asp-route-type="Domain" asp-route-value="@Model.ElementAt(el).Id">
+                        <div class="box">
+                            <h5> @Model.ElementAt(el).Domain </h5>
+                        </div>
+                    </a>
+                    <a class="btn btn-block w-100" asp-page="FindSimilar" asp-route-type="Domain" asp-route-value="@Model.ElementAt(el + 1).Id">
+                        <div class="box">
+                            <h5> @Model.ElementAt(el + 1).Domain </h5>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        for (int el = 0; el < countElements - 1; el += 2)
+        {
+                <div class="row">
+                    <div class="d-flex justify-content-center align-items-center">
+                        <a asp-page="FindSimilar" asp-route-type="Domain" asp-route-value="@Model.ElementAt(el).Id">
+                            <div class="w-100 p-3 box">
+                                <h5> @Model.ElementAt(el).Domain </h5>
+                            </div>
+                        </a>
+                        <a asp-page="FindSimilar" asp-route-type="Domain" asp-route-value="@Model.ElementAt(el + 1).Id">
+                            <div class="w-100 p-3 box">
+                                <h5> @Model.ElementAt(el + 1).Domain </h5>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+        }
+    
+        <div class="d-flex justify-content-center align-items-center">
+            <a asp-page="FindSimilar" asp-route-type="Domain" asp-route-value="@Model.ElementAt(countElements - 1).Id">
+                <div class="w-100 box">
+                    <h5> @Model.ElementAt(countElements - 1).Domain </h5>
+                </div>
+            </a>
+        </div>
+    }
+</div>

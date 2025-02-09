@@ -1,6 +1,7 @@
 ﻿using BoardGameBrawl.Application.Contracts.Common;
+using BoardGameBrawl.Application.DTOs.Entities.Group_Related;
+using BoardGameBrawl.Application.DTOs.Entities.Player_Related;
 using BoardGameBrawl.Domain.Entities.Group_Related;
-using BoardGameBrawl.Domain.Entities.Player_Related;
 
 namespace BoardGameBrawl.Application.Contracts.Entities.Group_Related
 {
@@ -11,10 +12,10 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Group_Related
         Task<GroupParticipant?> GetGroupParticipantAsync(Guid groupId,
             Guid playerId, CancellationToken cancellationToken = default);
 
-        Task<ICollection<BoardGameBrawl.Domain.Entities.Group_Related.Group>> GetAllPlayerGroupsByIdAsync(Guid playerId,
+        Task<ICollection<GroupDTO>> GetAllPlayerGroupsByIdAsync(Guid playerId,
            CancellationToken cancellationToken = default);
 
-        Task<ICollection<Player>> GetAllUserParticipantsInGroupByIdAsync(Guid groupId,
+        Task<ICollection<NavPlayerDTO>> GetAllUserParticipantsInGroupByIdAsync(Guid groupId,
             CancellationToken cancellationToken = default);
         
         Task<bool> GetAdminStatusAsync(GroupParticipant groupParticipant,

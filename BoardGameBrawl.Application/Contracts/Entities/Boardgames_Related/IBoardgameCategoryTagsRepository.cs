@@ -1,5 +1,6 @@
 ﻿
 using BoardGameBrawl.Application.Contracts.Common;
+using BoardGameBrawl.Application.DTOs.Entities.Boardgame_Related;
 using BoardGameBrawl.Domain.Entities.Boardgame_Related;
 
 namespace BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related
@@ -19,10 +20,14 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related
            Guid categoryId,
            CancellationToken cancellationToken = default);
 
-        Task<ICollection<Boardgame>> GetBoardgamesByCategoryAsync(Guid categoryId,
+        Task<IList<BoardgameCategoryDTO>> GetBoardgameCategoriesByGameAsync(Guid boardgameId,
             CancellationToken cancellationToken = default);
 
-        Task<ICollection<BoardgameCategory>> GetBoardgameCategoriesByGameAsync(Guid boardgameId,
+        
+        Task<IList<NavBoardgameDTO>> GetBoardgamesByCategoryAsync(Guid categoryId,
             CancellationToken cancellationToken = default);
+
+        Task<IList<NavBoardgameDTO>> GetBatchOfBoardgamesByCategoryAsync(Guid categoryId,
+            int size, int skip = 0, CancellationToken cancellationToken = default);
     }
 }

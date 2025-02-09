@@ -27,9 +27,6 @@ namespace BoardGameBrawl.App.Areas.Boardgame.Pages
 
         public BoardgameDTO? TargetBoardgame { get; set; }
 
-        [TempData]
-        public string? StatusMessage { get; set; }
-
         public async Task<IActionResult> OnGetAsync()
         {
             var user = await _userManager.GetUserAsync(User);

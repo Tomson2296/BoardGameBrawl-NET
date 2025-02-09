@@ -1,4 +1,5 @@
 ﻿using BoardGameBrawl.Application.Contracts.Common;
+using BoardGameBrawl.Application.DTOs.Entities.Boardgame_Related;
 using BoardGameBrawl.Domain.Entities.Boardgame_Related;
 
 namespace BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related
@@ -7,7 +8,7 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related
     {
         // custom refined methods //
 
-        Task<IList<Boardgame>> GetFilteredBatchOfBoardgamesAsync(string filter, int size, int skip = 0, CancellationToken cancellationToken = default);
+        Task<IList<NavBoardgameDTO>> GetFilteredBatchOfBoardgamesAsync(string filter, int size, int skip = 0, CancellationToken cancellationToken = default);
         
         Task<Boardgame> GetEntityByBGGId(int id, CancellationToken cancellationToken = default);
         

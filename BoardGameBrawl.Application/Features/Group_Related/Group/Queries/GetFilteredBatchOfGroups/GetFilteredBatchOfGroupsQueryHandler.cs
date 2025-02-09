@@ -14,20 +14,17 @@ namespace BoardGameBrawl.Application.Features.Group_Related.Group.Queries.GetFil
     public class GetFilteredBatchOfGroupsQueryHandler : IRequestHandler<GetFilteredBatchOfGroupsQuery, IList<NavGroupDTO>>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
 
-        public GetFilteredBatchOfGroupsQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public GetFilteredBatchOfGroupsQueryHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
         }
 
         public async Task<IList<NavGroupDTO>> Handle(GetFilteredBatchOfGroupsQuery request, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            var filteredGroups = await _unitOfWork.GroupRepository.GetFilteredBatchOfGroupsAsync(request.Filter,
+            return await _unitOfWork.GroupRepository.GetFilteredBatchOfGroupsAsync(request.Filter,
                 request.Size, request.Skip, cancellationToken);
-            return _mapper.Map<IList<NavGroupDTO>>(filteredGroups);
         }
     }
 }

@@ -24,9 +24,8 @@ namespace BoardGameBrawl.Application.Features.Player_Related.Players.Queries.Get
         public async Task<IList<NavPlayerDTO>> Handle(GetFilteredBatchOfPlayersQuery request, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            var filteredPlayers = await _unitOfWork.PlayerRepository.GetFilteredBatchOfPlayersAsync(request.Filter,
+            return await _unitOfWork.PlayerRepository.GetFilteredBatchOfPlayersAsync(request.Filter,
                 request.Size, request.Skip, cancellationToken);
-            return _mapper.Map<IList<NavPlayerDTO>>(filteredPlayers);
         }
     }
 }

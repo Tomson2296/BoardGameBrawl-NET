@@ -1,0 +1,41 @@
+﻿.box
+{
+    padding: 1.5rem; /* Inner spacing */
+    margin: 1rem; /* Outer spacing */
+    border: 2px solid #e0e0e0; /* Border thickness, style, color */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    background-color: #ffffff; /* Background color */
+    transition: all 0.3s ease; /* Smooth transitions */
+}
+
+/* Hover Effect */
+.box:hover {
+    transform: translateY(-2px); /* Lift effect */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 1; /* Bring forward on hover */
+}
+
+/* Color Variations */
+.box-primary {
+    background-color: #e3f2fd; /* Light blue */
+    border-color: #90caf9; /* Matching border */
+}
+
+.box-secondary {
+    background-color: #f5f5f5; /* Light gray */
+    border-color: #bdbdbd;
+}
+
+.box-success {
+    background-color: #d4edda; /* Light green */
+    border-color: #c3e6cb;
+}
+
+/* Outlined Variation */
+.box-outlined {
+    background-color: transparent;
+    border: 2px solid #2196f3; /* Blue border */
+    box-shadow: none;
+}
+}

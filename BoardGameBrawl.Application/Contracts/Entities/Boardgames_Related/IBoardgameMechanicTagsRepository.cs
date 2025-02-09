@@ -1,4 +1,5 @@
 ﻿using BoardGameBrawl.Application.Contracts.Common;
+using BoardGameBrawl.Application.DTOs.Entities.Boardgame_Related;
 using BoardGameBrawl.Domain.Entities.Boardgame_Related;
 
 namespace BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related
@@ -17,10 +18,14 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related
            Guid mechanicId,
            CancellationToken cancellationToken = default);
 
-        Task<ICollection<Boardgame>> GetBoardgamesByMechanicAsync(Guid mechanicId, 
+        Task<IList<BoardgameMechanicDTO>> GetBoardgameMechanicsByGameAsync(Guid boardgameId,
+           CancellationToken cancellationToken = default);
+
+
+        Task<IList<NavBoardgameDTO>> GetBoardgamesByMechanicAsync(Guid mechanicId, 
             CancellationToken cancellationToken = default);
 
-        Task<ICollection<BoardgameMechanic>> GetBoardgameMechanicsByGameAsync(Guid boardgameId, 
-            CancellationToken cancellationToken = default);
+        Task<IList<NavBoardgameDTO>> GetBatchOfBoardgamesByMechanicAsync(Guid mechanicId,
+           int size, int skip = 0, CancellationToken cancellationToken = default);
     }
 }

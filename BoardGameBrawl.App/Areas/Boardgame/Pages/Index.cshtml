@@ -6,7 +6,6 @@
 
 <partial name="_StatusMessage" for="StatusMessage" />
 <partial name="_BoardgameNavPartial" model="@Model.BoardgameDTO" />
-
 <div class="container">
         <div class="row mb-4">
             <table class="table table-responsible table-bordered table-hover table-striped text-center text-justify">
@@ -38,9 +37,16 @@
                 </tbody>
             </table>
         </div>
-
+        <br />
         <div class="row mb-4">
             <h5> Game Description: </h5>
             <p> @Model.BoardgameDTO.Description </p>
         </div>
+        <br />
+        <partial name="_BoardgameDomainsPartial" model="@Model.BoardgameDomainDTOs" />
+        <br />
+        <partial name="_BoardgameCategoriesPartial" model="@Model.BoardgameCategoryDTOs" />
+        <br />
+        <partial name="_BoardgameMechanicsPartial" model="@Model.BoardgameMechanicDTOs" />
+        <br />
 </div>

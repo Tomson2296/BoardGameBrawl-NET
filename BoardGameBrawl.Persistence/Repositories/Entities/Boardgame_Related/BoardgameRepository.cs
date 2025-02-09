@@ -1,5 +1,8 @@
 ﻿#nullable disable
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related;
+using BoardGameBrawl.Application.DTOs.Entities.Boardgame_Related;
 using BoardGameBrawl.Application.Exceptions;
 using BoardGameBrawl.Domain.Entities.Boardgame_Related;
 using BoardGameBrawl.Persistence.Repositories.Common;
@@ -10,12 +13,15 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
 {
     public class BoardgameRepository : GenericRepository<Boardgame>, IBoardgameRepository
     {
-        public BoardgameRepository(MainAppDBContext context) : base(context)
-        { }
+        private readonly IMapper _mapper;
+        public BoardgameRepository(MainAppDBContext context, IMapper mapper) : base(context)
+        {
+            _mapper = mapper;
+        }
 
 
         // custom BoardgameRepository methods //
-        public async Task<IList<Boardgame>> GetFilteredBatchOfBoardgamesAsync(string filter, int size, int skip = 0, CancellationToken cancellationToken = default)
+        public async Task<IList<NavBoardgameDTO>> GetFilteredBatchOfBoardgamesAsync(string filter, int size, int skip = 0, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -25,11 +31,12 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
             try
             {
                 return await Context.Boardgames
-                    .AsNoTracking()
                     .Where(b => b.Name.Contains(filter))
                     .OrderBy(b => b.Name)
+                    .ProjectTo<NavBoardgameDTO>(_mapper.ConfigurationProvider)
                     .Skip(skip)
                     .Take(size)
+                    .AsNoTracking()
                     .ToListAsync(cancellationToken);
             }
             catch (Exception ex)

@@ -36,7 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\User\Pages\Shared\" />
+    <Folder Include="Areas\AppUser\Pages\Shared\" />
     <Folder Include="Middlewares\" />
   </ItemGroup>
 

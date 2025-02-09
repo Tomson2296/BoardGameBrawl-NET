@@ -1,17 +1,21 @@
 #nullable disable
+using AspNetCoreGeneratedDocument;
 using BoardGameBrawl.Application.DTOs.Entities.Boardgame_Related;
 using BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameCategories.Commands.AddBoardgameCategory;
 using BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameCategories.Queries.CheckIfBoardgameCategoryExists;
 using BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameCategories.Queries.GetBoardgameCategoryId;
 using BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameCategoryTags.Commands.AddBoardgameCategoryTag;
+using BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameCategoryTags.Queries.GetBoardgameCategories;
 using BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameDomains.Commands.AddBoardgameDomain;
 using BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameDomains.Queries.CheckIfBoardgameDomainExists;
 using BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameDomains.Queries.GetBoardgameDomainId;
 using BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameDomainTags.Commands.AddBoardgameDomainTag;
+using BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameDomainTags.Queries.GetBoardgameDomains;
 using BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameMechanics.Commands.AddBoardgameMechanic;
 using BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameMechanics.Queries.CheckIfBoardgameMechanicExists;
 using BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameMechanics.Queries.GetBoardgameMechanicId;
 using BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameMechanicTags.Commands.AddBoardgameMechanicTag;
+using BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameMechanicTags.Queries.GetBoardgameMechanics;
 using BoardGameBrawl.Application.Features.Boardgames_Related.Boardgames.Commands.AddBoardgame;
 using BoardGameBrawl.Application.Features.Boardgames_Related.Boardgames.Queries.CheckIfBoardgameExists;
 using BoardGameBrawl.Application.Features.Boardgames_Related.Boardgames.Queries.GetBoardgameByBGGId;
@@ -58,6 +62,12 @@ namespace BoardGameBrawl.App.Areas.Boardgame.Pages
         
         public BoardgameDTO BoardgameDTO { get; set; }
 
+        public IList<BoardgameDomainDTO> BoardgameDomainDTOs { get; set; }
+        
+        public IList<BoardgameCategoryDTO> BoardgameCategoryDTOs { get; set; }
+
+        public IList<BoardgameMechanicDTO> BoardgameMechanicDTOs { get; set; }
+
         public bool IsBoardgameExistsInDB { get; set; }
 
 
@@ -75,30 +85,32 @@ namespace BoardGameBrawl.App.Areas.Boardgame.Pages
             if (!IsBoardgameExistsInDB)
             {
                 await AddBoardgameToDatabase();
-
-                // after that, get that boardgame
-                var getBoardgameByBGGIdQuery = new GetBoardgameByBGGIdQuery { BGGId = BoardgameId };
-                BoardgameDTO = await _mediator.Send(getBoardgameByBGGIdQuery);
+                await LoadBoardgameDTOs();
             }
             else
             {
-                var getBoardgameByBGGIdQuery = new GetBoardgameByBGGIdQuery { BGGId = BoardgameId };
-                BoardgameDTO = await _mediator.Send(getBoardgameByBGGIdQuery);
+                await LoadBoardgameDTOs();
             }
 
             return Page();
         }
 
-        private async Task<IList<string>> GetBoardgameDescription(string boardgameDesc)
+        private async Task LoadBoardgameDTOs()
         {
-            IList<string> modifiedDescString = new List<string>();
+            var getBoardgameByBGGIdQuery = new GetBoardgameByBGGIdQuery { BGGId = BoardgameId };
+            BoardgameDTO = await _mediator.Send(getBoardgameByBGGIdQuery);
 
-            string breakingLineString = "\n";
-            if (boardgameDesc.Contains(breakingLineString))
-            {
-                modifiedDescString = boardgameDesc.Split(breakingLineString);
-            }
-            return await Task.FromResult(modifiedDescString);
+            // get boardgame domains 
+            var getBoardgameDomains = new GetBoardgameDomainsQuery { BoardgameId = BoardgameDTO.Id };
+            BoardgameDomainDTOs = await _mediator.Send(getBoardgameDomains);
+
+            // get boardmage categories
+            var getBoardgameCategories = new GetBoardgameCategoriesQuery { BoardgameId = BoardgameDTO.Id };
+            BoardgameCategoryDTOs = await _mediator.Send(getBoardgameCategories);
+
+            //get boardgame mechanics
+            var getBoardgameMechanics = new GetBoardgameMechanicsQuery { BoardgameId = BoardgameDTO.Id };
+            BoardgameMechanicDTOs = await _mediator.Send(getBoardgameMechanics);
         }
 
         private async Task<IActionResult> AddBoardgameToDatabase()

@@ -5,28 +5,31 @@
 }
 
 <partial name="_BoardgameNavPartial" model="@Model.TargetBoardgame" />
-<partial name="_StatusMessage" for="StatusMessage" />
 
 <div class="container">
     <h3> @ViewData["title"] </h3>
     <br />
-    <div class="row">
-        <form method="post">
-            <div class="star-rating">
-                @for (int i = 1; i <= 5; i++)
-                {
-                    <span class="star" data-value="@i" onclick="setRating(@i)">★</span>
-                }
-            </div>
-            <input type="hidden" asp-for="Rating" id="selectedRating" />
-            <button type="submit" class="btn btn-primary mt-3">Submit Rating</button>
-        </form>
+    <div class="row text-center">
+        <h5>
+            Rate this game on the scale from 0 to 5:
+        </h5>
     </div>
     <div class="row">
-
+        <div class="d-flex-inline justify-content-between align-items-center">
+            <form method="post">
+                <div class="star-rating">
+                    @for (int i = 1; i <= 5; i++)
+                    {
+                        <span class="star" data-value="@i" onclick="setRating(@i)">★</span>
+                    }
+                </div>
+                <input type="hidden" asp-for="Rating" id="selectedRating" />
+                <button type="submit" class="btn btn-primary mt-3">Submit Rating</button>
+            </form>
+        </div>
     </div>
+    <br />
 </div>
-
 <style>
     .star-rating {
         font-size: 2em;

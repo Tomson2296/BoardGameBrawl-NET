@@ -1,5 +1,6 @@
 ﻿#nullable disable
 
+using AutoMapper;
 using BoardGameBrawl.Application.Contracts.Common;
 using BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related;
 using BoardGameBrawl.Application.Contracts.Entities.Group_Related;
@@ -8,6 +9,7 @@ using BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related;
 using BoardGameBrawl.Persistence.Repositories.Entities.Group_Related;
 using BoardGameBrawl.Persistence.Repositories.Entities.Player_Related;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Identity.Client;
 
 namespace BoardGameBrawl.Persistence.Repositories.Common
 {
@@ -15,6 +17,7 @@ namespace BoardGameBrawl.Persistence.Repositories.Common
     {
         protected readonly MainAppDBContext _context;
         protected readonly IHttpContextAccessor _contextAccessor;
+        protected readonly IMapper _mapper; 
 
         private IPlayerRepository _playerRepository;
         private IPlayerPreferenceRepository _playerPreferenceRepository;
@@ -34,16 +37,18 @@ namespace BoardGameBrawl.Persistence.Repositories.Common
         private IGroupParticipantRepository _groupParticipantRepository;
 
         public UnitOfWork(MainAppDBContext context, 
-            IHttpContextAccessor contextAccessor)
+            IHttpContextAccessor contextAccessor,
+            IMapper mapper)
         {
             _context = context;
             _contextAccessor = contextAccessor;
+            _mapper = mapper;
         }
 
         // Player-related repositories 
 
         public IPlayerRepository PlayerRepository =>
-            _playerRepository ??= new PlayerRepository(_context);
+            _playerRepository ??= new PlayerRepository(_context, _mapper);
 
         public IPlayerPreferenceRepository PlayerPreferenceRepository =>
             _playerPreferenceRepository ??= new PlayerPreferenceRepository(_context);
@@ -61,34 +66,34 @@ namespace BoardGameBrawl.Persistence.Repositories.Common
         // Boardgame-related repositories
 
         public IBoardgameRepository BoardgameRepository =>
-            _boardgameRepository ??= new BoardgameRepository(_context);
+            _boardgameRepository ??= new BoardgameRepository(_context, _mapper);
 
         public IBoardgameDomainsRepository BoardgameDomainsRepository =>
             _boardgameDomainsRepository ??= new BoardgameDomainsRepository(_context);
 
         public IBoardgameDomainTagsRepository BoardgameDomainTagsRepository =>
-            _boardgameDomainTagsRepository ??= new BoardgameDomainTagsRepository(_context);
+            _boardgameDomainTagsRepository ??= new BoardgameDomainTagsRepository(_context, _mapper);
 
         public IBoardgameCategoriesRepository BoardgameCategoriesRepository =>
             _boardgameCategoriesRepository ??= new BoardgameCategoriesRepository(_context);
 
         public IBoardgameCategoryTagsRepository BoardgameCategoryTagsRepository =>
-            _boardgameCategoryTagsRepository ??= new BoardgameCategoryTagsRepository(_context);
+            _boardgameCategoryTagsRepository ??= new BoardgameCategoryTagsRepository(_context, _mapper);
 
         public IBoardgameMechanicsRepository BoardgameMechanicsRepository =>
             _boardgameMechanicsRepository ??= new BoardgameMechanicsRepository(_context);
 
         public IBoardgameMechanicTagsRepository BoardgameMechanicsTagsRepository =>
-            _boardgameMechanicTagsRepository ??= new BoardgameMechanicTagsRepository(_context);
+            _boardgameMechanicTagsRepository ??= new BoardgameMechanicTagsRepository(_context, _mapper);
 
 
         // Group-related repositories
 
         public IGroupRepository GroupRepository =>
-            _groupRepository ??= new GroupRepository(_context);
-
+            _groupRepository ??= new GroupRepository(_context, _mapper);
+        
         public IGroupParticipantRepository GroupParticipantRepository =>
-           _groupParticipantRepository ??= new GroupParticipantRepository(_context);
+           _groupParticipantRepository ??= new GroupParticipantRepository(_context, _mapper);
 
 
         public async Task CommitChangesAsync()

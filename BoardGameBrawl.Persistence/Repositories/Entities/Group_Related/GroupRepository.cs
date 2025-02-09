@@ -1,4 +1,7 @@
-﻿using BoardGameBrawl.Application.Contracts.Entities.Group_Related;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using BoardGameBrawl.Application.Contracts.Entities.Group_Related;
+using BoardGameBrawl.Application.DTOs.Entities.Group_Related;
 using BoardGameBrawl.Domain.Entities.Group_Related;
 using BoardGameBrawl.Persistence.Repositories.Common;
 using Microsoft.EntityFrameworkCore;
@@ -7,13 +10,16 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Group_Related
 {
     public class GroupRepository : GenericRepository<Group>, IGroupRepository
     {
-        public GroupRepository(MainAppDBContext context) : base(context)
+        private readonly IMapper _mapper;
+
+        public GroupRepository(MainAppDBContext context, IMapper mapper) : base(context)
         {
+            _mapper = mapper;
         }
 
         // custom methods // 
 
-        public async Task<IList<Group>> GetFilteredBatchOfGroupsAsync(string filter, int size, int skip = 0, CancellationToken cancellationToken = default)
+        public async Task<IList<NavGroupDTO>> GetFilteredBatchOfGroupsAsync(string filter, int size, int skip = 0, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -23,11 +29,12 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Group_Related
             try
             {
                 return await Context.Groups
-                    .AsNoTracking()
                     .Where(g => g.GroupName.Contains(filter))
                     .OrderBy(g => g.GroupName)
+                    .ProjectTo<NavGroupDTO>(_mapper.ConfigurationProvider)
                     .Skip(skip)
                     .Take(size)
+                    .AsNoTracking()
                     .ToListAsync(cancellationToken);
             }
             catch (Exception ex)

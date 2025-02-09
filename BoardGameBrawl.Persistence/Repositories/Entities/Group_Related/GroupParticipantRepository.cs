@@ -1,6 +1,9 @@
-﻿using BoardGameBrawl.Application.Contracts.Entities.Group_Related;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using BoardGameBrawl.Application.Contracts.Entities.Group_Related;
+using BoardGameBrawl.Application.DTOs.Entities.Group_Related;
+using BoardGameBrawl.Application.DTOs.Entities.Player_Related;
 using BoardGameBrawl.Domain.Entities.Group_Related;
-using BoardGameBrawl.Domain.Entities.Player_Related;
 using BoardGameBrawl.Persistence.Repositories.Common;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,8 +11,10 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Group_Related
 {
     public class GroupParticipantRepository : GenericRepository<GroupParticipant> , IGroupParticipantRepository
     {
-        public GroupParticipantRepository(MainAppDBContext context) : base(context)
+        private readonly IMapper _mapper;
+        public GroupParticipantRepository(MainAppDBContext context, IMapper mapper) : base(context)
         {
+            _mapper = mapper;
         }
 
         // getter methods //
@@ -38,32 +43,28 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Group_Related
             return Task.FromResult(groupParticipant.IsAdmin);
         }
 
-        public async Task<ICollection<Group>> GetAllPlayerGroupsByIdAsync(Guid playerId, CancellationToken cancellationToken = default)
+        public async Task<ICollection<GroupDTO>> GetAllPlayerGroupsByIdAsync(Guid playerId, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(playerId);
 
-            var query = from groups in Context.Groups
-                        join groupParticipants in Context.GroupParticipants
-                        on groups.Id equals groupParticipants.GroupId
-                        where groupParticipants.PlayerId == playerId
-                        select groups;
-
-            return await query.ToListAsync(cancellationToken);
+            return await _context.Groups
+                .Where(g => g.GroupParticipants!.Any(par => par.PlayerId == playerId))
+                .ProjectTo<GroupDTO>(_mapper.ConfigurationProvider)
+                .AsNoTracking()
+                .ToListAsync(cancellationToken);
         }
 
-        public async Task<ICollection<Player>> GetAllUserParticipantsInGroupByIdAsync(Guid groupId, CancellationToken cancellationToken = default)
+        public async Task<ICollection<NavPlayerDTO>> GetAllUserParticipantsInGroupByIdAsync(Guid groupId, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(groupId);
 
-            var query = from players in Context.Players
-                        join groupParticipants in Context.GroupParticipants
-                        on players.Id equals groupParticipants.PlayerId
-                        where groupParticipants.GroupId == groupId
-                        select players;
-
-            return await query.ToListAsync(cancellationToken);
+            return await _context.Players
+              .Where(g => g.GroupParticipants!.Any(par => par.GroupId == groupId))
+              .ProjectTo<NavPlayerDTO>(_mapper.ConfigurationProvider)
+              .AsNoTracking()
+              .ToListAsync(cancellationToken);
         }
 
         // setter methods //

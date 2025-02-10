@@ -22,7 +22,6 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related
 
         Task<IList<BoardgameCategoryDTO>> GetBoardgameCategoriesByGameAsync(Guid boardgameId,
             CancellationToken cancellationToken = default);
-
         
         Task<IList<NavBoardgameDTO>> GetBoardgamesByCategoryAsync(Guid categoryId,
             CancellationToken cancellationToken = default);

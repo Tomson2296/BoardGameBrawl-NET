@@ -17,14 +17,14 @@
         {
             <div class="row">
                 <div class="d-flex justify-content-center align-items-center">
-                    <a class="btn btn-block w-100" asp-page="FindSimilar" asp-route-type="Domain" asp-route-value="@Model.ElementAt(el).Id">
+                    <a class="btn btn-block w-100" asp-page="FindSimilar" asp-route-PageNumber="1" asp-route-Type="Domain" asp-route-Value="@Model.ElementAt(el).Id">
                         <div class="box">
                             <h5> @Model.ElementAt(el).Domain </h5>
                         </div>
                     </a>
-                    <a class="btn btn-block w-100" asp-page="FindSimilar" asp-route-type="Domain" asp-route-value="@Model.ElementAt(el + 1).Id">
+                    <a class="btn btn-block w-100" asp-page="FindSimilar" asp-route-PageNumber="1" asp-route-Type="Domain" asp-route-Value="@Model.ElementAt(el+1).Id">
                         <div class="box">
-                            <h5> @Model.ElementAt(el + 1).Domain </h5>
+                            <h5> @Model.ElementAt(el+1).Domain </h5>
                         </div>
                     </a>
                 </div>
@@ -37,13 +37,13 @@
         {
                 <div class="row">
                     <div class="d-flex justify-content-center align-items-center">
-                        <a asp-page="FindSimilar" asp-route-type="Domain" asp-route-value="@Model.ElementAt(el).Id">
-                            <div class="w-100 p-3 box">
+                        <a class="btn btn-block w-100" asp-page="FindSimilar" asp-route-PageNumber="1" asp-route-Type="Domain" asp-route-Value="@Model.ElementAt(el).Id">
+                            <div class="box">
                                 <h5> @Model.ElementAt(el).Domain </h5>
                             </div>
                         </a>
-                        <a asp-page="FindSimilar" asp-route-type="Domain" asp-route-value="@Model.ElementAt(el + 1).Id">
-                            <div class="w-100 p-3 box">
+                        <a class="btn btn-block w-100" asp-page="FindSimilar" asp-route-PageNumber="1" asp-route-Type="Domain" asp-route-Value="@Model.ElementAt(el+1).Id">
+                            <div class="box">
                                 <h5> @Model.ElementAt(el + 1).Domain </h5>
                             </div>
                         </a>
@@ -52,8 +52,8 @@
         }
     
         <div class="d-flex justify-content-center align-items-center">
-            <a asp-page="FindSimilar" asp-route-type="Domain" asp-route-value="@Model.ElementAt(countElements - 1).Id">
-                <div class="w-100 box">
+            <a class="btn btn-block w-100" asp-page="FindSimilar" asp-route-PageNumber="1" asp-route-Type="Domain" asp-route-Value="@Model.ElementAt(countElements - 1).Id">
+                <div class="box">
                     <h5> @Model.ElementAt(countElements - 1).Domain </h5>
                 </div>
             </a>

@@ -1,6 +1,5 @@
 ﻿using BoardGameBrawl.Application.Contracts.Entities.Player_Related;
 using BoardGameBrawl.Domain.Entities.Player_Related;
-using BoardGameBrawl.Domain.Value_objects;
 using BoardGameBrawl.Persistence.Repositories.Common;
 using Microsoft.EntityFrameworkCore;
 using System;

@@ -9,12 +9,10 @@ namespace BoardGameBrawl.Application.Features.Player_Related.Players.Commands.Re
     public class RemovePlayerCommandHandler : IRequestHandler<RemovePlayerCommand, BaseCommandResponse>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
 
-        public RemovePlayerCommandHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public RemovePlayerCommandHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
         }
 
         public async Task<BaseCommandResponse> Handle(RemovePlayerCommand request, CancellationToken cancellationToken)

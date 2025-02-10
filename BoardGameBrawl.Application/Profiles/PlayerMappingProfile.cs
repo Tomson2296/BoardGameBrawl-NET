@@ -33,9 +33,24 @@ namespace BoardGameBrawl.Application.Profiles
                .ForMember(dest => dest.FriendOfFriendships, opt => opt.Ignore())
                .ReverseMap();
 
-            CreateMap<PlayerPreferenceDTO, PlayerRreference>()
+            CreateMap<PlayerFavouriteBGDTO, PlayerFavouriteBG>()
+              .ForMember(dest => dest.Player, opt => opt.Ignore())
+              .ForMember(dest => dest.Boardgame, opt => opt.Ignore())
+              
+              .ForMember(dest => dest.CreatedDate, opt => opt.Ignore())
+              .ForMember(dest => dest.CreatedBy, opt => opt.Ignore())
+              .ForMember(dest => dest.LastModifiedDate, opt => opt.Ignore())
+              .ForMember(dest => dest.LastModifiedBy, opt => opt.Ignore())
+              .ReverseMap();
+
+            CreateMap<PlayerPreferenceDTO, PlayerPreference>()
                .ForMember(dest => dest.Player, opt => opt.Ignore())
                .ForMember(dest => dest.Boardgame, opt => opt.Ignore())
+
+               .ForMember(dest => dest.CreatedDate, opt => opt.Ignore())
+               .ForMember(dest => dest.CreatedBy, opt => opt.Ignore())
+               .ForMember(dest => dest.LastModifiedDate, opt => opt.Ignore())
+               .ForMember(dest => dest.LastModifiedBy, opt => opt.Ignore())
                .ReverseMap();
 
             CreateMap<PlayerCollectionDTO, PlayerCollection>()

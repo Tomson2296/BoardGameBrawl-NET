@@ -51,7 +51,7 @@ namespace BoardGameBrawl.Domain.Entities.Boardgame_Related
 
         public ICollection<MatchRule>? BoardgameRules { get; set; }
 
-        public ICollection<PlayerRreference>? UserRatings { get; set; }
+        public ICollection<PlayerPreference>? UserRatings { get; set; }
 
         public ICollection<PlayerFavouriteBG>? PlayerFavouriteBGs { get; set; }
 

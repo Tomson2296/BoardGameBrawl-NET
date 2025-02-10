@@ -1,0 +1,12 @@
+﻿@model BoardGameBrawl.Application.DTOs.Entities.Boardgame_Related.BoardgameDTO
+@using static BoardGameBrawl.App.Areas.Boardgame.Pages.IndexModel
+
+<div class="row p-3">
+    <div class="d-flex flex-row justify-content-around text-center align-items-center">
+        <img src="data:image/*;base64,@(Convert.ToBase64String(Model.Image!))" class="img-fluid img-thumbnail img-round" alt=""
+             width="300" height="300" />
+        <div class="flex align-items-center align-self-center">
+            <h3> @Model.Name </h3>
+        </div>
+    </div>
+</div>

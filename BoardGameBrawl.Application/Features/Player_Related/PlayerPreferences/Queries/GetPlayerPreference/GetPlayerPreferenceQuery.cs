@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BoardGameBrawl.Application.Features.Player_Related.PlayerPreferences.Queries.GetPlayerPreferenceByBoardgame
 {
-    public class GetPlayerPreferenceByBoardgameQuery : IRequest<PlayerPreferenceDTO>
+    public class GetPlayerPreferenceQuery : IRequest<PlayerPreferenceDTO>
     {
         public Guid PlayerId { get; set; }
 

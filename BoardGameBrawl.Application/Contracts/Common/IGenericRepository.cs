@@ -1,4 +1,5 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace BoardGameBrawl.Application.Contracts.Common
 {
@@ -13,6 +14,8 @@ namespace BoardGameBrawl.Application.Contracts.Common
         Task AddEntity(T entity, CancellationToken cancellationToken = default);
         
         Task<bool> Exists(Guid id, CancellationToken cancellationToken = default);
+
+        Task<int> CountTotalElements(CancellationToken cancellationToken = default);
 
         Task DeleteEntity(T entity, CancellationToken cancellationToken = default);
 

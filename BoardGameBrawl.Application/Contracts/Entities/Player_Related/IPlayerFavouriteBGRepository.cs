@@ -11,6 +11,22 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Player_Related
 {
     public interface IPlayerFavouriteBGRepository : IGenericRepository<PlayerFavouriteBG>, IAuditableRepository<PlayerFavouriteBG>
     {
-        // custom IPlayerFavouriteBGRepo methods //
+        // custom methods //
+
+        Task<bool> Exists(Guid playerId,
+           Guid boardgameId, CancellationToken cancellationToken = default);
+
+
+        // getter methods //
+
+        Task<PlayerFavouriteBG> GetPlayerFavouriteBGAsync(Guid playerId,
+            Guid boardgameId,
+            CancellationToken cancellationToken = default);
+
+        Task<IList<PlayerFavouriteBGDTO>> GetAllPlayerFavouriteBGsAsync(Guid playerId,
+            CancellationToken cancellationToken = default);
+
+        Task<IList<PlayerFavouriteBGDTO>> GetAllPlayersFavouringBGAsync(Guid boardgameId,
+            CancellationToken cancellationToken = default);
     }
 }

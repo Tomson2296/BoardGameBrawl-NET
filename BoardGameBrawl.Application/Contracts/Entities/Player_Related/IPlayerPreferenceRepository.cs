@@ -1,9 +1,10 @@
 ﻿using BoardGameBrawl.Application.Contracts.Common;
+using BoardGameBrawl.Application.DTOs.Entities.Player_Related;
 using BoardGameBrawl.Domain.Entities.Player_Related;
 
 namespace BoardGameBrawl.Application.Contracts.Entities.Player_Related
 {
-    public interface IPlayerPreferenceRepository : IGenericRepository<PlayerRreference>, IAuditableRepository<PlayerRreference>
+    public interface IPlayerPreferenceRepository : IGenericRepository<PlayerPreference>, IAuditableRepository<PlayerPreference>
     {
         // refined methods //
         
@@ -13,14 +14,14 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Player_Related
 
         // getter methods //
 
-        Task<PlayerRreference> GetPlayerPreferenceByBoardgameIdAsync(Guid playerId, 
+        Task<PlayerPreferenceDTO> GetPlayerPreferenceAsync (Guid playerId, 
             Guid boardgameId,
             CancellationToken cancellationToken = default);
 
-        Task<IDictionary<Guid, byte>> GetAllPlayerPreferencesAsync(Guid playerId,
+        Task<IList<PlayerPreferenceDTO>> GetAllPlayerPreferencesAsync(Guid playerId,
             CancellationToken cancellationToken = default);
 
-        Task<IDictionary<Guid, byte>> GetAllBoardgamePrefencesAsync(Guid boardgameId,
+        Task<IList<PlayerPreferenceDTO>> GetAllBoardgamePrefencesChosenByPlayersAsync(Guid boardgameId,
             CancellationToken cancellationToken = default);
 
 

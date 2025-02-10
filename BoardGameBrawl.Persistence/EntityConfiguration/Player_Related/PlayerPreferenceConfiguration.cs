@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace BoardGameBrawl.Persistence.EntityConfiguration.Player_Related
 {
-    internal class PlayerPreferenceConfiguration : IEntityTypeConfiguration<PlayerRreference>
+    internal class PlayerPreferenceConfiguration : IEntityTypeConfiguration<PlayerPreference>
     {
-        public void Configure(EntityTypeBuilder<PlayerRreference> entity)
+        public void Configure(EntityTypeBuilder<PlayerPreference> entity)
         {
             entity.HasKey(e => new { e.PlayerId, e.BoardgameId });
 

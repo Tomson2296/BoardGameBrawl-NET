@@ -32,7 +32,7 @@ namespace BoardGameBrawl.Domain.Entities.Player_Related
 
         public ICollection<GroupParticipant>? GroupParticipants { get; set; }
 
-        public ICollection<PlayerRreference>? PlayerRatings { get; set; }
+        public ICollection<PlayerPreference>? PlayerRatings { get; set; }
 
         public ICollection<PlayerFriend>? Friendships { get; set; }  
 

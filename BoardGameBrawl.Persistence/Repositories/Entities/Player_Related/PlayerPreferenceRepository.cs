@@ -1,16 +1,20 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using BoardGameBrawl.Application.Contracts.Entities.Player_Related;
+using BoardGameBrawl.Application.DTOs.Entities.Player_Related;
 using BoardGameBrawl.Domain.Entities.Player_Related;
 using BoardGameBrawl.Persistence.Repositories.Common;
 using Microsoft.EntityFrameworkCore;
 
 namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
 {
-    public class PlayerPreferenceRepository : GenericRepository<PlayerRreference>, IPlayerPreferenceRepository
+    public class PlayerPreferenceRepository : GenericRepository<PlayerPreference>, IPlayerPreferenceRepository
     {
+        private readonly IMapper _mapper;
 
-        public PlayerPreferenceRepository(MainAppDBContext context) : base(context)
+        public PlayerPreferenceRepository(MainAppDBContext context, IMapper mapper) : base(context)
         {
+            _mapper = mapper;
         }
 
         // refined mthods //
@@ -19,14 +23,18 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
             Guid boardgameId,
             CancellationToken cancellationToken = default)
         {
-            var entity = await _context.PlayerRreferences.FindAsync(new[] { playerId, boardgameId }, cancellationToken);
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(playerId);
+            ArgumentNullException.ThrowIfNull(boardgameId);
+
+            var entity = await _context.PlayerPreferences.FindAsync( playerId, boardgameId, cancellationToken);
             return entity != null;
         }
 
 
         // getter methods //
 
-        public async Task<PlayerRreference> GetPlayerPreferenceByBoardgameIdAsync(Guid playerId,
+        public async Task<PlayerPreferenceDTO> GetPlayerPreferenceAsync(Guid playerId,
            Guid boardgameId,
            CancellationToken cancellationToken = default)
         {
@@ -34,21 +42,22 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
             ArgumentNullException.ThrowIfNull(playerId);
             ArgumentNullException.ThrowIfNull(boardgameId);
 
-            var playerPreference = await _context.PlayerRreferences.FirstOrDefaultAsync(e => e.PlayerId == playerId && e.BoardgameId == boardgameId, cancellationToken);
+            var playerPreference = await _context.PlayerPreferences
+                .FirstOrDefaultAsync(e => e.PlayerId == playerId && e.BoardgameId == boardgameId, cancellationToken);
 
             if (playerPreference != null)
-                return playerPreference;
+                return _mapper.Map<PlayerPreferenceDTO>(_mapper.ConfigurationProvider);
             else
                 throw new ApplicationException("Entity has not been found");
         }
 
-        public async Task<IDictionary<Guid, byte>> GetAllPlayerPreferencesAsync(Guid playerId,
+        public async Task<IList<PlayerPreferenceDTO>> GetAllPlayerPreferencesAsync(Guid playerId,
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(playerId);
 
-            bool isPlayerPreferenceExists = await _context.PlayerRreferences.AnyAsync(e => e.PlayerId == playerId, cancellationToken);
+            bool isPlayerPreferenceExists = await _context.PlayerPreferences.AnyAsync(e => e.PlayerId == playerId, cancellationToken);
 
             if (isPlayerPreferenceExists == false)
             {
@@ -56,22 +65,21 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
             }
             else
             {
-                var playerPreferences = await _context.PlayerRreferences
+                return await _context.PlayerPreferences
                         .Where(e => e.PlayerId == playerId)
+                        .ProjectTo<PlayerPreferenceDTO>(_mapper.ConfigurationProvider)
                         .AsNoTracking()
-                        .ToDictionaryAsync(e => e.BoardgameId, e => e.Rating, cancellationToken);
-
-                return playerPreferences;
+                        .ToListAsync(cancellationToken);
             }
         }
 
-        public async Task<IDictionary<Guid, byte>> GetAllBoardgamePrefencesAsync(Guid boardgameId, 
+        public async Task<IList<PlayerPreferenceDTO>> GetAllBoardgamePrefencesChosenByPlayersAsync(Guid boardgameId, 
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(boardgameId);
 
-            bool isBoardgamePreferenceExists = await _context.PlayerRreferences.AnyAsync(e => e.BoardgameId == boardgameId, cancellationToken);
+            bool isBoardgamePreferenceExists = await _context.PlayerPreferences.AnyAsync(e => e.BoardgameId == boardgameId, cancellationToken);
 
             if (isBoardgamePreferenceExists == false)
             {
@@ -79,12 +87,11 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
             }
             else
             {
-                var boardgamePreferences = await _context.PlayerRreferences
+                return await _context.PlayerPreferences
                         .Where(e => e.BoardgameId == boardgameId)
+                        .ProjectTo<PlayerPreferenceDTO>(_mapper.ConfigurationProvider)
                         .AsNoTracking()
-                        .ToDictionaryAsync(e => e.PlayerId, e => e.Rating, cancellationToken);
-
-                return boardgamePreferences;
+                        .ToListAsync(cancellationToken);
             }
         }
 
@@ -98,7 +105,7 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
             ArgumentNullException.ThrowIfNull(boardgameId);
             ArgumentNullException.ThrowIfNull(rating);
 
-            var playerPreference = await _context.PlayerRreferences.FirstOrDefaultAsync(e => e.PlayerId == playerId && e.BoardgameId == boardgameId, cancellationToken);
+            var playerPreference = await _context.PlayerPreferences.FirstOrDefaultAsync(e => e.PlayerId == playerId && e.BoardgameId == boardgameId, cancellationToken);
 
             if (playerPreference != null)
             {

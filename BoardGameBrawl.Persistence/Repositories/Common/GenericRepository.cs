@@ -62,6 +62,12 @@ namespace BoardGameBrawl.Persistence.Repositories.Common
             return entity != null;
         }
 
+        public async Task<int> CountTotalElements(CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            return await _context.Set<T>().CountAsync(cancellationToken);
+        }
+
         public async Task AddEntity(T entity, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();

@@ -4,32 +4,78 @@
     ViewData["title"] = "Rate this game / add to favourites";
 }
 
-<partial name="_BoardgameNavPartial" model="@Model.TargetBoardgame" />
-
+<parital name="_StatusMessage" for="@Model.StatusMessage" />
+<partial name="_BoardgamePartial" model="@Model.TargetBoardgame" />
+<br />
 <div class="container">
-    <h3> @ViewData["title"] </h3>
-    <br />
-    <div class="row text-center">
+    <div class="row p-3 text-center">
         <h5>
-            Rate this game on the scale from 0 to 5:
+            Rate this game on the scale from 1 to 5:
         </h5>
     </div>
-    <div class="row">
-        <div class="d-flex-inline justify-content-between align-items-center">
-            <form method="post">
-                <div class="star-rating">
-                    @for (int i = 1; i <= 5; i++)
-                    {
-                        <span class="star" data-value="@i" onclick="setRating(@i)">★</span>
-                    }
+    <div class="row p-3">
+        <p> 
+            By rating boardgames, you can help other users find games to explore and play. This website using 
+            hybrid recommendation system, by rating boardgames you can contribute to make that website much better.
+        </p>
+        <p>
+            By voting on your favourite boardgames you letting us improve on our recommendation algorithm.
+        </p>
+    </div>
+    <div class="row p-3">
+        <div class="d-inline-flex flex-row">
+
+            @if (@Model.IfPlayerVoted)
+            {
+                <div class="w-50">
+                    <p> Looks like you alredy voted for that boardgame. Do you want to change your mind? </p>
                 </div>
-                <input type="hidden" asp-for="Rating" id="selectedRating" />
-                <button type="submit" class="btn btn-primary mt-3">Submit Rating</button>
-            </form>
+            }
+
+            <div class="w-50 h-100 box d-flex flex-row justify-content-center align-items-center">
+                <form id="ratingForm" method="post">
+                    <div class="star-rating d-flex flex-row">
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                            <span class="star" data-value="@i" onclick="setRating(@i)">★</span>
+                        }
+                        <input type="hidden" asp-for="Rating" id="selectedRating" />
+                    </div>
+                    <button type="submit" class="btn btn-block" asp-page-handler="SubmitRating">
+                        <h6> Submit Rating </h6>
+                    </button>
+                </form>
+            </div>
+
+            @if (Model.IfBoardgameFavourite == true)
+            {
+                <div class="w-50 h-100 box d-flex justify-content-center align-items-center">
+                    <form id="addToFavForm" method="post">
+                        <button type="submit" class="btn btn-block" asp-page-handler="RemoveFromFavourites">
+                            <h6> Remove Boardgame from Favourites </h6>
+                        </button>
+                    </form>
+                </div>
+            }
+            else
+            {
+                <div class="w-50 h-100 box d-flex justify-content-center align-items-center">
+                    <form id="addToFavForm" method="post">
+                        <button type="submit" class="btn btn-block" asp-page-handler="AddToFavourites">
+                            <h6> Add Boardgame to Favourites </h6>
+                        </button>
+                    </form>
+                </div>
+            }
         </div>
     </div>
-    <br />
+    <div class="row p-3">
+        <div class="d-flex flex-row justify-content-center align-items-center">
+            <a asp-page="Index" asp-area="Boardgame" asp-route-Id="@Model.BoardgameId" class="w-50 btn btn-primary btn-block"> Back </a>
+        </div>
+    </div>
 </div>
+
 <style>
     .star-rating {
         font-size: 2em;
@@ -46,7 +92,6 @@
         color: #ffd700;
     }
 </style>
-
 
 @section Scripts {
     <script>
@@ -72,7 +117,7 @@
             star.addEventListener('click', function() {
                 // Toggle off if clicking the same rating
                 if (currentRating === parseInt(this.dataset.value)) {
-                    setRating(0);
+                    setRating(currentRating);
                 }
             });
         });

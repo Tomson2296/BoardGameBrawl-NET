@@ -77,7 +77,7 @@ namespace BoardGameBrawl.Persistence
 
         public DbSet<Player> Players { get; set; }
 
-        public DbSet<PlayerRreference> PlayerRreferences { get; set; }
+        public DbSet<PlayerPreference> PlayerPreferences { get; set; }
 
         public DbSet<PlayerFriend> PlayerFriends { get; set; }
 

@@ -1,7 +1,7 @@
 using BoardGameBrawl.Application.DTOs.Entities.Boardgame_Related;
-using BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameCategoryTags.Queries.GetBoardgamesByCategory;
-using BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameDomainTags.Queries.GetBoardgameeByDomain;
-using BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameMechanicTags.Queries.GetBoardgamesByMechanic;
+using BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameCategoryTags.Queries.GetBatchOfBoardgamesByCategory;
+using BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameDomainTags.Queries.GetBatchOfBoardgamesByDomain;
+using BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameMechanicTags.Queries.GetBatchOfBoardgamesByMechanic;
 using BoardGameBrawl.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -22,16 +22,25 @@ namespace BoardGameBrawl.App.Areas.Boardgame.Pages
         }
 
         [BindProperty(SupportsGet = true)]
+        public int PageNumber { get; set; }
+
+        [BindProperty(SupportsGet = true)]
         public string? Type { get; set; }
 
         [BindProperty(SupportsGet = true)]
         public Guid Value { get; set; }
 
-        public int PageSize { get; set; } = 20;
 
-        public int PageNumber { get; set; }
+        public int PreviousNumber { get; set; }
+
+        public int NextNumber { get; set; }
+
+        public int PageSize { get; set; } = 20;
+   
 
         public IList<NavBoardgameDTO>? SimilarBoardgames { get; set; }
+
+        public int ElementsCount { get; set; }
 
 
         public async Task<IActionResult> OnGetAsync()
@@ -49,18 +58,27 @@ namespace BoardGameBrawl.App.Areas.Boardgame.Pages
 
             if (Type == "Domain")
             {
-                var searchBoardgamesWithSameDomain = new GetBoardgamesByDomainQuery { DomainId = Value };
+                var searchBoardgamesWithSameDomain = new GetBatchOfBoardgamesByDomainQuery { DomainId = Value, Size = PageSize, Skip = PageNumber * PageSize };
                 SimilarBoardgames = await _mediator.Send(searchBoardgamesWithSameDomain);
+                ElementsCount = SimilarBoardgames.Count;
+                PreviousNumber = (PageNumber - 1 < 1) ? 1 : PageNumber - 1;
+                NextNumber = PageNumber + 1;
             }
             else if (Type == "Category")
             {
-                var searchBoardgamesWithSameCategory = new GetBoardgamesByCategoryQuery { CategoryId = Value };
+                var searchBoardgamesWithSameCategory = new GetBatchOfBoardgamesByCategoryQuery { CategoryId = Value, Size = PageSize, Skip = PageNumber * PageSize };
                 SimilarBoardgames = await _mediator.Send(searchBoardgamesWithSameCategory);
+                ElementsCount = SimilarBoardgames.Count;
+                PreviousNumber = (PageNumber - 1 < 1) ? 1 : PageNumber - 1;
+                NextNumber = PageNumber + 1;
             }
             else
             {
-                var searchBoardgamesWithSameMechanic = new GetBoardgamesByMechanicQuery { MechanicId = Value };
+                var searchBoardgamesWithSameMechanic = new GetBatchOfBoardgamesByMechanicQuery { MechanicId = Value, Size = PageSize, Skip = PageNumber * PageSize };
                 SimilarBoardgames = await _mediator.Send(searchBoardgamesWithSameMechanic);
+                ElementsCount = SimilarBoardgames.Count;
+                PreviousNumber = (PageNumber - 1 < 1) ? 1 : PageNumber - 1;
+                NextNumber = PageNumber + 1;
             }
 
             return Page();

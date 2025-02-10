@@ -10,23 +10,20 @@ using System.Threading.Tasks;
 
 namespace BoardGameBrawl.Application.Features.Player_Related.PlayerPreferences.Queries.GetPlayerPreferenceByBoardgame
 {
-    public class GetPlayerPreferenceByBoardgameQueryHandler : IRequestHandler<GetPlayerPreferenceByBoardgameQuery, PlayerPreferenceDTO>
+    public class GetPlayerPreferenceQueryHandler : IRequestHandler<GetPlayerPreferenceQuery, PlayerPreferenceDTO>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
 
-        public GetPlayerPreferenceByBoardgameQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public GetPlayerPreferenceQueryHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
         }
 
-        public async Task<PlayerPreferenceDTO> Handle(GetPlayerPreferenceByBoardgameQuery request, CancellationToken cancellationToken)
+        public async Task<PlayerPreferenceDTO> Handle(GetPlayerPreferenceQuery request, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            var playerPreference = await _unitOfWork.PlayerPreferenceRepository.GetPlayerPreferenceByBoardgameIdAsync(request.PlayerId, 
+            return await _unitOfWork.PlayerPreferenceRepository.GetPlayerPreferenceAsync(request.PlayerId, 
                 request.BoardgameId, cancellationToken);
-            return _mapper.Map<PlayerPreferenceDTO>(playerPreference);
         }
     }
 }

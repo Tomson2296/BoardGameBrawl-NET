@@ -1,6 +1,7 @@
 ﻿#nullable disable
 using BoardGameBrawl.Application.Contracts.Common;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace BoardGameBrawl.Persistence.Repositories.Common
 {
@@ -21,6 +22,14 @@ namespace BoardGameBrawl.Persistence.Repositories.Common
             ArgumentNullException.ThrowIfNull(id);
 
             return await _context.Set<T>().FindAsync(id, cancellationToken);    
+        }
+
+        public async Task<T> GetEntity(object[] keys, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(keys);
+
+            return await _context.Set<T>().FindAsync(keys, cancellationToken);
         }
 
         public async Task<IList<T>> GetBatchOfEntities(int size, 
@@ -62,10 +71,24 @@ namespace BoardGameBrawl.Persistence.Repositories.Common
             return entity != null;
         }
 
+        public async Task<bool> Exists(object[] keys, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(keys);
+
+            var entity = await _context.Set<T>().FindAsync(keys, cancellationToken);
+            return entity != null;
+        }
+
         public async Task<int> CountTotalElements(CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             return await _context.Set<T>().CountAsync(cancellationToken);
+        }
+
+        public async Task<bool> AnyElements(CancellationToken cancellationToken = default)
+        {
+            return await _context.Set<T>().AnyAsync(cancellationToken); 
         }
 
         public async Task AddEntity(T entity, CancellationToken cancellationToken = default)
@@ -153,6 +176,15 @@ namespace BoardGameBrawl.Persistence.Repositories.Common
                 return;
             }
             entry.State = EntityState.Detached;
+        }
+
+        public Task<object[]> GetPrimaryKeys(T entity, CancellationToken cancellation = default)
+        {
+            return Task.FromResult(_context.Model.FindEntityType(typeof(T))
+                .FindPrimaryKey()?
+                .Properties
+                .Select(p => p.PropertyInfo?.GetValue(entity))
+                .ToArray());
         }
     }
 }

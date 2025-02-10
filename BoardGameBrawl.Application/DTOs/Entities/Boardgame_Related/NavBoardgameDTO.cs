@@ -10,8 +10,10 @@ using System.Threading.Tasks;
 namespace BoardGameBrawl.Application.DTOs.Entities.Boardgame_Related
 {
     [AutoMap(typeof(Boardgame))]
-    public class NavBoardgameDTO : BaseAuditableEntityDTO
+    public class NavBoardgameDTO
     {
+        public Guid Id { get; set; }
+
         public string? Name { get; set; }
 
         public int BGGId { get; set; }

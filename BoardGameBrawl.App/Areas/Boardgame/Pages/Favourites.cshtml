@@ -4,7 +4,7 @@
     ViewData["title"] = "Rate this game / add to favourites";
 }
 
-<parital name="_StatusMessage" for="@Model.StatusMessage" />
+<partial name="_StatusMessage" for="@Model.StatusMessage" />
 <partial name="_BoardgamePartial" model="@Model.TargetBoardgame" />
 <br />
 <div class="container">
@@ -71,7 +71,7 @@
     </div>
     <div class="row p-3">
         <div class="d-flex flex-row justify-content-center align-items-center">
-            <a asp-page="Index" asp-area="Boardgame" asp-route-Id="@Model.BoardgameId" class="w-50 btn btn-primary btn-block"> Back </a>
+            <a asp-area="Boardgame" asp-page="/Index" asp-route-BoardgameId="@Model.BoardgameId" class="w-50 btn btn-primary btn-block"> Back </a>
         </div>
     </div>
 </div>

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BoardGameBrawl.Application.Features.Player_Related.PlayerCollections.Queries.GetPlayerCollection
 {
-    public class GetPlayerCollectionQuery : IRequest<PlayerCollectionDTO>
+    public class GetPlayerCollectionQuery : IRequest<PlayerCollectionDTO?>
     {
         public Guid Id { get; set; }
     }

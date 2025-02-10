@@ -10,22 +10,19 @@ using System.Threading.Tasks;
 
 namespace BoardGameBrawl.Application.Features.Player_Related.PlayerCollections.Queries.GetPlayerCollection
 {
-    public class GetPlayerCollectionQueryHandler : IRequestHandler<GetPlayerCollectionQuery, PlayerCollectionDTO>
+    public class GetPlayerCollectionQueryHandler : IRequestHandler<GetPlayerCollectionQuery, PlayerCollectionDTO?>
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
 
-        public GetPlayerCollectionQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
+        public GetPlayerCollectionQueryHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
         }
 
-        public async Task<PlayerCollectionDTO> Handle(GetPlayerCollectionQuery request, CancellationToken cancellationToken)
+        public async Task<PlayerCollectionDTO?> Handle(GetPlayerCollectionQuery request, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-            var playerCollection = await _unitOfWork.PlayerCollectionRepository.GetPlayerCollectionByIdAsync(request.Id, cancellationToken);
-            return _mapper.Map<PlayerCollectionDTO>(playerCollection);
+            return await _unitOfWork.PlayerCollectionRepository.GetPlayerCollectionByIdAsync(request.Id, cancellationToken);
         }
     }
 }

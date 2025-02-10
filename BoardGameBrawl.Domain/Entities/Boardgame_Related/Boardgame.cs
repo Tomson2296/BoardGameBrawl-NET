@@ -29,8 +29,6 @@ namespace BoardGameBrawl.Domain.Entities.Boardgame_Related
 
         public float AverageBGGWeight { get; set; }
 
-        public int Rank { get; set; }
-
         public float AverageRating { get; set; }
 
         public float BayesRating { get; set; }
@@ -49,11 +47,15 @@ namespace BoardGameBrawl.Domain.Entities.Boardgame_Related
         public ICollection<BoardgameMechanicTag>? BoardgameMechanicTags { get; set; }
 
 
-        public ICollection<MatchRule>? BoardgameRules { get; set; }
+        public ICollection<BoardgameModerator>? BoardgameModerators { get; set; }
 
         public ICollection<PlayerPreference>? UserRatings { get; set; }
 
         public ICollection<PlayerFavouriteBG>? PlayerFavouriteBGs { get; set; }
+
+        
+        
+        public ICollection<MatchRule>? BoardgameRules { get; set; }
 
         public ICollection<Match>? Matches { get; set; }
 

@@ -4,12 +4,13 @@ using AutoMapper;
 using BoardGameBrawl.Application.Contracts.Common;
 using BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related;
 using BoardGameBrawl.Application.Contracts.Entities.Group_Related;
+using BoardGameBrawl.Application.Contracts.Entities.Match_Related;
 using BoardGameBrawl.Application.Contracts.Entities.Player_Related;
 using BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related;
 using BoardGameBrawl.Persistence.Repositories.Entities.Group_Related;
+using BoardGameBrawl.Persistence.Repositories.Entities.Match_Related;
 using BoardGameBrawl.Persistence.Repositories.Entities.Player_Related;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Identity.Client;
 
 namespace BoardGameBrawl.Persistence.Repositories.Common
 {
@@ -32,9 +33,12 @@ namespace BoardGameBrawl.Persistence.Repositories.Common
         private IBoardgameCategoryTagsRepository _boardgameCategoryTagsRepository;
         private IBoardgameMechanicsRepository _boardgameMechanicsRepository;
         private IBoardgameMechanicTagsRepository _boardgameMechanicTagsRepository;
+        private IBoardgameModeratorsRepository _boardgameModeratorsRepository;
 
         private IGroupRepository _groupRepository;
         private IGroupParticipantRepository _groupParticipantRepository;
+
+        private IMatchRuleRepository _matchRuleRepository;
 
         public UnitOfWork(MainAppDBContext context, 
             IHttpContextAccessor contextAccessor,
@@ -57,7 +61,7 @@ namespace BoardGameBrawl.Persistence.Repositories.Common
             _playerFriendRepository ??= new PlayerFriendRepository(_context);
 
         public IPlayerCollectionRepository PlayerCollectionRepository =>
-            _playerCollectionRepository ??= new PlayerCollectionRepository(_context);
+            _playerCollectionRepository ??= new PlayerCollectionRepository(_context, _mapper);
 
         public IPlayerFavouriteBGRepository PlayerFavouriteBGRepository =>
             _playerFavouriteGBRepository ??= new PlayerFavouriteBGRepository(_context, _mapper);
@@ -69,22 +73,25 @@ namespace BoardGameBrawl.Persistence.Repositories.Common
             _boardgameRepository ??= new BoardgameRepository(_context, _mapper);
 
         public IBoardgameDomainsRepository BoardgameDomainsRepository =>
-            _boardgameDomainsRepository ??= new BoardgameDomainsRepository(_context);
+            _boardgameDomainsRepository ??= new BoardgameDomainsRepository(_context, _mapper);
 
         public IBoardgameDomainTagsRepository BoardgameDomainTagsRepository =>
             _boardgameDomainTagsRepository ??= new BoardgameDomainTagsRepository(_context, _mapper);
 
         public IBoardgameCategoriesRepository BoardgameCategoriesRepository =>
-            _boardgameCategoriesRepository ??= new BoardgameCategoriesRepository(_context);
+            _boardgameCategoriesRepository ??= new BoardgameCategoriesRepository(_context, _mapper);
 
         public IBoardgameCategoryTagsRepository BoardgameCategoryTagsRepository =>
             _boardgameCategoryTagsRepository ??= new BoardgameCategoryTagsRepository(_context, _mapper);
 
         public IBoardgameMechanicsRepository BoardgameMechanicsRepository =>
-            _boardgameMechanicsRepository ??= new BoardgameMechanicsRepository(_context);
+            _boardgameMechanicsRepository ??= new BoardgameMechanicsRepository(_context, _mapper);
 
         public IBoardgameMechanicTagsRepository BoardgameMechanicsTagsRepository =>
             _boardgameMechanicTagsRepository ??= new BoardgameMechanicTagsRepository(_context, _mapper);
+
+        public IBoardgameModeratorsRepository BoardgameModeratorsRepository =>
+            _boardgameModeratorsRepository ??= new BoardgameModeratorsRepository(_context, _mapper);
 
 
         // Group-related repositories
@@ -94,6 +101,13 @@ namespace BoardGameBrawl.Persistence.Repositories.Common
         
         public IGroupParticipantRepository GroupParticipantRepository =>
            _groupParticipantRepository ??= new GroupParticipantRepository(_context, _mapper);
+
+
+        // Match-related repositories
+
+        public IMatchRuleRepository MatchRuleRepository =>
+            _matchRuleRepository ??= new MatchRuleRepository(_context, _mapper);
+
 
 
         public async Task CommitChangesAsync()

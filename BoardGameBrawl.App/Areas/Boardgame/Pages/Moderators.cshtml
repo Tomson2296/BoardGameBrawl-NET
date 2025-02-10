@@ -1,4 +1,80 @@
 ﻿@page "{BoardgameId:int}"
 @model BoardGameBrawl.App.Areas.Boardgame.Pages.ModeratorsModel
 @{
+    ViewData["title"] = "Check who is moderator for that boardgame";
 }
+
+<partial name="_StatusMessage" for="StatusMessage" />
+<partial name="_BoardgamePartial" model="@Model.BoardgameDTO" />
+<div class="container">
+    <div class="row">
+        @if (Model.ModeratorsCount == 0)
+        {
+            <div class="p-3 text-center">
+                <h6>
+                    Looks like there is no moderators for this boardgame right now.
+                    You can click on button on down below to become first moderator for this game.
+                </h6>
+                <br />
+                <div class="w-100 box d-flex justify-content-center align-items-center">
+                    <form id="ratingForm" method="post">
+                        <button type="submit" class="btn btn-block" asp-page-handler="AddToModerators">
+                            <h6> Add to Moderators </h6>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="col-9">
+                @if (Model.IfPlayerModerating == false)
+                {
+                    <div class="w-100 box d-flex justify-content-center align-items-center">
+                        <form id="ratingForm" method="post">
+                            <button type="submit" class="btn btn-block" asp-page-handler="AddToModerators">
+                                <h6> Add to Moderators </h6>
+                            </button>
+                        </form>
+                    </div>
+                }
+                else
+                {
+                    <div class="w-100 box d-flex-column">
+                        <h6> Welcome to Moderation Panel </h6>
+                        <p> 
+                            By clicking button down below you can navigate to Boardgame Ruleset panel
+                        </p>
+                        <p>
+                            You can change whole ruleset for that boardgame.
+                            Rulesets created by moderators are signifact, bacause it gives other players opportunity
+                            to save data and display data about conducted matches and tournaments in the past.
+                        </p>
+                        <br />
+                        <div class="d-flex flex-column justify-content-center align-items-center">
+                             <a asp-area="Boardgame" asp-page="/ModifyRuleset" asp-route-BoardgameId="@Model.BoardgameId" class="w-50 btn btn-block btn-secondary"> 
+                            Change Ruleset    
+                            </a>
+                            <br />
+                            <form id="removeForm" method="post">
+                                <button asp-page-handler="DeleteFromModerators" type="submit" class="w-100 btn btn-block btn-danger"> 
+                                    Delete from Moderators 
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="col-3">
+                <partial name="_BoardgameModerators" model="@Model.BoardgameModerators" />
+            </div>
+        }
+    </div>
+    <div class="row">
+        <div class="p-3">
+            <div class="d-flex flex-row justify-content-center align-items-center">
+                <a asp-area="Boardgame" asp-page="/Index" asp-route-BoardgameId="@Model.BoardgameId" class="w-25 btn btn-primary btn-block"> Back </a>
+            </div>
+        </div>
+    </div>
+</div>

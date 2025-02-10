@@ -90,9 +90,6 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
                     b.Property<short>("PlayingTime")
                         .HasColumnType("smallint");
 
-                    b.Property<int>("Rank")
-                        .HasColumnType("int");
-
                     b.Property<short>("YearPublished")
                         .HasColumnType("smallint");
 
@@ -284,6 +281,45 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
                     b.HasIndex("MechanicId");
 
                     b.ToTable("BoardgameMechanicTags", "dbo");
+                });
+
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Boardgame_Related.BoardgameModerator", b =>
+                {
+                    b.Property<Guid>("BoardgameId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ModeratorId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("BoardgameName")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTime>("LastModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ModeratorName")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("BoardgameId", "ModeratorId");
+
+                    b.HasIndex("ModeratorId");
+
+                    b.ToTable("BoardgameModerators", "dbo");
                 });
 
             modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Group_Related.Group", b =>
@@ -657,7 +693,7 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
                     b.ToTable("PlayerFriends", "dbo");
                 });
 
-            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Player_Related.PlayerRreference", b =>
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Player_Related.PlayerPreference", b =>
                 {
                     b.Property<Guid>("PlayerId")
                         .HasColumnType("uniqueidentifier");
@@ -865,6 +901,25 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
                     b.Navigation("Mechanic");
                 });
 
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Boardgame_Related.BoardgameModerator", b =>
+                {
+                    b.HasOne("BoardGameBrawl.Domain.Entities.Boardgame_Related.Boardgame", "Boardgame")
+                        .WithMany("BoardgameModerators")
+                        .HasForeignKey("BoardgameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("BoardGameBrawl.Domain.Entities.Player_Related.Player", "Moderator")
+                        .WithMany("BoardgameModerators")
+                        .HasForeignKey("ModeratorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Boardgame");
+
+                    b.Navigation("Moderator");
+                });
+
             modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Group_Related.GroupParticipant", b =>
                 {
                     b.HasOne("BoardGameBrawl.Domain.Entities.Group_Related.Group", "Group")
@@ -951,7 +1006,7 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
                     b.Navigation("Requester");
                 });
 
-            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Player_Related.PlayerRreference", b =>
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Player_Related.PlayerPreference", b =>
                 {
                     b.HasOne("BoardGameBrawl.Domain.Entities.Boardgame_Related.Boardgame", "Boardgame")
                         .WithMany("UserRatings")
@@ -1002,6 +1057,8 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
 
                     b.Navigation("BoardgameMechanicTags");
 
+                    b.Navigation("BoardgameModerators");
+
                     b.Navigation("BoardgameRules");
 
                     b.Navigation("Matches");
@@ -1037,6 +1094,8 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
 
             modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Player_Related.Player", b =>
                 {
+                    b.Navigation("BoardgameModerators");
+
                     b.Navigation("FriendOfFriendships");
 
                     b.Navigation("Friendships");

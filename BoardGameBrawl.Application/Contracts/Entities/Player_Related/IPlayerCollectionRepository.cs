@@ -1,4 +1,5 @@
 ﻿using BoardGameBrawl.Application.Contracts.Common;
+using BoardGameBrawl.Application.DTOs.Entities.Player_Related;
 using BoardGameBrawl.Domain.Entities.Player_Related;
 using System;
 using System.Collections.Generic;
@@ -17,10 +18,10 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Player_Related
 
         // getter methods //
 
-        Task<PlayerCollection?> GetPlayerCollectionByIdAsync(Guid Id,
+        Task<PlayerCollectionDTO?> GetPlayerCollectionByIdAsync(Guid Id,
             CancellationToken cancellationToken = default);
 
-        Task<PlayerCollection?> GetPlayerCollectionByPlayerIdAsync(Guid playerId,
+        Task<PlayerCollectionDTO?> GetPlayerCollectionByPlayerIdAsync(Guid playerId,
             CancellationToken cancellationToken = default);
 
         Task<bool> GetIsCollectionCreatedAsync(PlayerCollection collection,

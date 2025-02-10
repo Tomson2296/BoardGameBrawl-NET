@@ -22,6 +22,7 @@ namespace BoardGameBrawl.Application
                 cfg.AddProfile<PlayerMappingProfile>();
                 cfg.AddProfile<BoardgameMappingProfile>();
                 cfg.AddProfile<GroupMappingProfile>();
+                cfg.AddProfile<MatchMappingProfile>();
             });
             AutomapperConfig.AssertConfigurationIsValid();
             AutomapperConfig.CreateMapper();

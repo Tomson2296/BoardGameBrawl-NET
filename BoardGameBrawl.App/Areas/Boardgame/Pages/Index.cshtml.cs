@@ -200,7 +200,9 @@ namespace BoardGameBrawl.App.Areas.Boardgame.Pages
                     BoardgameDomainTagDTO newBoardgameDomainTag = new()
                     {
                         BoardgameId = boardgameObject.Id,
-                        DomainId = boardgameDomain.Id
+                        BoardgameName = boardgameObject.Name,
+                        DomainId = boardgameDomain.Id,
+                        DomainName = boardgameDomain.Domain
                     };
 
                     var addBoardgameDomainTagCommand = new AddBoardgameDomainTagCommand { BoardgameDomainTagDTO = newBoardgameDomainTag };
@@ -256,7 +258,9 @@ namespace BoardGameBrawl.App.Areas.Boardgame.Pages
                     BoardgameCategoryTagDTO newBoardgameCategoryTag = new()
                     {
                         BoardgameId = boardgameObject.Id,
-                        CategoryId = boardgameCategory.Id
+                        BoardgameName = boardgameObject.Name,
+                        CategoryId = boardgameCategory.Id,
+                        CategoryName = boardgameCategory.Category
                     };
 
                     var addBoardgameCategoryTagCommand = new AddBoardgameCategoryTagCommand { BoardgameCategoryTagDTO = newBoardgameCategoryTag };
@@ -305,7 +309,9 @@ namespace BoardGameBrawl.App.Areas.Boardgame.Pages
                     BoardgameMechanicTagDTO newBoardgameMechanicTag = new()
                     {
                         BoardgameId = boardgameObject.Id,
-                        MechanicId = boardgameMechanic.Id
+                        BoardgameName = boardgameObject.Name,
+                        MechanicId = boardgameMechanic.Id,
+                        MechanicName = boardgameMechanic.Mechanic
                     };
 
                     var addBoardgameMechanicTagCommand = new AddBoardgameMechanicTagCommand { BoardgameMechanicTagDTO = newBoardgameMechanicTag };

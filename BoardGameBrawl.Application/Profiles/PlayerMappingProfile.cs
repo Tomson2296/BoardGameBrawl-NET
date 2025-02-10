@@ -9,12 +9,18 @@ namespace BoardGameBrawl.Application.Profiles
         public PlayerMappingProfile()
         {
             CreateMap<PlayerDTO, Player>()
+               .ForMember(dest => dest.CreatedDate, opt => opt.Ignore())
+               .ForMember(dest => dest.CreatedBy, opt => opt.Ignore())
+               .ForMember(dest => dest.LastModifiedDate, opt => opt.Ignore())
+               .ForMember(dest => dest.LastModifiedBy, opt => opt.Ignore())
+
                .ForMember(dest => dest.GroupParticipants, opt => opt.Ignore())
                .ForMember(dest => dest.PlayerRatings, opt => opt.Ignore())
                .ForMember(dest => dest.PlayerCollection, opt => opt.Ignore())
                .ForMember(dest => dest.PlayerFavouriteBGs, opt => opt.Ignore())
                .ForMember(dest => dest.Friendships, opt => opt.Ignore())
                .ForMember(dest => dest.FriendOfFriendships, opt => opt.Ignore())
+               .ForMember(dest => dest.BoardgameModerators, opt => opt.Ignore())
                .ReverseMap();
 
             CreateMap<NavPlayerDTO, Player>()
@@ -24,6 +30,10 @@ namespace BoardGameBrawl.Application.Profiles
                .ForMember(dest => dest.BGGUsername, opt => opt.Ignore())
                .ForMember(dest => dest.UserDescription, opt => opt.Ignore())
                .ForMember(dest => dest.ApplicationUserId, opt => opt.Ignore())
+               .ForMember(dest => dest.CreatedDate, opt => opt.Ignore())
+               .ForMember(dest => dest.CreatedBy, opt => opt.Ignore())
+               .ForMember(dest => dest.LastModifiedDate, opt => opt.Ignore())
+               .ForMember(dest => dest.LastModifiedBy, opt => opt.Ignore())
 
                .ForMember(dest => dest.GroupParticipants, opt => opt.Ignore())
                .ForMember(dest => dest.PlayerRatings, opt => opt.Ignore())
@@ -31,6 +41,7 @@ namespace BoardGameBrawl.Application.Profiles
                .ForMember(dest => dest.PlayerFavouriteBGs, opt => opt.Ignore())
                .ForMember(dest => dest.Friendships, opt => opt.Ignore())
                .ForMember(dest => dest.FriendOfFriendships, opt => opt.Ignore())
+               .ForMember(dest => dest.BoardgameModerators, opt => opt.Ignore())
                .ReverseMap();
 
             CreateMap<PlayerFavouriteBGDTO, PlayerFavouriteBG>()
@@ -55,6 +66,11 @@ namespace BoardGameBrawl.Application.Profiles
 
             CreateMap<PlayerCollectionDTO, PlayerCollection>()
                .ForMember(dest => dest.Player, opt => opt.Ignore())
+
+               .ForMember(dest => dest.CreatedDate, opt => opt.Ignore())
+               .ForMember(dest => dest.CreatedBy, opt => opt.Ignore())
+               .ForMember(dest => dest.LastModifiedDate, opt => opt.Ignore())
+               .ForMember(dest => dest.LastModifiedBy, opt => opt.Ignore())
                .ReverseMap();
         }
     }

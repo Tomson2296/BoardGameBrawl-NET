@@ -1,4 +1,5 @@
 ﻿using BoardGameBrawl.Application.Contracts.Common;
+using BoardGameBrawl.Application.DTOs.Entities.Boardgame_Related;
 using BoardGameBrawl.Domain.Entities.Boardgame_Related;
 using System;
 using System.Collections.Generic;
@@ -19,5 +20,16 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related
 
         Task<Guid> GetBoardgameDomainIdAsync(string? domainName,
            CancellationToken cancellationToken = default);
+
+        Task<BoardgameDomainDTO?> GetBoardgameDomainByNameAsync(string? domainName,
+            CancellationToken cancellationToken = default);
+
+        Task<string?> GetDomainNameAsync(BoardgameDomain domain,
+           CancellationToken cancellationToken = default);
+
+        // basic fields setter methods //
+
+        Task SetDomainNameAsync(BoardgameDomain domain,
+            string? domainName, CancellationToken cancellationToken = default);
     }
 }

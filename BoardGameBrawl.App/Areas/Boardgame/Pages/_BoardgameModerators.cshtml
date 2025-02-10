@@ -1,0 +1,25 @@
+﻿@model IList<BoardGameBrawl.Application.DTOs.Entities.Player_Related.NavPlayerDTO>
+
+<div class="d-flex flex-column justify-content-between align-items-center">
+    <div class="w-100 text-center">
+        <h6> Moderators </h6>
+    </div>
+    @foreach (var moderator in Model)
+    {
+        <div class="w-100 box position-sticky d-flex flex-row justify-content-center align-items-center">
+            <div>
+                @if (moderator.UserAvatar != null)
+                {
+                    <img src="data:image/*;base64,@(Convert.ToBase64String(moderator.UserAvatar))" class="card-img-top img-round" alt="" width="50" height="50">
+                }
+                else
+                {
+                    <img src="~/img/user.png" class="card-img-top img-round" alt="" width="50" height="50">
+                }
+            </div>
+            <div>
+                <h6> @moderator.PlayerName </h6>
+            </div>
+        </div>
+    }
+</div>

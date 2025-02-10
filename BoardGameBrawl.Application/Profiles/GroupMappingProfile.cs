@@ -10,11 +10,21 @@ namespace BoardGameBrawl.Application.Profiles
         {
             CreateMap<GroupDTO, Group>()
                .ForMember(dest => dest.GroupParticipants, opt => opt.Ignore())
+
+               .ForMember(dest => dest.CreatedDate, opt => opt.Ignore())
+               .ForMember(dest => dest.CreatedBy, opt => opt.Ignore())
+               .ForMember(dest => dest.LastModifiedDate, opt => opt.Ignore())
+               .ForMember(dest => dest.LastModifiedBy, opt => opt.Ignore())
                .ReverseMap();
 
             CreateMap<NavGroupDTO, Group>()
                .ForMember(dest => dest.GroupDescription, opt => opt.Ignore())
                .ForMember(dest => dest.GroupParticipants, opt => opt.Ignore())
+
+               .ForMember(dest => dest.CreatedDate, opt => opt.Ignore())
+               .ForMember(dest => dest.CreatedBy, opt => opt.Ignore())
+               .ForMember(dest => dest.LastModifiedDate, opt => opt.Ignore())
+               .ForMember(dest => dest.LastModifiedBy, opt => opt.Ignore())
                .ReverseMap();
 
             CreateMap<GroupParticipantDTO, GroupParticipant>()

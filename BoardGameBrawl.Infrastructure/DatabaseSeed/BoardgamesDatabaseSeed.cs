@@ -120,7 +120,6 @@ namespace BoardGameBrawl.Infrastructure.DatabaseSeed
                         MinimumPlayingTime = minPlayingTime,
                         MaximumPlayingTime = maxPPlayingTime,
                         AverageBGGWeight = BGGWeight,
-                        Rank = rank,
                         AverageRating = averageRating,
                         BayesRating = bayesRating,
                         Owned = owning,

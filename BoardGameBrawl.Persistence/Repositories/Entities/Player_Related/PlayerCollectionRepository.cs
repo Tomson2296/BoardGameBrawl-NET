@@ -1,4 +1,6 @@
-﻿using BoardGameBrawl.Application.Contracts.Entities.Player_Related;
+﻿using AutoMapper;
+using BoardGameBrawl.Application.Contracts.Entities.Player_Related;
+using BoardGameBrawl.Application.DTOs.Entities.Player_Related;
 using BoardGameBrawl.Domain.Entities.Player_Related;
 using BoardGameBrawl.Persistence.Repositories.Common;
 using Microsoft.EntityFrameworkCore;
@@ -13,8 +15,10 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
 {
     public class PlayerCollectionRepository : GenericRepository<PlayerCollection>, IPlayerCollectionRepository
     {
-        public PlayerCollectionRepository(MainAppDBContext context) : base(context)
+        private readonly IMapper _mapper;
+        public PlayerCollectionRepository(MainAppDBContext context, IMapper mapper) : base(context)
         {
+            _mapper = mapper;
         }
 
         public async Task<bool> CheckIfExistsByPlayerId(Guid playerId, CancellationToken cancellationToken = default)
@@ -24,23 +28,32 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
 
             var exists = await Context.PlayerCollections.AnyAsync(pc => pc.PlayerId == playerId, cancellationToken);
             return exists;
-
         }
 
-        public async Task<PlayerCollection?> GetPlayerCollectionByIdAsync(Guid Id, CancellationToken cancellationToken = default)
+        public async Task<PlayerCollectionDTO?> GetPlayerCollectionByIdAsync(Guid Id, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(Id);
 
-            return await Context.PlayerCollections.SingleOrDefaultAsync(pc => pc.Id == Id, cancellationToken);
+            var playerCollection = await Context.PlayerCollections.SingleOrDefaultAsync(pc => pc.Id == Id, cancellationToken);
+
+            if (playerCollection != null)
+                return _mapper.Map<PlayerCollectionDTO>(_mapper.ConfigurationProvider);
+            else
+                throw new ApplicationException("Entity has not been found");
         }
 
-        public async Task<PlayerCollection?> GetPlayerCollectionByPlayerIdAsync(Guid playerId, CancellationToken cancellationToken = default)
+        public async Task<PlayerCollectionDTO?> GetPlayerCollectionByPlayerIdAsync(Guid playerId, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(playerId);
 
-            return await Context.PlayerCollections.SingleOrDefaultAsync(pc => pc.PlayerId == playerId, cancellationToken);
+            var playerCollection = await Context.PlayerCollections.SingleOrDefaultAsync(pc => pc.PlayerId == playerId, cancellationToken);
+
+            if (playerCollection != null)
+                return _mapper.Map<PlayerCollectionDTO>(_mapper.ConfigurationProvider);
+            else
+                throw new ApplicationException("Entity has not been found");
         }
 
         public Task<bool> GetIsCollectionCreatedAsync(PlayerCollection collection, CancellationToken cancellationToken = default)

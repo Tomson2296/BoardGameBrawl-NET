@@ -5,8 +5,10 @@ using BoardGameBrawl.Domain.Entities.Boardgame_Related;
 namespace BoardGameBrawl.Application.DTOs.Entities.Boardgame_Related
 {
     [AutoMap(typeof(BoardgameCategory))]
-    public class BoardgameCategoryDTO : BaseAuditableEntityDTO
+    public class BoardgameCategoryDTO
     {
+        public Guid Id { get; set; }
+
         public string? Category { get; set; }
     }
 }

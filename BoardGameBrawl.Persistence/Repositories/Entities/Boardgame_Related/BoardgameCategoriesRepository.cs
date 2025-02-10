@@ -1,4 +1,6 @@
-﻿using BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related;
+﻿using AutoMapper;
+using BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related;
+using BoardGameBrawl.Application.DTOs.Entities.Boardgame_Related;
 using BoardGameBrawl.Domain.Entities.Boardgame_Related;
 using BoardGameBrawl.Persistence.Repositories.Common;
 using Microsoft.EntityFrameworkCore;
@@ -7,8 +9,12 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
 {
     public class BoardgameCategoriesRepository : GenericRepository<BoardgameCategory>, IBoardgameCategoriesRepository
     {
-        public BoardgameCategoriesRepository(MainAppDBContext context) : base(context)
-        { }
+        private readonly IMapper _mapper;
+
+        public BoardgameCategoriesRepository(MainAppDBContext context, IMapper mapper) : base(context)
+        {
+            _mapper = mapper;
+        }
 
         // refined methods //
 
@@ -43,7 +49,7 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
 
         // getter methods //
 
-        public async Task<BoardgameCategory?> GetBoardgameCategoryByNameAsync(string? categoryName, CancellationToken cancellationToken = default)
+        public async Task<BoardgameCategoryDTO?> GetBoardgameCategoryByNameAsync(string? categoryName, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -56,7 +62,7 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
                 .FirstOrDefaultAsync(e => e.Category == categoryName, cancellationToken);
 
             if (categoryObj != null)
-                return categoryObj;
+                return _mapper.Map<BoardgameCategoryDTO>(_mapper.ConfigurationProvider);
             else
                 throw new ApplicationException("Entity has not been found");
         }

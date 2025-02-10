@@ -1,4 +1,5 @@
 ﻿using BoardGameBrawl.Application.Contracts.Common;
+using BoardGameBrawl.Application.DTOs.Entities.Boardgame_Related;
 using BoardGameBrawl.Domain.Entities.Boardgame_Related;
 
 namespace BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related
@@ -16,7 +17,7 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related
         Task<Guid> GetBoardgameCategoryIdAsync(string? categoryName,
             CancellationToken cancellationToken = default);
 
-        Task<BoardgameCategory?> GetBoardgameCategoryByNameAsync(string? categoryName,
+        Task<BoardgameCategoryDTO?> GetBoardgameCategoryByNameAsync(string? categoryName,
             CancellationToken cancellationToken = default);
         
         Task<string?> GetCategoryNameAsync(BoardgameCategory category,

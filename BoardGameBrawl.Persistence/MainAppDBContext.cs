@@ -32,6 +32,7 @@ namespace BoardGameBrawl.Persistence
             modelBuilder.ApplyConfiguration(new BoardgameCategoryTagConfiguration());
             modelBuilder.ApplyConfiguration(new BoardgameMechanicConfiguration());
             modelBuilder.ApplyConfiguration(new BoardgameMechanicTagConfigutaion());
+            modelBuilder.ApplyConfiguration(new BoardgameModeratorConfiguration());
 
             //Group-related entities configuration
             modelBuilder.ApplyConfiguration(new GroupConfiguration());
@@ -73,6 +74,9 @@ namespace BoardGameBrawl.Persistence
         public DbSet<BoardgameMechanic> BoardgameMechanics { get; set; }
 
         public DbSet<BoardgameMechanicTag> BoardgameMechanicTags { get; set; }
+
+        public DbSet<BoardgameModerator> BoardgameModerators { get; set; }
+
 
 
         public DbSet<Player> Players { get; set; }

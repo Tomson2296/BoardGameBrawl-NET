@@ -1,4 +1,6 @@
-﻿using BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related;
+﻿using AutoMapper;
+using BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related;
+using BoardGameBrawl.Application.DTOs.Entities.Boardgame_Related;
 using BoardGameBrawl.Domain.Entities.Boardgame_Related;
 using BoardGameBrawl.Persistence.Repositories.Common;
 using Microsoft.EntityFrameworkCore;
@@ -12,10 +14,14 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
 {
     public class BoardgameDomainsRepository : GenericRepository<BoardgameDomain>, IBoardgameDomainsRepository
     {
-        public BoardgameDomainsRepository(MainAppDBContext context) : base(context)
-        {
+        private readonly IMapper _mapper;
 
+        public BoardgameDomainsRepository(MainAppDBContext context, IMapper mapper) : base(context)
+        {
+            _mapper = mapper;
         }
+
+        // custom methods //
 
         public async Task<bool> Exists(BoardgameDomain boardgameDomain,
             CancellationToken cancellationToken = default)
@@ -44,6 +50,26 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
                 else
                     return false;
             }
+        }
+
+        // getter methods //
+
+        public async Task<BoardgameDomainDTO?> GetBoardgameDomainByNameAsync(string? domainName, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            if (string.IsNullOrWhiteSpace(domainName))
+            {
+                throw new ArgumentException("Domain name cannot be null or whitespace.", nameof(domainName));
+            }
+
+            var domainObj = await Context.BoardgameDomains
+                .FirstOrDefaultAsync(e => e.Domain == domainName, cancellationToken);
+
+            if (domainObj != null)
+                return _mapper.Map<BoardgameDomainDTO>(_mapper.ConfigurationProvider);
+            else
+                throw new ApplicationException("Entity has not been found");
         }
 
         public async Task<Guid> GetBoardgameDomainIdAsync(string? domainName,
@@ -79,6 +105,31 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related
             else
                 throw new ApplicationException("Entity has not been found");
 
+        }
+
+        public Task<string?> GetDomainNameAsync(BoardgameDomain domain, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(domain);
+
+            return Task.FromResult(domain.Domain);
+        }
+
+
+        // setter methods //
+
+        public Task SetDomainNameAsync(BoardgameDomain domain, string? domainName, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(domain);
+
+            if (string.IsNullOrWhiteSpace(domainName))
+            {
+                throw new ArgumentException("Domain name cannot be null or whitespace.", nameof(domainName));
+            }
+
+            domain.Domain = domainName;
+            return Task.CompletedTask;
         }
     }
 }

@@ -3,7 +3,7 @@ using MediatR;
 
 namespace BoardGameBrawl.Application.Features.Group_Related.Group.Queries.GetAllGroupsByPlayer
 {
-    public class GetAllGroupsByPlayerQuery : IRequest<ICollection<GroupDTO>>
+    public class GetAllGroupsByPlayerQuery : IRequest<IList<NavGroupDTO>>
     {
         public Guid PlayerId { get; set; }
     }

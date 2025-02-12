@@ -1,6 +1,5 @@
 ﻿using BoardGameBrawl.Domain.Common;
 using BoardGameBrawl.Domain.Entities.Boardgame_Related;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BoardGameBrawl.Domain.Entities.Match_Related
 {
@@ -14,10 +13,8 @@ namespace BoardGameBrawl.Domain.Entities.Match_Related
 
         public RuleType RuleType { get; set; }
 
+        public Boardgame? Boardgame { get; set; }
 
         public Guid BoardgameId { get; set; }
-
-        [ForeignKey(nameof(BoardgameId))]
-        public Boardgame? Boardgame { get; set; }
     }
 }

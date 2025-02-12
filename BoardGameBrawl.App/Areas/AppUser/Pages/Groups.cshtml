@@ -1,5 +1,44 @@
 ﻿@page
 @model GroupsModel
 @{
-    ViewData["Title"] = "Check list of your groups";
+    ViewData["Title"] = "Check list of groups you belong to";
 }
+
+<div class="container">
+    <div class="row p-3 mb-3">
+        <h6> @ViewData["Title"]</h6>
+    </div>
+    <div class="row p-3">
+        <div class="d-flex flex-row flex-wrap text-center">
+            @if (Model.PlayerGroups.Count == 0)
+            {
+                <p> It looks like you still not a part of any group. </p>
+                <p> Maybe you would be interested in creating one of your own? </p>
+
+            }
+            else
+            {
+                @foreach (var group in Model.PlayerGroups)
+                {
+                    <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-3 text-center">
+                        <a asp-area="Group" asp-page="Index" asp-route-GroupName="@group.GroupName">
+                            <div class="card">
+                                @if (group.GroupMiniature != null)
+                                {
+                                    <img src="data:image/*;base64,@(Convert.ToBase64String(group.GroupMiniature!))" class="card-img-top" alt="" width="200" height="200" />
+                                }
+                                else
+                                {
+                                    <img src="~/img/group.png" class="card-img-top" alt="" width="200" height="200">
+                                }
+                                <div class="card-body">
+                                    <h6 class="card-title"> @group.GroupName </h6>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>

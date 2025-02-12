@@ -1,6 +1,7 @@
 ﻿using BoardGameBrawl.Application.Contracts.Common;
 using BoardGameBrawl.Application.DTOs.Entities.Player_Related;
 using BoardGameBrawl.Domain.Entities.Player_Related;
+using System.Globalization;
 
 namespace BoardGameBrawl.Application.Contracts.Entities.Player_Related
 {
@@ -11,6 +12,9 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Player_Related
         Task<IList<NavPlayerDTO>> GetFilteredBatchOfPlayersAsync(string filter, int size, int skip = 0, CancellationToken cancellationToken = default);
 
         Task<Player?> GetPlayerByApplicationUserIdAsync(Guid applicationUserId,
+            CancellationToken cancellationToken = default);
+
+        Task<PlayerDTO?> GetPlayerByUserNameAsync(string username,
             CancellationToken cancellationToken = default);
 
 

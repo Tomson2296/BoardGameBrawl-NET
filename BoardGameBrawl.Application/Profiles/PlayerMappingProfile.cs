@@ -45,14 +45,14 @@ namespace BoardGameBrawl.Application.Profiles
                .ReverseMap();
 
             CreateMap<PlayerFavouriteBGDTO, PlayerFavouriteBG>()
-              .ForMember(dest => dest.Player, opt => opt.Ignore())
-              .ForMember(dest => dest.Boardgame, opt => opt.Ignore())
-              
-              .ForMember(dest => dest.CreatedDate, opt => opt.Ignore())
-              .ForMember(dest => dest.CreatedBy, opt => opt.Ignore())
-              .ForMember(dest => dest.LastModifiedDate, opt => opt.Ignore())
-              .ForMember(dest => dest.LastModifiedBy, opt => opt.Ignore())
-              .ReverseMap();
+               .ForMember(dest => dest.Player, opt => opt.Ignore())
+               .ForMember(dest => dest.Boardgame, opt => opt.Ignore())
+               
+               .ForMember(dest => dest.CreatedDate, opt => opt.Ignore())
+               .ForMember(dest => dest.CreatedBy, opt => opt.Ignore())
+               .ForMember(dest => dest.LastModifiedDate, opt => opt.Ignore())
+               .ForMember(dest => dest.LastModifiedBy, opt => opt.Ignore())
+               .ReverseMap();
 
             CreateMap<PlayerPreferenceDTO, PlayerPreference>()
                .ForMember(dest => dest.Player, opt => opt.Ignore())
@@ -66,6 +66,16 @@ namespace BoardGameBrawl.Application.Profiles
 
             CreateMap<PlayerCollectionDTO, PlayerCollection>()
                .ForMember(dest => dest.Player, opt => opt.Ignore())
+
+               .ForMember(dest => dest.CreatedDate, opt => opt.Ignore())
+               .ForMember(dest => dest.CreatedBy, opt => opt.Ignore())
+               .ForMember(dest => dest.LastModifiedDate, opt => opt.Ignore())
+               .ForMember(dest => dest.LastModifiedBy, opt => opt.Ignore())
+               .ReverseMap();
+
+            CreateMap<PlayerFriendDTO, PlayerFriend>()
+               .ForMember(dest => dest.Requester, opt => opt.Ignore())
+               .ForMember(dest => dest.Addressee, opt => opt.Ignore())
 
                .ForMember(dest => dest.CreatedDate, opt => opt.Ignore())
                .ForMember(dest => dest.CreatedBy, opt => opt.Ignore())

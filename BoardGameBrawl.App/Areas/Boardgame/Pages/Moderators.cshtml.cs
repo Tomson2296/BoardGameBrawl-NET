@@ -7,6 +7,7 @@ using BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameModerators
 using BoardGameBrawl.Application.Features.Boardgames_Related.BoardgameModerators.Queries.GetAllModeratorsForBoardgame;
 using BoardGameBrawl.Application.Features.Boardgames_Related.Boardgames.Queries.GetBoardgameByBGGId;
 using BoardGameBrawl.Application.Features.Common.Concrete.Queries.CountEntities;
+using BoardGameBrawl.Application.Features.Common.Concrete.Queries.CountEntities.BoardgameModerators;
 using BoardGameBrawl.Application.Features.Player_Related.Players.Queries.GetPlayerByAppUserId;
 using BoardGameBrawl.Domain.Entities;
 using MediatR;
@@ -63,7 +64,7 @@ namespace BoardGameBrawl.App.Areas.Boardgame.Pages
             // counting exisitng moderators
 
             var countQuery = new ConcreteCountEntitiesQuery();
-            var boardgameModeratorsQueryHandler = new BoardgameModeratorCountEntitiesQueryHandler(unitOfWork);
+            var boardgameModeratorsQueryHandler = new CountBoardgameModeratorsQueryHandler(unitOfWork);
             ModeratorsCount = await boardgameModeratorsQueryHandler.Handle(countQuery, CancellationToken.None);
 
             if (ModeratorsCount != 0)

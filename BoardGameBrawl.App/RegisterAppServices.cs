@@ -10,6 +10,7 @@ using BoardGameBrawl.Persistence.Stores;
 using System.Net;
 using Polly;
 using Polly.Extensions.Http;
+using Polly.Retry;
 
 namespace BoardGameBrawl.App
 {
@@ -118,7 +119,7 @@ namespace BoardGameBrawl.App
             return builder;
         }
 
-        private static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
+        private static AsyncRetryPolicy<HttpResponseMessage> GetRetryPolicy()
         {
             // Retry policy based on BoardGameGeek XML API v2 community guidelines
             return HttpPolicyExtensions

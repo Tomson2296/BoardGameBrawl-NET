@@ -1,4 +1,85 @@
-﻿@page
+﻿@page "{Username}"
 @model BoardGameBrawl.App.Areas.Player.Pages.IndexModel
 @{
+    ViewData["Title"] = "Check that user's profile";
+    ViewData["TableDesc"] = "Profile Info:";
+    ViewData["TableUserDesc"] = "User's Description";
 }
+
+<div class="containter">
+    <div class="row mb-3">
+        <h3>@ViewData["Title"]</h3>
+    </div>
+
+    <div class="row text-center">
+        <h2>
+            @Model.TargetPlayer!.PlayerName
+        </h2>
+    </div>
+    <div class="row mb-3">s
+            <div class="d-flex justify-content-center">
+                <img src="data:image/*;base64,@(Convert.ToBase64String(Model.TargetPlayer.UserAvatar!))" class="img-fluid img-thumbnail img-round" alt=""
+                     width="300" height="300" />
+            </div>
+        }
+        else
+        {
+            <div class="d-flex justify-content-center">
+                <img src="~/img/user.png" class="img-fluid img-thumbnail img-round" alt="" width="300" height="300" />
+            </div>
+        }
+    </div>
+
+    <div class="row mb-3">
+        <table class="table table-responsible table-bordered table-hover table-striped text-center text-justify">
+            <tbody>
+                <tr>
+                    <td colspan="2"><strong> @ViewData["TableDesc"] </strong></td>
+                </tr>
+                <tr>
+                    <td><strong>  First Name: </strong></td>
+                    <td> @Model.TargetPlayer.FirstName </td>
+                </tr>
+                <tr>
+                    <td><strong> Last Name: </strong></td>
+                    <td> @Model.TargetPlayer.LastName </td>
+                </tr>
+                <tr>
+                    <td><strong>  Email: </strong></td>
+                    <td> @Model.TargetPlayer.Email </td>
+                </tr>
+                <tr>
+                    <td><strong>  BoardGameGeek Username: </strong></td>
+                    <td> @Model.TargetPlayer.BGGUsername </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <strong>
+                            @ViewData["TableUserDesc"]
+                        </strong>
+                    </td>
+                <tr>
+                        @if (Model.TargetPlayer.UserDescription == null)
+                        {
+                        <td colspan="2">
+                            No user description
+                        </td>
+                        }
+                        else
+                        {
+                        <td colspan="2">
+                                @Model.TargetPlayer.UserDescription
+                        </td>
+                        }
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+    .img-round {
+        border: 2px solid black;
+        border-radius: 50%;
+    }
+</style>

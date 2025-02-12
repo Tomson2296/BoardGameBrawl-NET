@@ -11,9 +11,9 @@ namespace BoardGameBrawl.Application.DTOs.Entities.Player_Related
 
         public Guid ApplicationUserId { get; set; }
 
-        public string? PlayerName { get; set; }
+        public required string PlayerName { get; set; }
 
-        public string? Email { get; set; }
+        public required string Email { get; set; }
 
         public string? FirstName { get; set; }
 

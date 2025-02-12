@@ -4,7 +4,7 @@ using MediatR;
 
 namespace BoardGameBrawl.Application.Features.Group_Related.Group.Queries.GetGroupParticicipants
 {
-    public class GetGroupParticipantsQueryHandler : IRequestHandler<GetGroupParticipantsQuery, ICollection<NavPlayerDTO>>
+    public class GetGroupParticipantsQueryHandler : IRequestHandler<GetGroupParticipantsQuery, IList<NavPlayerDTO>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -13,7 +13,7 @@ namespace BoardGameBrawl.Application.Features.Group_Related.Group.Queries.GetGro
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ICollection<NavPlayerDTO>> Handle(GetGroupParticipantsQuery request, CancellationToken cancellationToken)
+        public async Task<IList<NavPlayerDTO>> Handle(GetGroupParticipantsQuery request, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             return await _unitOfWork.GroupParticipantRepository.GetAllUserParticipantsInGroupByIdAsync(request.GroupId);

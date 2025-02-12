@@ -58,7 +58,7 @@ namespace BoardGameBrawl.Persistence.Repositories.Common
             _playerPreferenceRepository ??= new PlayerPreferenceRepository(_context, _mapper);
 
         public IPlayerFriendRepository PlayerFriendRepository =>
-            _playerFriendRepository ??= new PlayerFriendRepository(_context);
+            _playerFriendRepository ??= new PlayerFriendRepository(_context, _mapper);
 
         public IPlayerCollectionRepository PlayerCollectionRepository =>
             _playerCollectionRepository ??= new PlayerCollectionRepository(_context, _mapper);

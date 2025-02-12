@@ -17,10 +17,6 @@ namespace BoardGameBrawl.Application.Validators.Match_Related
              .NotEmpty().WithMessage("{PropertyName} cannot be empty")
              .MaximumLength(512).WithMessage("Username cannot be over {ComparisonValue} characters long");
 
-            RuleFor(rule => rule.RuleDecider)
-             .NotNull()
-             .NotEmpty().WithMessage("{PropertyName} cannot be empty");
-
             RuleFor(rule => rule.RuleType)
               .NotNull()
               .NotEmpty().WithMessage("{PropertyName} cannot be empty");

@@ -1,4 +1,6 @@
 ﻿using BoardGameBrawl.Application.Contracts.Common;
+using BoardGameBrawl.Application.DTOs.Entities.Boardgame_Related;
+using BoardGameBrawl.Application.DTOs.Entities.Identity_Related;
 using BoardGameBrawl.Application.DTOs.Entities.Player_Related;
 using BoardGameBrawl.Domain.Entities.Player_Related;
 using System;
@@ -23,10 +25,10 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Player_Related
             Guid boardgameId,
             CancellationToken cancellationToken = default);
 
-        Task<IList<PlayerFavouriteBGDTO>> GetAllPlayerFavouriteBGsAsync(Guid playerId,
+        Task<IList<NavBoardgameDTO>> GetAllPlayerFavouriteBGsAsync(Guid playerId,
             CancellationToken cancellationToken = default);
 
-        Task<IList<PlayerFavouriteBGDTO>> GetAllPlayersFavouringBGAsync(Guid boardgameId,
+        Task<IList<NavPlayerDTO>> GetAllPlayersFavouringBGAsync(Guid boardgameId,
             CancellationToken cancellationToken = default);
     }
 }

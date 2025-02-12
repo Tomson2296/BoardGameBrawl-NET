@@ -1,5 +1,10 @@
 #nullable disable
+using BoardGameBrawl.Application.DTOs.Entities.Boardgame_Related;
+using BoardGameBrawl.Application.DTOs.Entities.Player_Related;
+using BoardGameBrawl.Application.Features.Player_Related.PlayerFavouriteBGs.Queries.GetAllPlayerfavouriteBGs;
+using BoardGameBrawl.Application.Features.Player_Related.Players.Queries.GetPlayerByAppUserId;
 using BoardGameBrawl.Domain.Entities;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -9,17 +14,17 @@ namespace BoardGameBrawl.App.Areas.AppUser.Pages
     public class BoardgameFavouritesModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IMediator _mediator;
 
-        public BoardgameFavouritesModel(UserManager<ApplicationUser> userManager)
+        public BoardgameFavouritesModel(UserManager<ApplicationUser> userManager, IMediator mediator)
         {
             _userManager = userManager;
+            _mediator = mediator;
         }
 
-        [BindProperty]
-        public List<string> BoardgameFavouritesList { get; set; } = new List<string>();
+        public PlayerDTO TargetPlayer { get; set; }
 
-        //[BindProperty]
-        //public IEnumerable<BoardgameModel> BoardgameFavourites { get; set; } = new List<BoardgameModel>();
+        public IList<NavBoardgameDTO> UserFavouriteBGs { get; set; }
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -29,28 +34,14 @@ namespace BoardGameBrawl.App.Areas.AppUser.Pages
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            //BoardgameFavouritesList = await _userManager.GetUserFavouriteBoardGamesAsync(ApplicationUser);
-            //if (BoardgameFavouritesList == null)
-            //{
-            //    return Page();
-            //}
-            //else
-            //{
-            //    BoardgameFavourites = await GetUserFavouriteBoardgames();
-            //    return Page();
-            //}
+            var query = new GetPlayerByAppUserIdQuery { ApplicationUserId = user.Id };
+            TargetPlayer = await _mediator.Send(query);
+
+            // get all player's favourite boardgames 
+            var playerFav = new GetAllPlayerFavouriteBGsQuery { PlayerId = TargetPlayer.Id };
+            UserFavouriteBGs = await _mediator.Send(playerFav);
 
             return Page();
         }
-
-        //private async Task<IEnumerable<BoardgameModel>> GetUserFavouriteBoardgames()
-        //{
-        //    List<BoardgameModel> result = new List<BoardgameModel>();
-        //    foreach (var boardgameID in BoardgameFavouritesList)
-        //    {
-        //        result.Add(await _boardgameStore.FindBoardGameByBGGIdAsync(int.Parse(boardgameID)));
-        //    }
-        //    return result;
-        //}
     }
 }

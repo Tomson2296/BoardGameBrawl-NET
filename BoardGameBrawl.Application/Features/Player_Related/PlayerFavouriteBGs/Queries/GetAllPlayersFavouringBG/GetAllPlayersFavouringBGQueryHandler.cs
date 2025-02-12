@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BoardGameBrawl.Application.Features.Player_Related.PlayerFavouriteBGs.Queries.GetAllPlayersFavouringBG
 {
-    public class GetAllPlayersFavouringBGQueryHandler : IRequestHandler<GetAllPlayersFavouringBGQuery, IList<PlayerFavouriteBGDTO>>
+    public class GetAllPlayersFavouringBGQueryHandler : IRequestHandler<GetAllPlayersFavouringBGQuery, IList<NavPlayerDTO>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -18,7 +18,7 @@ namespace BoardGameBrawl.Application.Features.Player_Related.PlayerFavouriteBGs.
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<IList<PlayerFavouriteBGDTO>> Handle(GetAllPlayersFavouringBGQuery request, CancellationToken cancellationToken)
+        public async Task<IList<NavPlayerDTO>> Handle(GetAllPlayersFavouringBGQuery request, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
             return await _unitOfWork.PlayerFavouriteBGRepository.GetAllPlayersFavouringBGAsync(request.BoardgameId, cancellationToken);

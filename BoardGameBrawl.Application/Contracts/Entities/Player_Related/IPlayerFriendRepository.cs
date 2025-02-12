@@ -1,4 +1,5 @@
 ﻿using BoardGameBrawl.Application.Contracts.Common;
+using BoardGameBrawl.Application.DTOs.Entities.Player_Related;
 using BoardGameBrawl.Domain.Entities.Group_Related;
 using BoardGameBrawl.Domain.Entities.Player_Related;
 using System;
@@ -11,12 +12,20 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Player_Related
 {
     public interface IPlayerFriendRepository : IGenericRepository<PlayerFriend>, IAuditableRepository<PlayerFriend>
     {
+        // custom methods //
+
+
+
         // getter methods //
 
         Task<PlayerFriend?> GetEntity(Guid requesterId,
             Guid addresseeID, CancellationToken cancellationToken = default);
 
-        Task<ICollection<Player>?> GetPlayerFriendshipsAsync(Guid targetUserId,
+        Task<Guid> GetFriendshipId(Guid requesterId, Guid addresseeID,
+            CancellationToken cancellationToken = default);
+
+
+        Task<IList<NavPlayerDTO>> GetPlayerFriendshipsAsync(Guid targetUserId,
             CancellationToken cancellationToken = default);
 
         Task<FriendshipStatus> GetFriendshipStatusAsync(PlayerFriend friendship,

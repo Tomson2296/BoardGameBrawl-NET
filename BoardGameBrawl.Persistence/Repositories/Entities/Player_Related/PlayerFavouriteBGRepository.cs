@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using BoardGameBrawl.Application.Contracts.Entities.Player_Related;
+using BoardGameBrawl.Application.DTOs.Entities.Boardgame_Related;
 using BoardGameBrawl.Application.DTOs.Entities.Player_Related;
 using BoardGameBrawl.Domain.Entities.Player_Related;
 using BoardGameBrawl.Persistence.Repositories.Common;
@@ -47,47 +48,28 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
                 throw new ApplicationException("Entity has not been found");
         }
 
-        public async Task<IList<PlayerFavouriteBGDTO>> GetAllPlayerFavouriteBGsAsync(Guid playerId, CancellationToken cancellationToken = default)
+        public async Task<IList<NavBoardgameDTO>> GetAllPlayerFavouriteBGsAsync(Guid playerId, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(playerId);
 
-            bool isAnyPlayerFavouriteExists = await _context.PlayerFavouriteBGs.AnyAsync(e => e.PlayerId == playerId, cancellationToken);
-
-            if (isAnyPlayerFavouriteExists == false)
-            {
-                throw new ArgumentException("Entity has not been found");
-            }
-            else
-            {
-                return await _context.PlayerFavouriteBGs
-                        .Where(e => e.PlayerId == playerId)
-                        .ProjectTo<PlayerFavouriteBGDTO>(_mapper.ConfigurationProvider)
-                        .AsNoTracking()
-                        .ToListAsync(cancellationToken);
-            }
+            return await _context.Boardgames
+                    .Where(e => e.PlayerFavouriteBGs!.Any(pf => pf.PlayerId == playerId))
+                    .ProjectTo<NavBoardgameDTO>(_mapper.ConfigurationProvider)
+                    .AsNoTracking()
+                    .ToListAsync(cancellationToken);
         }
 
-        public async Task<IList<PlayerFavouriteBGDTO>> GetAllPlayersFavouringBGAsync(Guid boardgameId, CancellationToken cancellationToken = default)
+        public async Task<IList<NavPlayerDTO>> GetAllPlayersFavouringBGAsync(Guid boardgameId, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(boardgameId);
 
-            bool isAnyBoardgameFavouriteExists = await _context.PlayerFavouriteBGs.AnyAsync(e => e.BoardgameId == boardgameId, cancellationToken);
-
-            if (isAnyBoardgameFavouriteExists == false)
-            {
-                throw new ArgumentException("Entity has not been found");
-            }
-            else
-            {
-                return await _context.PlayerFavouriteBGs
-                        .Where(e => e.BoardgameId == boardgameId)
-                        .ProjectTo<PlayerFavouriteBGDTO>(_mapper.ConfigurationProvider)
-                        .AsNoTracking()
-                        .ToListAsync(cancellationToken);
-            }
+            return await _context.Players
+                    .Where(e => e.PlayerFavouriteBGs!.Any(pf => pf.BoardgameId == boardgameId))
+                    .ProjectTo<NavPlayerDTO>(_mapper.ConfigurationProvider)
+                    .AsNoTracking()
+                    .ToListAsync(cancellationToken);
         }
-
     }
 }

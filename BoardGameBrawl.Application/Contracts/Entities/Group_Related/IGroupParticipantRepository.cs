@@ -12,10 +12,10 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Group_Related
         Task<GroupParticipant?> GetGroupParticipantAsync(Guid groupId,
             Guid playerId, CancellationToken cancellationToken = default);
 
-        Task<ICollection<GroupDTO>> GetAllPlayerGroupsByIdAsync(Guid playerId,
+        Task<IList<NavGroupDTO>> GetAllPlayerGroupsByIdAsync(Guid playerId,
            CancellationToken cancellationToken = default);
 
-        Task<ICollection<NavPlayerDTO>> GetAllUserParticipantsInGroupByIdAsync(Guid groupId,
+        Task<IList<NavPlayerDTO>> GetAllUserParticipantsInGroupByIdAsync(Guid groupId,
             CancellationToken cancellationToken = default);
         
         Task<bool> GetAdminStatusAsync(GroupParticipant groupParticipant,

@@ -52,12 +52,12 @@
                         </p>
                         <br />
                         <div class="d-flex flex-column justify-content-center align-items-center">
-                             <a asp-area="Boardgame" asp-page="/ModifyRuleset" asp-route-BoardgameId="@Model.BoardgameId" class="w-50 btn btn-block btn-secondary"> 
+                             <a asp-page="ModifyRuleset" asp-route-BoardgameId="@Model.BoardgameId" class="w-50 btn btn-block btn-lg btn-secondary"> 
                             Change Ruleset    
                             </a>
                             <br />
                             <form id="removeForm" method="post">
-                                <button asp-page-handler="DeleteFromModerators" type="submit" class="w-100 btn btn-block btn-danger"> 
+                                <button asp-page-handler="DeleteFromModerators" type="submit" class="w-100 btn btn-block btn-lg btn-danger"> 
                                     Delete from Moderators 
                                 </button>
                             </form>
@@ -73,7 +73,9 @@
     <div class="row">
         <div class="p-3">
             <div class="d-flex flex-row justify-content-center align-items-center">
-                <a asp-area="Boardgame" asp-page="/Index" asp-route-BoardgameId="@Model.BoardgameId" class="w-25 btn btn-primary btn-block"> Back </a>
+                <a asp-area="Boardgame" asp-page="/Index" asp-route-BoardgameId="@Model.BoardgameId" class="w-25 btn btn-primary btn-block btn-lg"> 
+                    Back to Boardgame Main Page
+                </a>
             </div>
         </div>
     </div>

@@ -8,7 +8,8 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Group_Related
     {
         // custom methods //
 
-        Task<IList<NavGroupDTO>> GetFilteredBatchOfGroupsAsync(string filter, int size, int skip = 0, CancellationToken cancellationToken = default);
+        Task<IList<NavGroupDTO>> GetFilteredBatchOfGroupsAsync(string filter,
+            int size, int skip = 0, CancellationToken cancellationToken = default);
 
 
         // getter methods // 

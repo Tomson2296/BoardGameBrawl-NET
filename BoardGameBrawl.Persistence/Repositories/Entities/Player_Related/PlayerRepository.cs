@@ -2,6 +2,8 @@
 using AutoMapper.QueryableExtensions;
 using BoardGameBrawl.Application.Contracts.Entities.Player_Related;
 using BoardGameBrawl.Application.DTOs.Entities.Player_Related;
+using BoardGameBrawl.Application.Exceptions;
+using BoardGameBrawl.Domain.Entities;
 using BoardGameBrawl.Domain.Entities.Player_Related;
 using BoardGameBrawl.Persistence.Repositories.Common;
 using Microsoft.EntityFrameworkCore;
@@ -50,6 +52,27 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
 
             return await Context.Players.SingleOrDefaultAsync(u => u.ApplicationUserId == applicationUserId, cancellationToken);
         }
+
+        public async Task<PlayerDTO?> GetPlayerByUserNameAsync(string username, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                throw new ArgumentException("Username cannot be null or whitespace.", nameof(username));
+            }
+
+            var player = await Context.Players.SingleOrDefaultAsync(u => u.PlayerName == username, cancellationToken);
+            if (player != null)
+            {
+                return _mapper.Map<PlayerDTO>(_mapper.ConfigurationProvider);
+            }
+            else
+            {
+                throw new ApplicationException("Entity has not been found");
+            }
+        }
+
 
         // getter methods //
 
@@ -225,5 +248,6 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
             return Task.CompletedTask;
         }
 
+       
     }
 }

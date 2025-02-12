@@ -43,19 +43,19 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Group_Related
             return Task.FromResult(groupParticipant.IsAdmin);
         }
 
-        public async Task<ICollection<GroupDTO>> GetAllPlayerGroupsByIdAsync(Guid playerId, CancellationToken cancellationToken = default)
+        public async Task<IList<NavGroupDTO>> GetAllPlayerGroupsByIdAsync(Guid playerId, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(playerId);
 
             return await _context.Groups
                 .Where(g => g.GroupParticipants!.Any(par => par.PlayerId == playerId))
-                .ProjectTo<GroupDTO>(_mapper.ConfigurationProvider)
+                .ProjectTo<NavGroupDTO>(_mapper.ConfigurationProvider)
                 .AsNoTracking()
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<ICollection<NavPlayerDTO>> GetAllUserParticipantsInGroupByIdAsync(Guid groupId, CancellationToken cancellationToken = default)
+        public async Task<IList<NavPlayerDTO>> GetAllUserParticipantsInGroupByIdAsync(Guid groupId, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
             ArgumentNullException.ThrowIfNull(groupId);

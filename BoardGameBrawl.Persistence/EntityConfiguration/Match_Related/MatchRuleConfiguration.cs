@@ -22,6 +22,10 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Match_Related
                 .HasConversion<MatchRuleTypeConverter>()
                 .IsRequired();
 
+            entity.HasOne(e => e.Boardgame)
+                .WithMany(b => b.BoardgameRules)
+                .IsRequired();
+
             //entity.HasQueryFilter(e => !e.IsSoftDeleted);
 
             entity.ToTable("MatchRules");

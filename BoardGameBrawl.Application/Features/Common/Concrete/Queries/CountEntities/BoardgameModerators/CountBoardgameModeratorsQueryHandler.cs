@@ -7,11 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BoardGameBrawl.Application.Features.Common.Concrete.Queries.CountEntities
+namespace BoardGameBrawl.Application.Features.Common.Concrete.Queries.CountEntities.BoardgameModerators
 {
-    public class BoardgameModeratorCountEntitiesQueryHandler : CountEntitiesQueryHandler<CountEntitiesQuery, BoardgameModerator>
+    public class CountBoardgameModeratorsQueryHandler : CountEntitiesQueryHandler<ConcreteCountEntitiesQuery, BoardgameModerator>
     {
-        public BoardgameModeratorCountEntitiesQueryHandler(IUnitOfWork unitOfWork) : base(unitOfWork)
+        public CountBoardgameModeratorsQueryHandler(IUnitOfWork unitOfWork) : base(unitOfWork)
         {
         }
 

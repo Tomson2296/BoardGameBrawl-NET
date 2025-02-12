@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BoardGameBrawl.Application.Features.Player_Related.PlayerFavouriteBGs.Queries.GetAllPlayersFavouringBG
 {
-    public class GetAllPlayersFavouringBGQuery : IRequest<IList<PlayerFavouriteBGDTO>>
+    public class GetAllPlayersFavouringBGQuery : IRequest<IList<NavPlayerDTO>>
     {
         public Guid BoardgameId { get; set; }
     }

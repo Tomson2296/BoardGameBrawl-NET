@@ -37,6 +37,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\AppUser\Pages\Shared\" />
+    <Folder Include="Areas\Group\Pages\Shared\" />
     <Folder Include="Middlewares\" />
   </ItemGroup>
 

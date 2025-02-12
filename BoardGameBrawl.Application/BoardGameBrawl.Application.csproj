@@ -26,4 +26,10 @@
     <ProjectReference Include="..\BoardGameBrawl.Domain\BoardGameBrawl.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Features\Common\Concrete\Commands\AddEntity\" />
+    <Folder Include="Features\Common\Concrete\Commands\DeleteEntity\" />
+    <Folder Include="Features\Common\Concrete\Queries\GetEntity\" />
+  </ItemGroup>
+
 </Project>

@@ -1,0 +1,46 @@
+﻿@page
+@model BoardGameBrawl.App.Areas.Player.Pages.UserFriendsModel
+@{
+    ViewData["title"] = "Check list of user's friends";
+}
+
+<div class="container">
+    <div class="row p-3 mb-3">
+        <h3>@ViewData["Title"]</h3>
+    </div>
+
+    <div class="row p-3">
+        <div class="d-flex flex-row flex-wrap text-center">
+            @foreach (var user in Model.PlayerFriends!)
+            {
+                <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-3 p-2">
+                    <a class="customNavLink" asp-area="Player" asp-page="Index" asp-route-UserName="@user.PlayerName">
+                        <div class="card">
+                            @if (user.UserAvatar != null)
+                            {
+                                <img src="~/img/user.png" class="card-img-top img-round" alt="" width="200" height="200" />
+                            }
+                            else
+                            {
+                                <img src="data:image/*;base64,@(Convert.ToBase64String(user.UserAvatar!))" class="card-img-top img-round" alt="" width="200" height="200" />
+                            }
+                            <div class="card-body">
+                                <h6 class="card-title text-truncate"> @user.PlayerName </h6>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<style>
+    a {
+        text-decoration: none;
+        color: black;
+    }
+
+    .img-round {
+        border-radius: 50%;
+    }
+</style>

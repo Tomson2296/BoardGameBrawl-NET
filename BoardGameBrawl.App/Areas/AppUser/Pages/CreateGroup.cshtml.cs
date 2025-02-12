@@ -1,5 +1,8 @@
 #nullable disable
+using BoardGameBrawl.Application.DTOs.Entities.Group_Related;
+using BoardGameBrawl.Application.Features.Group_Related.Group.Commands.AddGroup;
 using BoardGameBrawl.Domain.Entities;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,10 +13,12 @@ namespace BoardGameBrawl.App.Areas.AppUser.Pages
     public class CreateGroupModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IMediator _mediator;
 
-        public CreateGroupModel(UserManager<ApplicationUser> userManager)
+        public CreateGroupModel(UserManager<ApplicationUser> userManager, IMediator mediator)
         {
             _userManager = userManager;
+            _mediator = mediator;
         }
 
         [TempData]
@@ -25,12 +30,12 @@ namespace BoardGameBrawl.App.Areas.AppUser.Pages
         public class InputModel
         {
             [Required]
-            [MaxLength(100)]
+            [MaxLength(256)]
             [Display(Name = "Group Name")]
             public string GroupName { get; set; }
 
             [Display(Name = "Group Description")]
-            [MaxLength(500)]
+            [MaxLength(2048)]
             public string GroupDesc { get; set; }
 
             [Display(Name = "Group Miniature")]
@@ -55,98 +60,83 @@ namespace BoardGameBrawl.App.Areas.AppUser.Pages
             return Page();
         }
 
-        //public async Task<IActionResult> OnPostAsync()
-        //{
-        //    var user = await _userManager.GetUserAsync(User);
-        //    if (user == null)
-        //    {
-        //        return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-        //    }
+        public async Task<IActionResult> OnPostAsync()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
+            }
 
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return Page();
-        //    }
+            try
+            {
+                // create new PlayerDTO object
+                GroupDTO groupDTO = new()
+                {
+                    Id = Guid.NewGuid(),
+                    GroupName = Input.GroupName,
+                    GroupDescription = Input.GroupDesc
+                };
 
-        //    // Creating a new instance of group and saving it to database 
-        //    GroupModel newGroup = CreateNewGroup();
-            
-        //    await _groupStore.SetGroupNameAsync(newGroup, Input.GroupName);
+                if (Request.Form.Files.Count > 0)
+                {
+                    IFormFile file = Request.Form.Files.FirstOrDefault();
+                    var imageResult = await ProcessFileUploadAsync(file);
 
-        //    if (Input.GroupDesc != null)
-        //    {
-        //        await _groupStore.SetGroupDescAsync(newGroup, Input.GroupDesc);
-        //    }
+                    if (!imageResult.Success)
+                    {
+                        ModelState.AddModelError("File", imageResult.ErrorMessage);
+                        StatusMessage = "Error: " + imageResult.ErrorMessage;
+                        return Page();
+                    }
 
-        //    DateOnly creationTime = DateOnly.FromDateTime(DateTime.Now);
-        //    await _groupStore.SetGroupCreationDateAsync(newGroup, creationTime);
+                    groupDTO.GroupMiniature = imageResult.FileData;
+                }
 
-        //    if (Request.Form.Files.Count > 0)
-        //    {
-        //        IFormFile file = Request.Form.Files.FirstOrDefault();
-        //        using (var dataStream = new MemoryStream())
-        //        {
-        //            // Upload the file if less than 2 MB
-        //            if (dataStream.Length < 2097152)
-        //            {
-        //                await file.CopyToAsync(dataStream);
-        //                Input.GroupMiniature = dataStream.ToArray();
-        //                await _groupStore.SetGroupMiniatureAsync(newGroup, Input.GroupMiniature);
-        //            }
-        //            else
-        //            {
-        //                ModelState.AddModelError("File", "The file is too large.");
-        //            }
-        //        }
-        //    }
+                //Use MediatR to Send the Command
+                var command = new AddGroupCommand { GroupDTO = groupDTO };
+                var response = await _mediator.Send(command);
 
-        //    IdentityResult result = await _groupStore.CreateGroupAsync(newGroup, CancellationToken.None);
-        //    if (result.Succeeded)
-        //    {
-        //        // If creation new group succeded -> create new instance od GroupParticipant
-        //        // to make connection between user and newly created group
-        //        GroupParticipant newGroupParticipant = CreateNewGroupParticipant();
-        //        await _groupParticipantStore.SetGroupAsync(newGroupParticipant, newGroup);
-        //        await _groupParticipantStore.SetUserAsync(newGroupParticipant, user);
-        //        await _groupParticipantStore.SetOwnershipAsync(newGroupParticipant, true);
-        //        await _groupParticipantStore.CreateGroupParticipantAsync(newGroupParticipant);
+                if (!response.Success)
+                {
+                    ModelState.AddModelError("Command", response.Message);
+                    StatusMessage = "Error: " + response.Message;
+                    return Page();
+                }
 
-        //        StatusMessage = "Group has been created successflly";
-        //        return RedirectToPage();
-        //    }
-        //    else
-        //    {
-        //        foreach (var error in result.Errors)
-        //        {
-        //            ModelState.AddModelError(string.Empty, error.Description);
-        //        }
-        //        StatusMessage = "Error - group has not been created. Try again";
-        //        return Page();
-        //    }
-        //}
+                StatusMessage = "Group Profile Created Successfully";
+                return RedirectToPage("/Groups", new { area = "AppUser" });
+            }
+            catch (Exception ex)
+            {
+                StatusMessage = "Error - An unexpected error occurred while creating group profile: " + ex.Message;
+                return RedirectToPage("/Groups", new { area = "AppUser" });
+            }
+        }
 
-        //private GroupModel CreateNewGroup()
-        //{
-        //    try
-        //    {
-        //        return Activator.CreateInstance<GroupModel>();
-        //    }
-        //    catch
-        //    {
-        //        throw new InvalidOperationException($"Can't create an instance of '{nameof(Group)}'.");
-        //    }
-        //}
+        public class FileUploadResult
+        {
+            public bool Success { get; set; }
+            public byte[] FileData { get; set; }
+            public string ErrorMessage { get; set; }
+        }
 
-        //private GroupParticipant CreateNewGroupParticipant()
-        //{
-        //    try
-        //    {
-        //        return Activator.CreateInstance<GroupParticipant>();
-        //    }
-        //    catch
-        //    {
-        //        throw new InvalidOperationException($"Can't create an instance of '{nameof(GroupParticipant)}'.");
-        //    }
-        //}
+        private async Task<FileUploadResult> ProcessFileUploadAsync(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return new FileUploadResult { Success = false, ErrorMessage = "No file uploaded." };
+            }
+
+            if (file.Length > 2 * 1024 * 1024) // 2MB Limit
+            {
+                return new FileUploadResult { Success = false, ErrorMessage = "The file is too large." };
+            }
+
+            using var dataStream = new MemoryStream();
+            await file.CopyToAsync(dataStream);
+
+            return new FileUploadResult { Success = true, FileData = dataStream.ToArray() };
+        }
     }
 }

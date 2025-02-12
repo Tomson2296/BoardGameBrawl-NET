@@ -1,0 +1,66 @@
+﻿@page "{BoardgameId:int}"
+@model BoardGameBrawl.App.Areas.Boardgame.Pages.CheckBoardgameRulesetModel
+@{
+    ViewData["title"] = "Check that boardgame ruleset";
+}
+
+<partial name="_StatusMessage" for="StatusMessage" />
+<div class="container">
+    <div class="row">
+        <div class="text-center p-3 mb-3">
+            <h5>Boardgame Ruleset</h5>
+        </div>
+
+        @if (Model.MatchRuleDTOs!.Count == 0)
+        {
+            <div class="text-center p-3 mb-3">
+                <h5> There is no boardgame rules at the moment </h5>
+            </div>
+        }
+        else
+        {
+            <table class="table table-responsible table-bordered table-hover table-striped text-center text-justify">
+                <thead>
+                    <tr>
+                        <td><strong>Type</strong></td>
+                        <td colspan="2"><strong>Description</strong></td>
+                        <td><strong>Decider</strong></td>
+                        <td><strong>Delete rule</strong></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var rule in Model.MatchRuleDTOs)
+                    {
+                        <tr>
+                            <td>@rule.RuleType.ToString()</td>
+                            <td colspan="2">@rule.RuleDescription!.ToString()</td>
+                            @if (rule.RuleDecider == true)
+                            {
+                                <td> <img src="~/img/star.png" alt="star" height="32" width="32" /> </td>
+                            }
+                            else
+                            {
+                                <td> </td>
+                            }
+                            <td>
+                                <form id="removeRuleForm" method="post" name="removeRuleForm">
+                                    <button type="submit" asp-page-handler="RemoveRuleFromRuleset" asp-route-value="@rule.RuleId"
+                                            class="w-75 btn btn-lg btn-danger">
+                                        Delete rule
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+    <div class="row">
+        <div class="d-flex flex-row justify-content-center align-items-center">
+            <a asp-page="/ModifyRuleset" asp-route-BoardgameId="@Model.BoardgameId" class="w-50 btn btn-lg btn-primary btn-block">
+                Back To Creation Page 
+            </a>
+        </div>
+    </div>
+</div>

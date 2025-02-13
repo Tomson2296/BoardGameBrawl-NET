@@ -2,7 +2,7 @@
 using BoardGameBrawl.Application.DTOs.Entities.Group_Related;
 using FluentValidation;
 
-namespace BoardGameBrawl.Application.Validators.Group_Related
+namespace BoardGameBrawl.Application.Validators.Group_Related.Groups
 {
     public class UpdateGroupValidator : AbstractValidator<GroupDTO>
     {
@@ -15,9 +15,10 @@ namespace BoardGameBrawl.Application.Validators.Group_Related
             Include(new GroupValidator(groupRepository));
 
             RuleFor(player => player.Id)
-            .MustAsync(async (id, token) => {
-                    var playerExists = await _groupRepository.Exists(id, token);
-                    return playerExists;
+            .MustAsync(async (id, token) =>
+            {
+                var playerExists = await _groupRepository.Exists(id, token);
+                return playerExists;
             })
             .WithMessage("{PropertyName} does not exist.");
         }

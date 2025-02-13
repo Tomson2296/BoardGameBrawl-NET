@@ -1,6 +1,4 @@
 using BoardGameBrawl.Application.DTOs.Entities.Player_Related;
-using BoardGameBrawl.Application.Features.Player_Related.Players.Queries.GetPlayer;
-using BoardGameBrawl.Application.Features.Player_Related.Players.Queries.GetPlayerByAppUserId;
 using BoardGameBrawl.Application.Features.Player_Related.Players.Queries.GetPlayerByUsername;
 using BoardGameBrawl.Domain.Entities;
 using MediatR;

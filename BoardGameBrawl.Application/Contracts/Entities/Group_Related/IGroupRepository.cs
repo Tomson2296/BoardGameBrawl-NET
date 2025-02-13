@@ -11,6 +11,9 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Group_Related
         Task<IList<NavGroupDTO>> GetFilteredBatchOfGroupsAsync(string filter,
             int size, int skip = 0, CancellationToken cancellationToken = default);
 
+        Task<GroupDTO> GetGroupByGroupName(string groupName,
+            CancellationToken cancellationToken = default);
+
 
         // getter methods // 
 

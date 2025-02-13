@@ -74,7 +74,7 @@ namespace BoardGameBrawl.Application.Features.Common.Commands.AddEntity
 
         protected abstract IGenericRepository<TEntity> GetRepository(IUnitOfWork unitOfWork);
 
-        protected abstract TEntityValidator GetValidatorRequiringRepo(IGenericRepository<TEntity> repository);
+        protected abstract TEntityValidator GetValidatorRequiringRepo();
 
         protected abstract Guid GetEntityId(TEntity entity);
 

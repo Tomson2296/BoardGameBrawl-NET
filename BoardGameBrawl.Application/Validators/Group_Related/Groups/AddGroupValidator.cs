@@ -2,7 +2,7 @@
 using BoardGameBrawl.Application.DTOs.Entities.Group_Related;
 using FluentValidation;
 
-namespace BoardGameBrawl.Application.Validators.Group_Related
+namespace BoardGameBrawl.Application.Validators.Group_Related.Groups
 {
     public class AddGroupValidator : AbstractValidator<GroupDTO>
     {

@@ -43,6 +43,21 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Group_Related
             }
         }
 
+        public async Task<GroupDTO> GetGroupByGroupName(string groupName, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            if (string.IsNullOrWhiteSpace(groupName))
+            {
+                throw new ArgumentException("Group name cannot be null or whitespace.", nameof(groupName));
+            }
+            var groupInDB = await _context.Groups.FirstOrDefaultAsync(e => e.GroupName == groupName, cancellationToken);
+
+            if (groupInDB != null)
+                return _mapper.Map<GroupDTO>(groupInDB);
+            else
+                throw new ApplicationException("Entity has not been found");
+        }
+
 
         // getter methods //
 

@@ -1,6 +1,8 @@
 #nullable disable
 using BoardGameBrawl.Application.DTOs.Entities.Group_Related;
 using BoardGameBrawl.Application.Features.Group_Related.Group.Commands.AddGroup;
+using BoardGameBrawl.Application.Features.Group_Related.GroupParticipants.Commands.AddGroupParticipant;
+using BoardGameBrawl.Application.Features.Player_Related.Players.Queries.GetPlayerByAppUserId;
 using BoardGameBrawl.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -98,6 +100,31 @@ namespace BoardGameBrawl.App.Areas.AppUser.Pages
                 var response = await _mediator.Send(command);
 
                 if (!response.Success)
+                {
+                    ModelState.AddModelError("Command", response.Message);
+                    StatusMessage = "Error: " + response.Message;
+                    return Page();
+                }
+
+                // get active player profile
+                var getPlayerProfile = new GetPlayerByAppUserIdQuery { ApplicationUserId = user.Id };
+                var playerProfile = await _mediator.Send(getPlayerProfile);
+
+
+                //Create first groupParticipant of that group and make it admin
+                GroupParticipantDTO newGroupParticipantDTO = new()
+                {
+                    GroupId = groupDTO.Id,
+                    GroupName = groupDTO.GroupName,
+                    PlayerId = playerProfile.Id,
+                    PlayerName = playerProfile.PlayerName,
+                    IsAdmin = true
+                };
+
+                var createAdmin = new AddGroupParticipantCommand { EntityDTO = newGroupParticipantDTO };
+                var createAdminResult = await _mediator.Send(createAdmin);
+
+                if (!createAdminResult.Success)
                 {
                     ModelState.AddModelError("Command", response.Message);
                     StatusMessage = "Error: " + response.Message;

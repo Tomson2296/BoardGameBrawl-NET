@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using BoardGameBrawl.Application.Contracts.Common;
 using BoardGameBrawl.Application.Exceptions;
-using BoardGameBrawl.Application.Validators.Group_Related;
+using BoardGameBrawl.Application.Validators.Group_Related.Groups;
 using MediatR;
 
 namespace BoardGameBrawl.Application.Features.Group_Related.Group.Commands.UpdateGroup

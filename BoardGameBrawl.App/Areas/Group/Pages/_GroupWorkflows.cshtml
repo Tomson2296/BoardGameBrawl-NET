@@ -1,0 +1,18 @@
+﻿@{
+    var groupName = ViewContext.RouteData.Values["GroupName"]?.ToString();
+}
+
+<ul class="nav nav-pills flex-column">
+    <li class="nav-item">
+        <a class="nav-link @GroupWorkflowsPages.IndexNavClass(ViewContext, groupName)" id="index" asp-page="Index" asp-route-GroupName="@groupName">Index</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @GroupWorkflowsPages.GroupParticipantsNavClass(ViewContext, groupName)" id="participants" asp-page="GroupParticipants" asp-route-GroupName="@groupName" asp-route-PageNumber="1"> Group Participants </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @GroupWorkflowsPages.GroupTournamentsNavClass(ViewContext, groupName)" id="tournaments" asp-page="GroupTournaments" asp-route-GroupName="@groupName"> Group Tournaments </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @GroupWorkflowsPages.GroupAdminsNavClass(ViewContext, groupName)" id="tournaments" asp-page="GroupAdmins" asp-route-GroupName="@groupName"> Group Admins </a>
+    </li>
+</ul>

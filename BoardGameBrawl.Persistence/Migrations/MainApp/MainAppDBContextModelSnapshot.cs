@@ -690,6 +690,12 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
 
                     b.HasIndex("AddresseeId");
 
+                    b.HasIndex("AddresseeName")
+                        .HasDatabaseName("AddresseeNameIndex");
+
+                    b.HasIndex("RequesterName")
+                        .HasDatabaseName("RequesterNameIndex");
+
                     b.ToTable("PlayerFriends", "dbo");
                 });
 
@@ -733,6 +739,83 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
                     b.HasIndex("BoardgameId");
 
                     b.ToTable("PlayerPreferences", "dbo");
+                });
+
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Player_Related.Schedule_Related.DailyAvailability", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("DayOfWeek")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("PlayerScheduleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlayerScheduleId");
+
+                    b.ToTable("DailyAvailabilities", "dbo");
+                });
+
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Player_Related.Schedule_Related.PlayerSchedule", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("CreatedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<DateTime>("LastModifiedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("PlayerId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlayerId")
+                        .IsUnique()
+                        .HasDatabaseName("PlayerIndex");
+
+                    b.ToTable("PlayerSchedules", "dbo");
+                });
+
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Player_Related.Schedule_Related.TimeSlot", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("DailyAvailabilityId")
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan>("EndTime")
+                        .HasColumnType("time");
+
+                    b.Property<TimeSpan>("StartTime")
+                        .HasColumnType("time");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DailyAvailabilityId");
+
+                    b.ToTable("TimeSlots", "dbo");
                 });
 
             modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Tournament_Related.Tournament", b =>
@@ -950,11 +1033,13 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
 
             modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Match_Related.MatchRule", b =>
                 {
-                    b.HasOne("BoardGameBrawl.Domain.Entities.Boardgame_Related.Boardgame", null)
+                    b.HasOne("BoardGameBrawl.Domain.Entities.Boardgame_Related.Boardgame", "Boardgame")
                         .WithMany("BoardgameRules")
                         .HasForeignKey("BoardgameId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Boardgame");
                 });
 
             modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Player_Related.PlayerCollection", b =>
@@ -1023,6 +1108,39 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
                     b.Navigation("Boardgame");
 
                     b.Navigation("Player");
+                });
+
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Player_Related.Schedule_Related.DailyAvailability", b =>
+                {
+                    b.HasOne("BoardGameBrawl.Domain.Entities.Player_Related.Schedule_Related.PlayerSchedule", "PlayerSchedule")
+                        .WithMany("DailyAvailabilities")
+                        .HasForeignKey("PlayerScheduleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PlayerSchedule");
+                });
+
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Player_Related.Schedule_Related.PlayerSchedule", b =>
+                {
+                    b.HasOne("BoardGameBrawl.Domain.Entities.Player_Related.Player", "Player")
+                        .WithOne("PlayerSchedule")
+                        .HasForeignKey("BoardGameBrawl.Domain.Entities.Player_Related.Schedule_Related.PlayerSchedule", "PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Player");
+                });
+
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Player_Related.Schedule_Related.TimeSlot", b =>
+                {
+                    b.HasOne("BoardGameBrawl.Domain.Entities.Player_Related.Schedule_Related.DailyAvailability", "DailyAvailability")
+                        .WithMany("TimeSlots")
+                        .HasForeignKey("DailyAvailabilityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DailyAvailability");
                 });
 
             modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Tournament_Related.Tournament", b =>
@@ -1107,6 +1225,18 @@ namespace BoardGameBrawl.Persistence.Migrations.MainApp
                     b.Navigation("PlayerFavouriteBGs");
 
                     b.Navigation("PlayerRatings");
+
+                    b.Navigation("PlayerSchedule");
+                });
+
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Player_Related.Schedule_Related.DailyAvailability", b =>
+                {
+                    b.Navigation("TimeSlots");
+                });
+
+            modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Player_Related.Schedule_Related.PlayerSchedule", b =>
+                {
+                    b.Navigation("DailyAvailabilities");
                 });
 
             modelBuilder.Entity("BoardGameBrawl.Domain.Entities.Tournament_Related.Tournament", b =>

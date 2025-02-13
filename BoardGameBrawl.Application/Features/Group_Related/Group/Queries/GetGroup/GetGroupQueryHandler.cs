@@ -20,9 +20,7 @@ namespace BoardGameBrawl.Application.Features.Group_Related.Group.Queries.GetGro
         public async Task<GroupDTO> Handle(GetGroupQuery request, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-
-            var group = await _unitOfWork.GroupRepository.GetEntity(request.Id);
-            return _mapper.Map<GroupDTO>(group);
+            return await _unitOfWork.GroupRepository.GetGroupByGroupName(request.GroupName);
         }
     }
 }

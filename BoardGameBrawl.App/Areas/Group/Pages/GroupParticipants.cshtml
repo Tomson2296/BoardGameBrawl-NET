@@ -1,0 +1,62 @@
+﻿@page "{GroupName}/{PageNumber:int}"
+@model BoardGameBrawl.App.Areas.Group.Pages.GroupParticipantsModel
+@{
+    ViewData["Title"] = "List of Group Participants";
+}
+
+<div class="container">
+    <div class="row p-3 mb-3">
+        <h5> There is list of group participants: </h5>
+    </div>
+    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-6 g-4">
+        <br />
+            @foreach (var participant in Model.GroupParticipants!)
+            {
+                <div class="col">
+                    <a asp-area="Player" asp-page="/Index" asp-route-UserName="@participant.PlayerName">
+                        <div class="card h-100 shadow-sm">
+                            @if (participant.UserAvatar != null)
+                            {
+                                <img src="data:image/*;base64,@(Convert.ToBase64String(participant.UserAvatar!))" class="card-img-top img-round img-fluid" alt="" width="200" height="200">
+                            }
+                            else
+                            {
+                                <img src="~/img/user.png" class="card-img-top img-round" alt="" width="200" height="200">
+                            }
+                            <div class="card-body">
+                                <h6 class="card-title text-truncate text-center"> @participant.PlayerName </h6>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+    </div>
+    <br />
+    <div class="row">
+        <div class="d-flex flex-row justify-content-center align-items-center">
+
+            @if (Model.PageNumber == 1 && Model.ElementsCount < Model.PageSize)
+            {
+                <a class="btn btn-block" asp-page="GroupParticipants" asp-route-GroupName="@Model.GroupName" asp-route-PageNumber="@Model.PageNumber"> @Model.PageNumber </a>
+            }
+            else if (Model.PageNumber == 1 && Model.ElementsCount == Model.PageSize)
+            {
+                <a class="btn btn-block" asp-page="GroupParticipants" asp-route-GroupName="@Model.GroupName" asp-route-PageNumber="@Model.PageNumber"> @Model.PageNumber </a>
+                <a class="btn btn-block" asp-page="GroupParticipants" asp-route-GroupName="@Model.GroupName" asp-route-PageNumber="@Model.NextNumber"> @Model.NextNumber </a>
+            }
+            else if (Model.PageNumber > 1 && Model.ElementsCount == Model.PageSize)
+            {
+                <a class="btn btn-block" asp-page="GroupParticipants" asp-route-GroupName="@Model.GroupName" asp-route-PageNumber="@Model.PreviousNumber"> @Model.PreviousNumber </a>
+                <a class="btn btn-block" asp-page="GroupParticipants" asp-route-GroupName="@Model.GroupName" asp-route-PageNumber="@Model.PageNumber"> @Model.PageNumber </a>
+                <a class="btn btn-block" asp-page="GroupParticipants" asp-route-GroupName="@Model.GroupName" asp-route-PageNumber="@Model.NextNumber"> @Model.NextNumber </a>
+            }
+            else
+            {
+                <a class="btn btn-block" asp-page="GroupParticipants" asp-route-GroupName="@Model.GroupName" asp-route-PageNumber="@Model.PreviousNumber"> @Model.PreviousNumber </a>
+                <a class="btn btn-block" asp-page="GroupParticipants" asp-route-GroupName="@Model.GroupName" asp-route-PageNumber="@Model.PageNumber"> @Model.PageNumber </a>
+            }
+        </div>
+        <div class="row">
+        </div>
+    </div>
+</div>

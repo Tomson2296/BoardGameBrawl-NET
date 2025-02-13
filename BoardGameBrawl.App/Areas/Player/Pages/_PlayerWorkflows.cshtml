@@ -1,0 +1,8 @@
+﻿<ul class="nav nav-pills flex-column">
+    <li class="nav-item"><a class="nav-link @PlayerWorkflowsPages.IndexNavClass(ViewContext)" id="index" asp-page="./Index">Index</a></li>
+    <li class="nav-item"><a class="nav-link @PlayerWorkflowsPages.BGGCollectionNavClass(ViewContext)" id="collection" asp-page="./UserBGGCollection">BGGCollection</a></li>
+    <li class="nav-item"><a class="nav-link @PlayerWorkflowsPages.BoardgameFavouritesNavClass(ViewContext)" id="favourites" asp-page="./UserBoardgameFavourites" asp-route-PageNumber="1">User Fav. Boardgames </a></li>
+    <li class="nav-item"><a class="nav-link @PlayerWorkflowsPages.PlayerFriendsNavClass(ViewContext)" id="friends" asp-page="./UserFriends" asp-route-PageNumber="1">User Friends</a></li>
+    <li class="nav-item"><a class="nav-link @PlayerWorkflowsPages.PlayerGroupsNavClass(ViewContext)" id="groups" asp-page="./UserGroups">User Groups</a></li>
+    <li class="nav-item"><a class="nav-link @PlayerWorkflowsPages.PlayerModerationNavClass(ViewContext)" id="moderation" asp-page="./UserModerations">User Modearations</a></li>
+</ul>

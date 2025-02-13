@@ -2,11 +2,13 @@
 using BoardGameBrawl.Domain.Entities.Group_Related;
 using BoardGameBrawl.Domain.Entities.Match_Related;
 using BoardGameBrawl.Domain.Entities.Player_Related;
+using BoardGameBrawl.Domain.Entities.Player_Related.Schedule_Related;
 using BoardGameBrawl.Domain.Entities.Tournament_Related;
 using BoardGameBrawl.Persistence.EntityConfiguration.Boardgame_Related;
 using BoardGameBrawl.Persistence.EntityConfiguration.Group_Related;
 using BoardGameBrawl.Persistence.EntityConfiguration.Match_Related;
 using BoardGameBrawl.Persistence.EntityConfiguration.Player_Related;
+using BoardGameBrawl.Persistence.EntityConfiguration.Player_Related.Schedule_Related;
 using BoardGameBrawl.Persistence.EntityConfiguration.Tournament_Related;
 using Microsoft.EntityFrameworkCore;
 
@@ -49,6 +51,10 @@ namespace BoardGameBrawl.Persistence
             modelBuilder.ApplyConfiguration(new PlayerCollectionConfiguration());
             modelBuilder.ApplyConfiguration(new PlayerFavouriteBGConfiguration());
 
+            modelBuilder.ApplyConfiguration(new PlayerScheduleConfiguration());
+            modelBuilder.ApplyConfiguration(new DailyAvailabilityConfiguration());
+            modelBuilder.ApplyConfiguration(new TimeSlotConfiguration());
+
             //Tournament-related entities configuration
             modelBuilder.ApplyConfiguration(new TournamentConfiguration());
             modelBuilder.ApplyConfiguration(new TournamentMatchConfiguration());
@@ -88,6 +94,12 @@ namespace BoardGameBrawl.Persistence
         public DbSet<PlayerCollection> PlayerCollections { get; set; }
 
         public DbSet<PlayerFavouriteBG> PlayerFavouriteBGs { get; set; }
+
+        public DbSet<PlayerSchedule> PlayerSchedules { get; set; }
+
+        public DbSet<DailyAvailability> DailyAvailabilities { get; set; }
+
+        public DbSet<TimeSlot> TimeSlots { get; set; }
 
 
 

@@ -7,6 +7,18 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Group_Related
 {
     public interface IGroupParticipantRepository : IGenericRepository<GroupParticipant>
     {
+        // custom methods //
+
+        Task<IList<NavPlayerDTO>> GetBatchOfUserParticipantsInGroupByIdAsync(Guid groupId,
+            int size, int skip = 0, CancellationToken cancellationToken = default);
+
+        Task<bool> CheckIfUserIsGroupParticipant(Guid groupId, Guid playerId,
+            CancellationToken cancellationToken = default);
+
+        Task<IList<NavPlayerDTO>> GetAllGroupAdminsAsync(Guid groupId,
+            CancellationToken cancellationToken = default);
+
+
         // getter methods //
 
         Task<GroupParticipant?> GetGroupParticipantAsync(Guid groupId,
@@ -17,9 +29,13 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Group_Related
 
         Task<IList<NavPlayerDTO>> GetAllUserParticipantsInGroupByIdAsync(Guid groupId,
             CancellationToken cancellationToken = default);
+
         
         Task<bool> GetAdminStatusAsync(GroupParticipant groupParticipant,
             CancellationToken cancellationToken = default);
+
+        Task<bool> GetAdminStatusAsync(Guid groupId, Guid playerId,
+           CancellationToken cancellationToken = default);
 
 
         // setter methods //

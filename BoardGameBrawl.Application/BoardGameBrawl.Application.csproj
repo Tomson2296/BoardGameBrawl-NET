@@ -27,9 +27,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Common\Concrete\Commands\AddEntity\" />
-    <Folder Include="Features\Common\Concrete\Commands\DeleteEntity\" />
     <Folder Include="Features\Common\Concrete\Queries\GetEntity\" />
+    <Folder Include="Features\Player_Related\PlayerSchedule\Commands\AddOrUpdateSchedule\" />
+    <Folder Include="Features\Player_Related\PlayerSchedule\Commands\AddOrUpdateDaily\" />
+    <Folder Include="Features\Player_Related\PlayerSchedule\Commands\AddOrUpdateTimeSlot\" />
+    <Folder Include="Features\Player_Related\PlayerSchedule\Commands\ClearDay\" />
+    <Folder Include="Features\Player_Related\PlayerSchedule\Commands\RemoveSchedule\" />
+    <Folder Include="Features\Player_Related\PlayerSchedule\Commands\RemoveTimeSlot\" />
+    <Folder Include="Validators\Player_Related\PlayerSchedule\" />
   </ItemGroup>
 
 </Project>

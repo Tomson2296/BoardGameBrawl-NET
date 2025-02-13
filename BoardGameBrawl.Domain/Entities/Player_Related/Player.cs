@@ -1,6 +1,7 @@
 ﻿using BoardGameBrawl.Domain.Common;
 using BoardGameBrawl.Domain.Entities.Boardgame_Related;
 using BoardGameBrawl.Domain.Entities.Group_Related;
+using BoardGameBrawl.Domain.Entities.Player_Related.Schedule_Related;
 
 namespace BoardGameBrawl.Domain.Entities.Player_Related
 {
@@ -29,6 +30,9 @@ namespace BoardGameBrawl.Domain.Entities.Player_Related
 
         public PlayerCollection? PlayerCollection { get; set; }
 
+        public PlayerSchedule? PlayerSchedule { get; set; }
+
+
         public ICollection<PlayerFavouriteBG>? PlayerFavouriteBGs { get; set; }
 
         public ICollection<PlayerPreference>? PlayerRatings { get; set; }
@@ -42,6 +46,5 @@ namespace BoardGameBrawl.Domain.Entities.Player_Related
         public ICollection<PlayerFriend>? Friendships { get; set; }  
 
         public ICollection<PlayerFriend>? FriendOfFriendships { get; set; } 
-
     }
 }

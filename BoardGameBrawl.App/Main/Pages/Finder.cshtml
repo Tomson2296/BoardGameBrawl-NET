@@ -36,7 +36,7 @@
             @foreach (var user in Model.Players!)
             {
                 <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-3 p-2">
-                        <a asp-area="AppUser" asp-page="/Index" asp-route-UserName="@user.PlayerName">
+                        <a asp-area="Player" asp-page="Index" asp-route-UserName="@user.PlayerName">
                         <div class="card">
                             @if (user.UserAvatar != null)
                             {
@@ -64,7 +64,7 @@
             @foreach (var boardgame in Model.Boardgames!)
             {
                 <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-3 p-2">
-                    <a asp-area="Boardgame" asp-page="/Index" asp-route-BoardgameID="@boardgame.BGGId">
+                    <a asp-area="Boardgame" asp-page="Index" asp-route-BoardgameID="@boardgame.BGGId">
                         <div class="card">
                             <img src="data:image/*;base64,@(Convert.ToBase64String(boardgame.Image!))" class="card-img-top img-round" alt="" width="200" height="200">
                             <div class="card-body">
@@ -86,7 +86,7 @@
             @foreach (var group in Model.Groups!)
             {
                 <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-3 p-2">
-                    <a asp-area="Group" asp-page="/Index" asp-route-GroupName="@group.GroupName">
+                    <a asp-area="Group" asp-page="Index" asp-route-GroupName="@group.GroupName">
                         <div class="card">
                             @if (group.GroupMiniature != null)
                             {

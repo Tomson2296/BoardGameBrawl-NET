@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using BoardGameBrawl.Application.Contracts.Common;
-using BoardGameBrawl.Application.Exceptions;
 using BoardGameBrawl.Application.Responses;
 using MediatR;
 using System;

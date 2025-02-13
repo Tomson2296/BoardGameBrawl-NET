@@ -2,7 +2,7 @@
 using BoardGameBrawl.Application.DTOs.Entities.Group_Related;
 using FluentValidation;
 
-namespace BoardGameBrawl.Application.Validators.Group_Related
+namespace BoardGameBrawl.Application.Validators.Group_Related.Groups
 {
     public class GroupValidator : AbstractValidator<GroupDTO>
     {
@@ -18,13 +18,9 @@ namespace BoardGameBrawl.Application.Validators.Group_Related
               .MaximumLength(256).WithMessage("Username cannot be over {ComparisonValue} characters long");
 
             RuleFor(group => group.GroupDescription)
-             .NotNull()
-             .NotEmpty().WithMessage("{PropertyName} cannot be empty")
-             .MaximumLength(2048).WithMessage("Username cannot be over {ComparisonValue} characters long");
-
-            RuleFor(group => group.GroupName)
-              .NotNull()
-              .NotEmpty().WithMessage("{PropertyName} cannot be empty");
+              .MaximumLength(2048)
+              .WithMessage("Username cannot be over {ComparisonValue} characters long")
+              .When(group => !string.IsNullOrWhiteSpace(group.GroupDescription));
         }
     }
 }

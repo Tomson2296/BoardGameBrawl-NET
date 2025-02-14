@@ -23,7 +23,7 @@ namespace BoardGameBrawl.App.Areas.Player.Pages
         }
 
         [BindProperty(SupportsGet = true)]
-        public string? Username { get; set; }
+        public string? UserName { get; set; }
 
         public PlayerDTO? TargetPlayer { get; set; }
 
@@ -37,7 +37,7 @@ namespace BoardGameBrawl.App.Areas.Player.Pages
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            var getPlayerQuery = new GetPlayerByUsernameQuery { Username = Username };
+            var getPlayerQuery = new GetPlayerByUsernameQuery { Username = UserName };
             TargetPlayer = await _mediator.Send(getPlayerQuery);
 
             //get player's groups

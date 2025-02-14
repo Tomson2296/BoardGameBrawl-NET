@@ -21,6 +21,15 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
 
         // custom PlayerRepository methods //
 
+        public async Task<bool> CheckIfPlayerExistsByAppId(Guid appUserId, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(appUserId);
+
+            return await _context.Players.AnyAsync(u => u.ApplicationUserId == appUserId, cancellationToken);
+        }
+
+
         public async Task<IList<NavPlayerDTO>> GetFilteredBatchOfPlayersAsync(string filter, int size, int skip = 0, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -65,7 +74,7 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
             var player = await Context.Players.SingleOrDefaultAsync(u => u.PlayerName == username, cancellationToken);
             if (player != null)
             {
-                return _mapper.Map<PlayerDTO>(_mapper.ConfigurationProvider);
+                return _mapper.Map<PlayerDTO>(player);
             }
             else
             {
@@ -248,6 +257,5 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
             return Task.CompletedTask;
         }
 
-       
     }
 }

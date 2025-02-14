@@ -1,24 +1,19 @@
-﻿@page "{Username}"
+﻿@page "{UserName}"
 @model BoardGameBrawl.App.Areas.Player.Pages.UserBGGCollectionModel
 @{
     ViewData["title"] = "Check user's BGG Collection";
+    ViewData["ActivePage"] = PlayerWorkflowsPages.BGGCollection;
 }
 
 <div class="container">
     @if (Model.UserBoardGameCollection == null)
     {
-        <div class="row text-center">
-            <h3> That user dont have an BGG Account registered at the moment. </h3>
+        <div class="row p-3 mb-3 text-center">
+            <h3> That user doesn't have BGG Account registered at the moment </h3>
         </div>
     }
     else
     {
-        <div class="row mb-3">
-            <h3> @ViewData["title"] </h3>
-            <h6> We download your Boardgame collection using BGG API, including only boardgame base sets (excluding board game expansions) </h6>
-            <h6> By clicking one of the games below, you can navigate to proper board game site and start your competitive journey </h6>
-        </div>
-
         <div class="container">
             <div class="d-flex flex-row flex-wrap text-center">
                 @for (int i = 0; i < Model.UserBoardGameCollection.TotalItems; i++)

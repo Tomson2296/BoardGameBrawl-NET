@@ -2,7 +2,7 @@
 using BoardGameBrawl.Application.Contracts.Common;
 using BoardGameBrawl.Application.Responses;
 using BoardGameBrawl.Application.Validators.Player_Related.PlayerPreferences;
-using BoardGameBrawl.Domain.Entities.Player_Related;
+using BoardGameBrawl.Domain.Entities.Player_Related.Preference_Related;
 using MediatR;
 using System;
 using System.Collections.Generic;

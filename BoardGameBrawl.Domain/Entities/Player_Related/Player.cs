@@ -1,6 +1,7 @@
 ﻿using BoardGameBrawl.Domain.Common;
 using BoardGameBrawl.Domain.Entities.Boardgame_Related;
 using BoardGameBrawl.Domain.Entities.Group_Related;
+using BoardGameBrawl.Domain.Entities.Player_Related.Preference_Related;
 using BoardGameBrawl.Domain.Entities.Player_Related.Schedule_Related;
 
 namespace BoardGameBrawl.Domain.Entities.Player_Related

@@ -1,8 +1,27 @@
-﻿<ul class="nav nav-pills flex-column">
-    <li class="nav-item"><a class="nav-link @PlayerWorkflowsPages.IndexNavClass(ViewContext)" id="index" asp-page="./Index">Index</a></li>
-    <li class="nav-item"><a class="nav-link @PlayerWorkflowsPages.BGGCollectionNavClass(ViewContext)" id="collection" asp-page="./UserBGGCollection">BGGCollection</a></li>
-    <li class="nav-item"><a class="nav-link @PlayerWorkflowsPages.BoardgameFavouritesNavClass(ViewContext)" id="favourites" asp-page="./UserBoardgameFavourites" asp-route-PageNumber="1">User Fav. Boardgames </a></li>
-    <li class="nav-item"><a class="nav-link @PlayerWorkflowsPages.PlayerFriendsNavClass(ViewContext)" id="friends" asp-page="./UserFriends" asp-route-PageNumber="1">User Friends</a></li>
-    <li class="nav-item"><a class="nav-link @PlayerWorkflowsPages.PlayerGroupsNavClass(ViewContext)" id="groups" asp-page="./UserGroups">User Groups</a></li>
-    <li class="nav-item"><a class="nav-link @PlayerWorkflowsPages.PlayerModerationNavClass(ViewContext)" id="moderation" asp-page="./UserModerations">User Modearations</a></li>
+﻿@{
+    var playerName = ViewContext.RouteData.Values["UserName"]?.ToString();
+}
+
+<ul class="nav nav-pills flex-column">
+    <li class="nav-item">
+        <a class="nav-link @PlayerWorkflowsPages.IndexNavClass(ViewContext, playerName)" id="index" asp-page="./Index" asp-route-UserName="@playerName">Index</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @PlayerWorkflowsPages.BGGCollectionNavClass(ViewContext, playerName)" id="collection" asp-page="./UserBGGCollection" asp-route-UserName="@playerName">BGGCollection</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @PlayerWorkflowsPages.BoardgameFavouritesNavClass(ViewContext, playerName)" id="favourites" asp-page="./UserBoardgameFavourites" asp-route-UserName="@playerName" asp-route-PageNumber="1">User Fav. Boardgames </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @PlayerWorkflowsPages.PlayerVotesNavClass(ViewContext, playerName)" id="votes" asp-page="./UserBoardgameVotes" asp-route-UserName="@playerName">User Votes </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @PlayerWorkflowsPages.PlayerFriendsNavClass(ViewContext, playerName)" id="friends" asp-page="./UserFriends" asp-route-UserName="@playerName" asp-route-PageNumber="1">User Friends</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @PlayerWorkflowsPages.PlayerGroupsNavClass(ViewContext, playerName)" id="groups" asp-page="./UserGroups" asp-route-UserName="@playerName">User Groups</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link @PlayerWorkflowsPages.PlayerModerationNavClass(ViewContext, playerName)" id="moderation" asp-page="./UserModerations" asp-route-UserName="@playerName">User Moderations</a>
+    </li>
 </ul>

@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using BoardGameBrawl.Domain.Entities.Player_Related;
+using BoardGameBrawl.Domain.Entities.Player_Related.Preference_Related;
 
-namespace BoardGameBrawl.Application.DTOs.Entities.Player_Related
+namespace BoardGameBrawl.Application.DTOs.Entities.Player_Related.Preference_Related
 {
     [AutoMap(typeof(PlayerPreference))]
-    public class PlayerPreferenceDTO 
+    public class PlayerPreferenceDTO
     {
         public Guid PlayerId { get; set; }
 

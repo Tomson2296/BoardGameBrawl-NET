@@ -1,13 +1,14 @@
-﻿@page "{Username}"
+﻿@page "{UserName}"
 @model BoardGameBrawl.App.Areas.Player.Pages.IndexModel
 @{
     ViewData["Title"] = "Check that user's profile";
     ViewData["TableDesc"] = "Profile Info:";
     ViewData["TableUserDesc"] = "User's Description";
+    ViewData["ActivePage"] = PlayerWorkflowsPages.Index;
 }
 
 <div class="containter">
-    <div class="row mb-3">
+    <div class="row p-3 mb-3">
         <h3>@ViewData["Title"]</h3>
     </div>
 
@@ -16,7 +17,9 @@
             @Model.TargetPlayer!.PlayerName
         </h2>
     </div>
-    <div class="row mb-3">s
+    <div class="row mb-3">
+        @if(Model.TargetPlayer.UserAvatar != null)
+        {
             <div class="d-flex justify-content-center">
                 <img src="data:image/*;base64,@(Convert.ToBase64String(Model.TargetPlayer.UserAvatar!))" class="img-fluid img-thumbnail img-round" alt=""
                      width="300" height="300" />
@@ -61,15 +64,15 @@
                 <tr>
                         @if (Model.TargetPlayer.UserDescription == null)
                         {
-                        <td colspan="2">
-                            No user description
-                        </td>
+                            <td colspan="2">
+                                No user description
+                            </td>
                         }
                         else
                         {
-                        <td colspan="2">
-                                @Model.TargetPlayer.UserDescription
-                        </td>
+                            <td colspan="2">
+                                    @Model.TargetPlayer.UserDescription
+                            </td>
                         }
                 </tr>
             </tbody>

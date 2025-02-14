@@ -1,24 +1,22 @@
-﻿@page "{Username}"
+﻿@page "{UserName}"
 @model BoardGameBrawl.App.Areas.Player.Pages.UserBoardgameFavouritesModel
 @{
     ViewData["Title"] = "Check user's favourite boardgames";
+    ViewData["ActivePage"] = PlayerWorkflowsPages.BoardgameFavourites;
 }
 
 <div class="container">
-    <div class="row p-3 mb-3">
-        <h6> @ViewData["Title"]</h6>
-    </div>
-    <div class="row p-3">
-        <div class="d-flex flex-row flex-wrap text-center">
-            @if (Model.UserFavouriteBGs!.Count == 0)
+        @if (Model.UserFavouriteBGs!.Count == 0)
+        {
+            <div class="row p-3 mb-3 text-center">
+                <h3> That user doesn't have any favourite boardgames at the moment </h3>
+            </div>
+        }
+        else
+        {
+            @foreach (var boardgame in Model.UserFavouriteBGs)
             {
-                <p> It looks like you still haven't decided on which boardgames you like the most :) </p>
-                <p> Don't worry, you can always change that by using our Finder panel to find something you may find interesting. </p>
-            }
-            else
-            {
-                @foreach (var boardgame in Model.UserFavouriteBGs)
-                {
+                <div class="d-flex flex-row flex-wrap text-center">
                     <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-3 p-2">
                         <a asp-area="Boardgame" asp-page="Index" asp-route-BoardgameID="@boardgame.BGGId">
                             <div class="card">
@@ -30,8 +28,7 @@
                             </div>
                         </a>
                     </div>
-                }
+                </div>
             }
-        </div>
-    </div>
+        }
 </div>

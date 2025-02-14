@@ -11,11 +11,10 @@ using System.Threading.Tasks;
 
 namespace BoardGameBrawl.Application.Features.Common.Queries.CheckIfEntityExists
 {
-    public abstract class CheckIfEntityExistsQueryHandler<TCommand, TEntityDTO, TEntity, TEntityRepo> : IRequestHandler<TCommand, bool>
+    public abstract class CheckIfEntityExistsQueryHandler<TCommand, TEntityDTO, TEntity> : IRequestHandler<TCommand, bool>
         where TCommand : IRequest<bool>
         where TEntityDTO : class
         where TEntity : class
-        where TEntityRepo : IGenericRepository<TEntity>
     {
         private readonly IUnitOfWork _unitofWork;
         private readonly IMapper _mapper;
@@ -31,7 +30,7 @@ namespace BoardGameBrawl.Application.Features.Common.Queries.CheckIfEntityExists
             cancellationToken.ThrowIfCancellationRequested();
             var dto = GetEntityDTOFromRequest(request);
 
-            var entity = _mapper.Map<TEntity>(_mapper.ConfigurationProvider);
+            var entity = _mapper.Map<TEntity>(dto);
             var entityId = GetEntityId(entity);
             
             var repo = GetRepository(_unitofWork);

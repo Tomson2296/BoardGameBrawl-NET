@@ -44,6 +44,14 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
                 .FirstOrDefaultAsync(ps => ps.PlayerId == playerId, cancellationToken);
         }
 
+        public async Task<bool> CheckIfPlayerScheduleExists(Guid playerId, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(playerId);
+
+            return await _context.PlayerSchedules.AnyAsync(ps => ps.PlayerId == playerId, cancellationToken);
+        }
+
         public async Task AddOrUpdateAsync(PlayerSchedule playerSchedule, CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -80,6 +88,50 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
             }
         }
 
+        public async Task AddBatchOfDailyAvailabilityAsync(Guid playerId, List<DailyAvailability> dailyAvailabilities,
+            CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(playerId);
+            ArgumentNullException.ThrowIfNull(dailyAvailabilities);
+
+            var schedule = await GetPlayerScheduleByPlayerId(playerId);
+
+            if (schedule == null)
+            {
+                // If the schedule doesn't exist, create one with the provided availability.
+                schedule = new PlayerSchedule
+                {
+                    PlayerId = playerId,
+                    DailyAvailabilities = dailyAvailabilities
+                };
+                await _context.PlayerSchedules.AddAsync(schedule, cancellationToken);
+            }
+            else
+            {
+                // loop through every item in dailyAvailabilities
+                foreach (var daily in dailyAvailabilities)
+                {
+                    // Find an existing DailyAvailability for the same day.
+                    var existingAvailability = schedule.DailyAvailabilities?
+                        .FirstOrDefault(da => da.DayOfWeek == daily.DayOfWeek);
+
+                    if (existingAvailability == null)
+                    {
+                        // Add the new availability.
+                        if (schedule.DailyAvailabilities == null)
+                            schedule.DailyAvailabilities = new List<DailyAvailability>();
+                        schedule.DailyAvailabilities.Add(daily);
+                    }
+                    else
+                    {
+                        // Update the existing availability.
+                        _context.Entry(existingAvailability).CurrentValues.SetValues(daily);
+                    }
+                }
+            }
+        }
+       
         public async Task AddOrUpdateDailyAvailabilityAsync(Guid playerId, DailyAvailability availability,
             CancellationToken cancellationToken = default)
         {
@@ -119,6 +171,70 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
                 }
             }
         }
+
+        public async Task AddBatchOfTimeSlotsAsync(Guid playerId, DayOfWeek day,
+            List<TimeSlot> timeSlots, CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(playerId);
+            ArgumentNullException.ThrowIfNull(day);
+            ArgumentNullException.ThrowIfNull(timeSlots);
+
+            // Load the player's schedule along with DailyAvailabilities and TimeSlots.
+            var schedule = await GetPlayerScheduleWithDetails(playerId);
+
+            if (schedule == null)
+            {
+                // Create a new schedule if needed.
+                schedule = new PlayerSchedule
+                {
+                    PlayerId = playerId,
+                    DailyAvailabilities = new List<DailyAvailability>()
+                };
+                await _context.PlayerSchedules.AddAsync(schedule, cancellationToken);
+            }
+
+            // Find the DailyAvailability for the specified day.
+            var dailyAvailability = schedule.DailyAvailabilities?
+                .FirstOrDefault(da => da.DayOfWeek == day);
+
+            if (dailyAvailability == null)
+            {
+                // If not found, create a new DailyAvailability with the new TimeSlot.
+                dailyAvailability = new DailyAvailability
+                {
+                    DayOfWeek = day,
+                    TimeSlots = timeSlots
+                };
+
+                if (schedule.DailyAvailabilities == null)
+                    schedule.DailyAvailabilities = new List<DailyAvailability>();
+                schedule.DailyAvailabilities.Add(dailyAvailability);
+            }
+            else
+            {
+                // loop thorugh TimeSlots objects
+                foreach (var time in timeSlots)
+                {
+                    // Check if the time slot exists (by its Id) and update or add accordingly.
+                    var existingTimeSlot = dailyAvailability.TimeSlots?
+                        .FirstOrDefault(ts => ts.Id == time.Id);
+
+                    if (existingTimeSlot == null)
+                    {
+                        if (dailyAvailability.TimeSlots == null)
+                            dailyAvailability.TimeSlots = new List<TimeSlot>();
+                        dailyAvailability.TimeSlots.Add(time);
+                    }
+                    else
+                    {
+                        existingTimeSlot.StartTime = time.StartTime;
+                        existingTimeSlot.EndTime = time.EndTime;
+                    }
+                }
+            }
+        }
+
 
         public async Task AddOrUpdateTimeSlotAsync(Guid playerId, DayOfWeek day, TimeSlot timeSlot,
             CancellationToken cancellationToken = default)

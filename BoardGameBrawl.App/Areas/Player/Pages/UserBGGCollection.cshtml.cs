@@ -26,7 +26,7 @@ namespace BoardGameBrawl.App.Areas.Player.Pages
         }
 
         [BindProperty(SupportsGet = true)]
-        public string? Username { get; set; }
+        public string? UserName { get; set; }
 
         public BoardgameCollectionResponse? UserBoardGameCollection { get; set; }
 
@@ -40,7 +40,7 @@ namespace BoardGameBrawl.App.Areas.Player.Pages
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            var query = new GetPlayerByUsernameQuery { Username = Username };
+            var query = new GetPlayerByUsernameQuery { Username = UserName };
             TargetPlayer = await _mediator.Send(query);
 
             if (TargetPlayer.BGGUsername != null)

@@ -1,7 +1,7 @@
 ﻿using BoardGameBrawl.Domain.Common;
 using BoardGameBrawl.Domain.Entities.Boardgame_Related;
 
-namespace BoardGameBrawl.Domain.Entities.Player_Related
+namespace BoardGameBrawl.Domain.Entities.Player_Related.Preference_Related
 {
     public class PlayerPreference : BaseEntity
     {

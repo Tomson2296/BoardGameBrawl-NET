@@ -16,5 +16,7 @@ namespace BoardGameBrawl.Domain.Entities.Player_Related.Schedule_Related
         public TimeSpan StartTime { get; set; }
 
         public TimeSpan EndTime { get; set; }
+
+        public int DailyAvailabilityId { get; set; }
     }
 }

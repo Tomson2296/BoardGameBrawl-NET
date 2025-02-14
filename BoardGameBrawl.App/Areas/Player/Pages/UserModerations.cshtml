@@ -1,18 +1,16 @@
-﻿@page "{Username}"
+﻿@page "{UserName}"
 @model BoardGameBrawl.App.Areas.Player.Pages.UserModerationsModel
 @{
     ViewData["Title"] = "Check boardgames that user can modify";
+    ViewData["ActivePage"] = PlayerWorkflowsPages.PlayerModeration;
 }
 
 <div class="container">
-    <div class="row p-3 mb-3">
-        <h3>@ViewData["Title"]</h3>
-    </div>
 
     @if (Model.NavBoardgameDTOs!.Count == 0)
     {
         <div class="row text-center p-3 mb-3">
-            <h5> At the moment you dont have a modification privileges for any boardgames. </h5>
+            <h3> That user doesn't have any moderator privileges at the moment </h3>
         </div>
     }
     else

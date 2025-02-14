@@ -17,5 +17,7 @@ namespace BoardGameBrawl.Application.DTOs.Entities.Player_Related.Schedule_Relat
         public DayOfWeek DayOfWeek { get; set; }
 
         public ICollection<TimeSlotDTO>? TimeSlots { get; set; }
+
+        public Guid PlayerScheduleId { get; set; }
     }
 }

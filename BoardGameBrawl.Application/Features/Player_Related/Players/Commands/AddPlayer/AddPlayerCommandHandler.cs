@@ -42,6 +42,7 @@ namespace BoardGameBrawl.Application.Features.Player_Related.Players.Commands.Ad
                 var player = _mapper.Map<Player>(request.PlayerDTO);
 
                 await _unitOfWork.PlayerRepository.AddEntity(player, cancellationToken);
+                //uncomment when using in database seed
                 await _unitOfWork.CommitChangesAsync();
 
                 response.Success = true;

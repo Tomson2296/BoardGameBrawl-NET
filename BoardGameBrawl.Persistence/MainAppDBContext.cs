@@ -2,6 +2,7 @@
 using BoardGameBrawl.Domain.Entities.Group_Related;
 using BoardGameBrawl.Domain.Entities.Match_Related;
 using BoardGameBrawl.Domain.Entities.Player_Related;
+using BoardGameBrawl.Domain.Entities.Player_Related.Preference_Related;
 using BoardGameBrawl.Domain.Entities.Player_Related.Schedule_Related;
 using BoardGameBrawl.Domain.Entities.Tournament_Related;
 using BoardGameBrawl.Persistence.EntityConfiguration.Boardgame_Related;

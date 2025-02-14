@@ -21,16 +21,29 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Player_Related
         Task<PlayerSchedule?> GetPlayerScheduleWithDetails(Guid playerId,
             CancellationToken cancellationToken = default);
 
+        Task<bool> CheckIfPlayerScheduleExists(Guid playerId,
+            CancellationToken cancellationToken = default);
+
+
+        // Add or updates UserSchedule object
         Task AddOrUpdateAsync(PlayerSchedule playerSchedule,
             CancellationToken cancellationToken = default);
 
-        // Add or updates DailyAvailability object
+        // Add or updates singular DailyAvailability object
         Task AddOrUpdateDailyAvailabilityAsync(Guid playerId, DailyAvailability availability,
             CancellationToken cancellationToken = default);
 
-        // Adds or updates time slot 
+        // Add batch of DailyAvailability (when creating a new UserSchedule for first time)
+        Task AddBatchOfDailyAvailabilityAsync(Guid playerId, List<DailyAvailability> dailyAvailabilities,
+            CancellationToken cancellationToken = default);
+
+        // Adds or updates singular time slot 
         Task AddOrUpdateTimeSlotAsync(Guid playerId, DayOfWeek day, TimeSlot timeSlot,
             CancellationToken cancellationToken = default);
+
+        // Add batch of TimeSlots and attach them to DailyAvailability object
+        Task AddBatchOfTimeSlotsAsync(Guid playerId, DayOfWeek day,
+            List<TimeSlot> timeSlots, CancellationToken cancellationToken = default);
 
         // Remove singular taken time slot from one day
         Task RemoveTimeSlotAsync(int timeSlotId, CancellationToken cancellationToken = default);

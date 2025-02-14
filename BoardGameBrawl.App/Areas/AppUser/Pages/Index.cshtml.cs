@@ -32,7 +32,7 @@ namespace BoardGameBrawl.App.Areas.AppUser.Pages
 
             var query = new GetPlayerByAppUserIdQuery { ApplicationUserId = user.Id };
             TargetPlayer = await _mediator.Send(query);
-            
+
             return Page();
         }
     }

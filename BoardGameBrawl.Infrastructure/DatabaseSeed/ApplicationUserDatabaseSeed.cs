@@ -27,6 +27,8 @@ namespace BoardGameBrawl.Infrastructure.DatabaseSeed
 
         public async Task SeedDatabaseAsync()
         {
+            // ensure that everything related to MainAppDBContext is disposed before new creation
+            await _DBContext.Database.EnsureDeletedAsync();
             await _DBContext.Database.EnsureCreatedAsync();
 
             if (await _DBContext.Users.AnyAsync(u => u.UserName!.Equals("admin")))

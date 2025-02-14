@@ -1,6 +1,7 @@
 #nullable disable
 using BoardGameBrawl.Application.DTOs.Entities.Boardgame_Related;
 using BoardGameBrawl.Application.DTOs.Entities.Player_Related;
+using BoardGameBrawl.Application.DTOs.Entities.Player_Related.Preference_Related;
 using BoardGameBrawl.Application.Features.Boardgames_Related.Boardgames.Queries.GetBoardgameByBGGId;
 using BoardGameBrawl.Application.Features.Player_Related.PlayerFavouriteBGs.Commands.AddPlayerFavouriteBG;
 using BoardGameBrawl.Application.Features.Player_Related.PlayerFavouriteBGs.Commands.DeletePlayerFavouriteBG;

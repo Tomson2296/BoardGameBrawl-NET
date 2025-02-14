@@ -1,5 +1,5 @@
 ﻿using BoardGameBrawl.Application.Contracts.Entities.Player_Related;
-using BoardGameBrawl.Application.DTOs.Entities.Player_Related;
+using BoardGameBrawl.Application.DTOs.Entities.Player_Related.Preference_Related;
 using FluentValidation;
 using System;
 using System.Collections.Generic;

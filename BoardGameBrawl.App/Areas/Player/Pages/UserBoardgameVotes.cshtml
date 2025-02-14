@@ -1,0 +1,29 @@
+﻿@page "{UserName}"
+@model BoardGameBrawl.App.Areas.Player.Pages.UserBoardgameVotesModel
+@{
+    ViewData["ActivePage"] = PlayerWorkflowsPages.PlayerVotes;
+    ViewData["Title"] = "List of user's boardgame votes";
+}
+
+<div class="container">
+
+    @if (Model.PlayerPreferenceDTOs.Count == 0)
+    {
+        <div class="row p-3 mb-3 text-center">
+            <h3> That user hasn't voted for any boardgame at the moment </h3>
+        </div>
+    }
+
+    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-16">
+        @foreach (var preference in Model.PlayerPreferenceDTOs)
+        {
+            <div class="col">
+                <div class="card-body text-center">
+                    <img src="data:image/*;base64,@(Convert.ToBase64String(preference.Boardgame_Image!))" class="card-img-top img-round" alt="" width="200" height="200">
+                    <h5 class="card-title">@preference.Boardgame_Name </h5>
+                    <h5 class="card-title">Rating: @preference.Rating </h5>
+                </div>
+            </div>
+        }
+    </div>
+</div>

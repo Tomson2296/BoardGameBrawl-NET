@@ -1,4 +1,69 @@
 ﻿@page
 @model BoardGameBrawl.App.Areas.Schedule.Pages.IndexModel
 @{
+    ViewData["Ttile"] = "Check your schedule";
+}
+
+<div class="container">
+    <h2>@ViewData["Title"]</h2>
+    <form method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @for (int i = 0; i < Model.Schedule.Days.Count; i++)
+        {
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h5>@Model.Schedule.Days[i].DayOfWeek</h5>
+                </div>
+                <div class="card-body">
+                    @for (int j = 0; j < Model.Schedule.Days[i].TimeSlots.Count; j++)
+                    {
+                        <div class="row mb-2">
+                            <div class="col-md-3">
+                                <input type="hidden" asp-for="Schedule.Days[i].TimeSlots[j].Id" />
+                                <input type="time" asp-for="Schedule.Days[i].TimeSlots[j].StartTime" class="form-control" />
+                                <span asp-validation-for="Schedule.Days[i].TimeSlots[j].StartTime" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-3">
+                                <input type="time" asp-for="Schedule.Days[i].TimeSlots[j].EndTime" class="form-control" />
+                                <span asp-validation-for="Schedule.Days[i].TimeSlots[j].EndTime" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-1">
+                                <button type="button" class="btn btn-danger" onclick="removeTimeSlot(this)">Remove</button>
+                            </div>
+                        </div>
+                    }
+                    <button type="button" class="btn btn-secondary" onclick="addTimeSlot(@i)">Add Time Slot</button>
+                </div>
+            </div>
+        }
+
+        <button type="submit" class="btn btn-primary">Save Schedule</button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function addTimeSlot(dayIndex) {
+            const container = document.querySelectorAll('.card-body')[dayIndex];
+            const newRow = document.createElement('div');
+            newRow.className = 'row mb-2';
+            newRow.innerHTML = `
+                <div class="col-md-3">
+                    <input type="time" name="Schedule.Days[${dayIndex}].TimeSlots[${container.children.length -1}].StartTime" class="form-control" />
+                </div>
+                <div class="col-md-3">
+                    <input type="time" name="Schedule.Days[${dayIndex}].TimeSlots[${container.children.length -1}].EndTime" class="form-control" />
+                </div>
+                <div class="col-md-1">
+                    <button type="button" class="btn btn-danger" onclick="removeTimeSlot(this)">Remove</button>
+                </div>
+            `;
+            container.insertBefore(newRow, container.lastElementChild);
+        }
+
+        function removeTimeSlot(button) {
+            button.closest('.row').remove();
+        }
+    </script>
 }

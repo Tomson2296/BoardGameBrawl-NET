@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using BoardGameBrawl.Application.DTOs.Entities.Player_Related;
+using BoardGameBrawl.Application.DTOs.Entities.Player_Related.Preference_Related;
 using BoardGameBrawl.Application.DTOs.Entities.Player_Related.Schedule_Related;
 using BoardGameBrawl.Domain.Entities.Player_Related;
+using BoardGameBrawl.Domain.Entities.Player_Related.Preference_Related;
 using BoardGameBrawl.Domain.Entities.Player_Related.Schedule_Related;
 
 namespace BoardGameBrawl.Application.Profiles
@@ -88,15 +90,29 @@ namespace BoardGameBrawl.Application.Profiles
                .ReverseMap();
 
 
+            // Related-to-Preferences DTO mappings
+
+            CreateMap<CompositePlayerBoardgamePreferences, CompositePlayerBoardgamePreferencesDTO>()
+                .ForMember(dest => dest.BGGId, opt => opt.MapFrom(src => src.Boardgame!.BGGId))
+                .ForMember(dest => dest.Boardgame_Name, opt => opt.MapFrom(src => src.Boardgame!.Name))
+                .ForMember(dest => dest.Boardgame_Image, opt => opt.MapFrom(src => src.Boardgame!.Image))
+                .ForMember(dest => dest.Rating, opt => opt.MapFrom(src => src.PlayerPreference!.Rating));
+
+            CreateMap<CompositeBoardgamePreferencesByPlayers, CompositeBoardgamePreferencesByPlayersDTO>()
+                .ForMember(dest => dest.PlayerId, opt => opt.MapFrom(src => src.Player!.Id))
+                .ForMember(dest => dest.PlayerName, opt => opt.MapFrom(src => src.Player!.PlayerName))
+                .ForMember(dest => dest.UserAvatar, opt => opt.MapFrom(src => src.Player!.UserAvatar))
+                .ForMember(dest => dest.Rating, opt => opt.MapFrom(src => src.PlayerPreference!.Rating));
+
+
             // Related-to-Schedule DTO mappings
 
+
             CreateMap<TimeSlotDTO, TimeSlot>()
-               .ForMember(dest => dest.DailyAvailabilityId, opt => opt.Ignore())
                .ForMember(dest => dest.DailyAvailability, opt => opt.Ignore())
                .ReverseMap();
 
             CreateMap<DailyAvailabilityDTO, DailyAvailability>()
-               .ForMember(dest => dest.PlayerScheduleId, opt => opt.Ignore())
                .ForMember(dest => dest.PlayerSchedule, opt => opt.Ignore())
                .ReverseMap();
 

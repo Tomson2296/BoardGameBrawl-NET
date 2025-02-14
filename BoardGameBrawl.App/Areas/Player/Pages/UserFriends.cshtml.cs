@@ -22,7 +22,7 @@ namespace BoardGameBrawl.App.Areas.Player.Pages
         }
 
         [BindProperty(SupportsGet = true)]
-        public string? Username { get; set; }
+        public string? UserName { get; set; }
             
         public PlayerDTO? TargetPlayer { get; set; }
 
@@ -36,7 +36,7 @@ namespace BoardGameBrawl.App.Areas.Player.Pages
                 return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
             }
 
-            var query = new GetPlayerByUsernameQuery { Username = Username };
+            var query = new GetPlayerByUsernameQuery { Username = UserName };
             TargetPlayer = await _mediator.Send(query);
 
             // get player's friendshipList

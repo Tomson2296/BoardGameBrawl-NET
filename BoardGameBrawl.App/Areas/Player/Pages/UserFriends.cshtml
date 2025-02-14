@@ -1,13 +1,18 @@
-﻿@page
+﻿@page "{UserName}"
 @model BoardGameBrawl.App.Areas.Player.Pages.UserFriendsModel
 @{
     ViewData["title"] = "Check list of user's friends";
+    ViewData["ActivePage"] = PlayerWorkflowsPages.PlayerFriends;
 }
 
 <div class="container">
-    <div class="row p-3 mb-3">
-        <h3>@ViewData["Title"]</h3>
-    </div>
+    
+    @if (Model.PlayerFriends!.Count == 0)
+    {
+        <div class="row p-3 mb-3 text-center">
+            <h3> That user doesn't have any friends at the moment </h3>
+        </div>
+    }
 
     <div class="row p-3">
         <div class="d-flex flex-row flex-wrap text-center">

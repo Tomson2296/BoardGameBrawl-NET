@@ -1,12 +1,19 @@
 ﻿using BoardGameBrawl.Application.Contracts.Entities.Identity_Related;
 using BoardGameBrawl.Domain.Entities;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace BoardGameBrawl.Persistence.Extensions
 {
     public static class UserManagerExtensionMethods
     {
         // custom UserManager extension methods //
+
+        public static async Task<IList<ApplicationUser>> GetAllApplicationUsers(this UserManager<ApplicationUser> userManager)
+        {
+            ArgumentNullException.ThrowIfNull(userManager);
+            return await userManager.Users.ToListAsync();
+        }
 
         public static Task<int> GetNumberOfUsersCountAsync(this UserManager<ApplicationUser> userManager,
             CancellationToken cancellationToken = default)

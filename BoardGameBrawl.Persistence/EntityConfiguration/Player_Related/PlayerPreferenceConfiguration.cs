@@ -1,4 +1,4 @@
-﻿using BoardGameBrawl.Domain.Entities.Player_Related;
+﻿using BoardGameBrawl.Domain.Entities.Player_Related.Preference_Related;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace BoardGameBrawl.Persistence.EntityConfiguration.Player_Related
@@ -18,7 +18,7 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Player_Related
                .IsRequired();
 
             entity.HasOne(e => e.Boardgame)
-                .WithMany(b => b.UserRatings)
+                .WithMany(b => b.PlayerPreferences)
                 .HasForeignKey(e => e.BoardgameId);
 
             entity.Property(e => e.BoardgameName)

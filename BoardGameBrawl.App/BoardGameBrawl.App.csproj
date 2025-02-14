@@ -36,7 +36,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Schedule\Pages\Shared\" />
     <Folder Include="Middlewares\" />
   </ItemGroup>
 

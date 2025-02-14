@@ -17,6 +17,9 @@ namespace BoardGameBrawl.Application.Contracts.Entities.Player_Related
         Task<PlayerDTO?> GetPlayerByUserNameAsync(string username,
             CancellationToken cancellationToken = default);
 
+        Task<bool> CheckIfPlayerExistsByAppId(Guid appUserId,
+            CancellationToken cancellationToken = default);
+
 
         // getter methods // 
 

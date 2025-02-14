@@ -1,6 +1,7 @@
 ﻿using BoardGameBrawl.Domain.Common;
 using BoardGameBrawl.Domain.Entities.Match_Related;
 using BoardGameBrawl.Domain.Entities.Player_Related;
+using BoardGameBrawl.Domain.Entities.Player_Related.Preference_Related;
 using BoardGameBrawl.Domain.Entities.Tournament_Related;
 
 namespace BoardGameBrawl.Domain.Entities.Boardgame_Related
@@ -49,7 +50,7 @@ namespace BoardGameBrawl.Domain.Entities.Boardgame_Related
 
         public ICollection<BoardgameModerator>? BoardgameModerators { get; set; }
 
-        public ICollection<PlayerPreference>? UserRatings { get; set; }
+        public ICollection<PlayerPreference>? PlayerPreferences { get; set; }
 
         public ICollection<PlayerFavouriteBG>? PlayerFavouriteBGs { get; set; }
 

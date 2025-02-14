@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using AutoMapper.Configuration.Annotations;
 using AutoMapper.QueryableExtensions;
 using BoardGameBrawl.Application.Contracts.Entities.Player_Related;
-using BoardGameBrawl.Application.DTOs.Entities.Player_Related;
+using BoardGameBrawl.Application.DTOs.Entities.Player_Related.Preference_Related;
 using BoardGameBrawl.Domain.Entities.Player_Related;
+using BoardGameBrawl.Domain.Entities.Player_Related.Preference_Related;
 using BoardGameBrawl.Persistence.Repositories.Common;
 using Microsoft.EntityFrameworkCore;
 
@@ -115,6 +117,54 @@ namespace BoardGameBrawl.Persistence.Repositories.Entities.Player_Related
             {
                 throw new ApplicationException("Entity has not been found");
             }
+        }
+
+        public async Task<IList<CompositePlayerBoardgamePreferencesDTO>> GetCompositePlayerBoardgamePreferences(Guid playerId, 
+            CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(playerId);
+
+            //var playerPreferences = await _context.PlayerPreferences
+            //            .Where(e => e.PlayerId == playerId)
+            //            .AsNoTracking()
+            //            .ToListAsync(cancellationToken);
+
+            //var listOFBoardgames = await _context.Boardgames
+            //            .Where(b => b.PlayerPreferences!.Any(pf => pf.PlayerId == playerId))
+            //            .AsNoTracking()
+            //            .ToListAsync(cancellationToken);
+
+            var compositeList = await (from preferences in _context.PlayerPreferences
+                                 join boardgames in _context.Boardgames
+                                 on preferences.BoardgameId equals boardgames.Id
+                                 where preferences.PlayerId == playerId
+                                 select new CompositePlayerBoardgamePreferences
+                                 {
+                                     PlayerPreference = preferences,
+                                     Boardgame = boardgames
+                                 }).ToListAsync(cancellationToken);
+
+            return _mapper.Map<IList<CompositePlayerBoardgamePreferencesDTO>>(compositeList);
+        }
+
+        public async Task<IList<CompositeBoardgamePreferencesByPlayersDTO>> GetBoardgamePreferencesByPlayers(Guid boardgameId, 
+            CancellationToken cancellationToken = default)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+            ArgumentNullException.ThrowIfNull(boardgameId);
+
+            var compositeList = await (from preferences in _context.PlayerPreferences
+                                 join players in _context.Players
+                                 on preferences.PlayerId equals players.Id
+                                 where preferences.BoardgameId == boardgameId
+                                 select new CompositeBoardgamePreferencesByPlayers
+                                 {
+                                     PlayerPreference = preferences,
+                                     Player = players
+                                 }).ToListAsync(cancellationToken);
+
+            return _mapper.Map<IList<CompositeBoardgamePreferencesByPlayersDTO>>(compositeList);
         }
     }
 }

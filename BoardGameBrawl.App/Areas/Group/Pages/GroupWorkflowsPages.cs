@@ -24,7 +24,7 @@ namespace BoardGameBrawl.App.Areas.Group.Pages
             PageNavGroupClassWithGroupNameParamether(viewContext, GroupTournaments, groupName);
 
         public static string GroupAdminsNavClass(ViewContext viewContext, string groupName) =>
-        PageNavGroupClassWithGroupNameParamether(viewContext, GroupAdmins, groupName);
+            PageNavGroupClassWithGroupNameParamether(viewContext, GroupAdmins, groupName);
 
 
         public static string PageNavGroupClassWithGroupNameParamether(ViewContext viewContext, string page, string groupName)

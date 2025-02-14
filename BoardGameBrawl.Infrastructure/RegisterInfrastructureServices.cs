@@ -16,6 +16,8 @@ namespace BoardGameBrawl.Infrastructure
 
             services.AddScoped<ApplicationUserDatabaseSeed>();
 
+            services.AddScoped<PlayerDatabaseSeed>();
+
             services.AddScoped<BoardgamesDatabaseSeed>();
 
             // Register BGGService

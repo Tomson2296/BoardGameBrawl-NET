@@ -1,69 +1,80 @@
 ﻿@page
+@using System.Globalization
 @model BoardGameBrawl.App.Areas.Schedule.Pages.IndexModel
 @{
-    ViewData["Ttile"] = "Check your schedule";
+    ViewData["Title"] = "Show your schedule";
 }
 
-<div class="container">
-    <h2>@ViewData["Title"]</h2>
-    <form method="post">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        @for (int i = 0; i < Model.Schedule.Days.Count; i++)
-        {
-            <div class="card mb-3">
-                <div class="card-header">
-                    <h5>@Model.Schedule.Days[i].DayOfWeek</h5>
-                </div>
-                <div class="card-body">
-                    @for (int j = 0; j < Model.Schedule.Days[i].TimeSlots.Count; j++)
-                    {
-                        <div class="row mb-2">
-                            <div class="col-md-3">
-                                <input type="hidden" asp-for="Schedule.Days[i].TimeSlots[j].Id" />
-                                <input type="time" asp-for="Schedule.Days[i].TimeSlots[j].StartTime" class="form-control" />
-                                <span asp-validation-for="Schedule.Days[i].TimeSlots[j].StartTime" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-3">
-                                <input type="time" asp-for="Schedule.Days[i].TimeSlots[j].EndTime" class="form-control" />
-                                <span asp-validation-for="Schedule.Days[i].TimeSlots[j].EndTime" class="text-danger"></span>
-                            </div>
-                            <div class="col-md-1">
-                                <button type="button" class="btn btn-danger" onclick="removeTimeSlot(this)">Remove</button>
-                            </div>
-                        </div>
-                    }
-                    <button type="button" class="btn btn-secondary" onclick="addTimeSlot(@i)">Add Time Slot</button>
-                </div>
-            </div>
-        }
+<partial name="_StatusMessage" for="StatusMessage" />
 
-        <button type="submit" class="btn btn-primary">Save Schedule</button>
-    </form>
+<div class="schedule-container">
+    @foreach (var day in Model.Schedule.Days)
+    {
+        <div class="day-column">
+            <div class="day-header">
+                @day.DayOfWeek
+            </div>
+            <div class="day-body">
+                @foreach (var slot in day.TimeSlots)
+                {
+                    var topPercent = slot.StartTime.TotalHours / 24 * 100;
+                    var heightPercent = (slot.EndTime.TotalHours - slot.StartTime.TotalHours) / 24 * 100;
+                    var topString = topPercent.ToString("F2", CultureInfo.InvariantCulture);
+                    var heightString = heightPercent.ToString("F2", CultureInfo.InvariantCulture);
+
+                    <div class="time-slot" style="top: @topString%; height: @heightString%">
+                        @slot.StartTime.ToString(@"hh\:mm") - @slot.EndTime.ToString(@"hh\:mm")
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>
+<div class="row d-flex flex-column justify-content-center p-3">
+    <a asp-page="SetSchedule" class="btn btn-lg btn-block btn-primary">
+        Set Your Schedule
+    </a>
 </div>
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-    <script>
-        function addTimeSlot(dayIndex) {
-            const container = document.querySelectorAll('.card-body')[dayIndex];
-            const newRow = document.createElement('div');
-            newRow.className = 'row mb-2';
-            newRow.innerHTML = `
-                <div class="col-md-3">
-                    <input type="time" name="Schedule.Days[${dayIndex}].TimeSlots[${container.children.length -1}].StartTime" class="form-control" />
-                </div>
-                <div class="col-md-3">
-                    <input type="time" name="Schedule.Days[${dayIndex}].TimeSlots[${container.children.length -1}].EndTime" class="form-control" />
-                </div>
-                <div class="col-md-1">
-                    <button type="button" class="btn btn-danger" onclick="removeTimeSlot(this)">Remove</button>
-                </div>
-            `;
-            container.insertBefore(newRow, container.lastElementChild);
-        }
+<style>
+    .schedule-container {
+        display: flex;
+        justify-content: space-between;
+        margin: 20px 0;
+    }
 
-        function removeTimeSlot(button) {
-            button.closest('.row').remove();
-        }
-    </script>
-}
+    .day-column {
+        flex: 1;
+        margin: 0 5px;
+        border: 1px solid #ccc;
+        box-sizing: border-box;
+    }
+
+    .day-header {
+        background: #ddd;
+        text-align: center;
+        padding: 5px;
+        font-weight: bold;
+    }
+
+    .day-body {
+        position: relative;
+        height: 600px; 
+        background: #f9f9f9;
+        overflow: hidden;
+    }
+
+    .time-slot {
+        position: absolute;
+        left: 5%;
+        width: 90%;
+        background: #e3f2fd;
+        border: 1px solid #90caf9;
+        border-radius: 4px;
+        text-align: center;
+        padding: 2px;
+        box-sizing: border-box;
+        font-size: 0.85rem;
+        overflow: hidden;
+    }
+</style>

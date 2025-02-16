@@ -2,7 +2,6 @@
 using BoardGameBrawl.Application.Contracts.Common;
 using BoardGameBrawl.Application.Responses;
 using BoardGameBrawl.Application.Validators.Player_Related.Schedule_Related.DailyAvailabilityValidators;
-using BoardGameBrawl.Application.Validators.Player_Related.Schedule_Related.TimeSlotValidators;
 using BoardGameBrawl.Domain.Entities.Player_Related.Schedule_Related;
 using MediatR;
 using System;

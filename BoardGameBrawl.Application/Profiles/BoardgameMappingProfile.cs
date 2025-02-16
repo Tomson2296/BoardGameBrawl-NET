@@ -17,13 +17,14 @@ namespace BoardGameBrawl.Application.Profiles
                .ForMember(dest => dest.BoardgameDomainTags, opt => opt.Ignore())
                .ForMember(dest => dest.BoardgameCategoryTags, opt => opt.Ignore())
                .ForMember(dest => dest.BoardgameMechanicTags, opt => opt.Ignore())
-               .ForMember(dest => dest.BoardgameRules, opt => opt.Ignore())
+               .ForMember(dest => dest.BoardgameRuleSet, opt => opt.Ignore())
                .ForMember(dest => dest.PlayerPreferences, opt => opt.Ignore())
-               .ForMember(dest => dest.Matches, opt => opt.Ignore())
-               .ForMember(dest => dest.Tournaments, opt => opt.Ignore())
-               .ForMember(dest => dest.TournamentMatches, opt => opt.Ignore())
                .ForMember(dest => dest.PlayerFavouriteBGs, opt => opt.Ignore())
                .ForMember(dest => dest.BoardgameModerators, opt => opt.Ignore())
+               .ForMember(dest => dest.PlayerEloRatingsInGame, opt => opt.Ignore())
+
+               .ForMember(dest => dest.Matches, opt => opt.Ignore())
+               .ForMember(dest => dest.Tournaments, opt => opt.Ignore())
                .ReverseMap();
 
             CreateMap<NavBoardgameDTO, Boardgame>()
@@ -48,13 +49,15 @@ namespace BoardGameBrawl.Application.Profiles
               .ForMember(dest => dest.BoardgameDomainTags, opt => opt.Ignore())
               .ForMember(dest => dest.BoardgameCategoryTags, opt => opt.Ignore())
               .ForMember(dest => dest.BoardgameMechanicTags, opt => opt.Ignore())
-              .ForMember(dest => dest.BoardgameRules, opt => opt.Ignore())
+              .ForMember(dest => dest.BoardgameRuleSet, opt => opt.Ignore())
               .ForMember(dest => dest.PlayerPreferences, opt => opt.Ignore())
-              .ForMember(dest => dest.Matches, opt => opt.Ignore())
               .ForMember(dest => dest.Tournaments, opt => opt.Ignore())
-              .ForMember(dest => dest.TournamentMatches, opt => opt.Ignore())
               .ForMember(dest => dest.PlayerFavouriteBGs, opt => opt.Ignore())
               .ForMember(dest => dest.BoardgameModerators, opt => opt.Ignore())
+              .ForMember(dest => dest.PlayerEloRatingsInGame, opt => opt.Ignore())
+
+              .ForMember(dest => dest.Matches, opt => opt.Ignore())
+              .ForMember(dest => dest.Tournaments, opt => opt.Ignore())
               .ReverseMap();
 
             CreateMap<BoardgameDomainDTO, BoardgameDomain>()

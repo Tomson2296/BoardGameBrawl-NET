@@ -19,15 +19,15 @@ namespace BoardGameBrawl.Persistence
                 entry.Property(nameof(ISoftDeleted.IsSoftDeleted)).CurrentValue = true;    
             }
 
-            foreach (var entry in base.ChangeTracker.Entries<BaseEntity>()
+            foreach (var entry in base.ChangeTracker.Entries<BaseAuditableEntity>()
                 .Where(q => q.State == EntityState.Added || q.State == EntityState.Modified))
             {
-                entry.Entity.LastModifiedDate = DateTime.Now;
+                entry.Entity.LastModifiedDate = DateTimeOffset.UtcNow;
                 entry.Entity.LastModifiedBy = username;
 
                 if (entry.State == EntityState.Added)
                 {
-                    entry.Entity.CreatedDate = DateTime.Now;
+                    entry.Entity.CreatedDate = DateTimeOffset.UtcNow;
                     entry.Entity.CreatedBy = username;
                 }
             }

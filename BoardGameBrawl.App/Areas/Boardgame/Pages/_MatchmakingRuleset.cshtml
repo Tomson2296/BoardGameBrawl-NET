@@ -1,4 +1,4 @@
-﻿@model IList<BoardGameBrawl.Application.DTOs.Entities.Match_Related.MatchRuleDTO>
+﻿@model IList<BoardGameBrawl.Application.DTOs.Entities.Match_Related.MatchRuleSetDTO>
 
 <div class="container">
     <div class="text-center p-3 mb-3">
@@ -13,40 +13,6 @@
     }
     else
     {
-        <table class="table table-responsible table-bordered table-hover table-striped text-center text-justify">
-            <thead>
-                <tr>
-                    <td><strong>Type</strong></td>
-                    <td colspan="2"><strong>Description</strong></td>
-                    <td><strong>Decider</strong></td>
-                    <td>Delete rule</td>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var rule in Model)
-                {
-                    <tr>
-                        <td>@rule.RuleType.ToString()</td>
-                        <td colspan="2">@rule.RuleDescription!.ToString()</td>
-                        @if (rule.RuleDecider == true)
-                        {
-                            <td> <img src="~/img/star.png" alt="star" height="32" width="32" /> </td>
-                        }
-                        else
-                        {
-                            <td> </td>
-                        }
-                        <form action="post" name="removeRuleForm">
-                        <td>
-                            <button asp-area="Boardgame" asp-page="/ModifyRuleset" asp-page-handler="RemoveRuleFromRuleset"
-                                    id="rule-submit" type="submit" class="w-75 btn btn-lg btn-secondary" value="@rule.RuleId">
-                                Remove rule
-                            </button>
-                        </td>
-                        </form>
-                    </tr>
-                }
-            </tbody>
-        </table>
+        
     }
 </div>

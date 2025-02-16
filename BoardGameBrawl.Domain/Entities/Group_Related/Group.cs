@@ -2,7 +2,7 @@
 
 namespace BoardGameBrawl.Domain.Entities.Group_Related
 {
-    public class Group : BaseEntity
+    public class Group : BaseAuditableEntity
     {
         public Guid Id { get; set; } = Guid.NewGuid();
 

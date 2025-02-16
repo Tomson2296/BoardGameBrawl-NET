@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BoardGameBrawl.Application.Features.Player_Related.PlayerSchedule.Commands.RemoveSchedule
 {
-    public class RemoveScheduleCommand : IRequest<Unit>
+    public class RemoveScheduleCommand : IRequest<BaseCommandResponse>
     {
         public Guid PlayerId { get; set; }
     }

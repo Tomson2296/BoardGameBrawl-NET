@@ -19,13 +19,18 @@ namespace BoardGameBrawl.Application.Profiles
                .ForMember(dest => dest.LastModifiedBy, opt => opt.Ignore())
 
                .ForMember(dest => dest.GroupParticipants, opt => opt.Ignore())
-               .ForMember(dest => dest.PlayerRatings, opt => opt.Ignore())
+               .ForMember(dest => dest.PlayerEloRatings, opt => opt.Ignore())
                .ForMember(dest => dest.PlayerCollection, opt => opt.Ignore())
                .ForMember(dest => dest.PlayerSchedule, opt => opt.Ignore())
+               .ForMember(dest => dest.PlayerPreferences, opt => opt.Ignore())
                .ForMember(dest => dest.PlayerFavouriteBGs, opt => opt.Ignore())
                .ForMember(dest => dest.Friendships, opt => opt.Ignore())
                .ForMember(dest => dest.FriendOfFriendships, opt => opt.Ignore())
                .ForMember(dest => dest.BoardgameModerators, opt => opt.Ignore())
+               .ForMember(dest => dest.MatchesParticipating, opt => opt.Ignore())
+               .ForMember(dest => dest.MatchesWinning, opt => opt.Ignore())
+               .ForMember(dest => dest.TournamentParticipating, opt => opt.Ignore())
+               .ForMember(dest => dest.TournamentMatchesParticipating, opt => opt.Ignore())
                .ReverseMap();
 
             CreateMap<NavPlayerDTO, Player>()
@@ -41,13 +46,18 @@ namespace BoardGameBrawl.Application.Profiles
                .ForMember(dest => dest.LastModifiedBy, opt => opt.Ignore())
 
                .ForMember(dest => dest.GroupParticipants, opt => opt.Ignore())
-               .ForMember(dest => dest.PlayerRatings, opt => opt.Ignore())
+               .ForMember(dest => dest.PlayerEloRatings, opt => opt.Ignore())
+               .ForMember(dest => dest.PlayerPreferences, opt => opt.Ignore())
                .ForMember(dest => dest.PlayerCollection, opt => opt.Ignore())
                .ForMember(dest => dest.PlayerSchedule, opt => opt.Ignore())
                .ForMember(dest => dest.PlayerFavouriteBGs, opt => opt.Ignore())
                .ForMember(dest => dest.Friendships, opt => opt.Ignore())
                .ForMember(dest => dest.FriendOfFriendships, opt => opt.Ignore())
                .ForMember(dest => dest.BoardgameModerators, opt => opt.Ignore())
+               .ForMember(dest => dest.MatchesParticipating, opt => opt.Ignore())
+               .ForMember(dest => dest.MatchesWinning, opt => opt.Ignore())
+               .ForMember(dest => dest.TournamentParticipating, opt => opt.Ignore())            
+               .ForMember(dest => dest.TournamentMatchesParticipating, opt => opt.Ignore())
                .ReverseMap();
 
             CreateMap<PlayerFavouriteBGDTO, PlayerFavouriteBG>()

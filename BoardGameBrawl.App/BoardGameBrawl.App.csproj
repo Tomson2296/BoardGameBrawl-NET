@@ -36,6 +36,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Match\Pages\Shared\" />
+    <Folder Include="Areas\Tournament\Pages\Shared\" />
     <Folder Include="Middlewares\" />
   </ItemGroup>
 

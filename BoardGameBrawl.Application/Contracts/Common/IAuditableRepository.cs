@@ -2,11 +2,11 @@
 
 namespace BoardGameBrawl.Application.Contracts.Common
 {
-    public interface IAuditableRepository<T> where T : BaseEntity
+    public interface IAuditableRepository<T> where T : BaseAuditableEntity
     {
         // getter methods // 
 
-        public async Task<DateTime> GetCreatedDateAsync(T entity,
+        public async Task<DateTimeOffset> GetCreatedDateAsync(T entity,
            CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -24,7 +24,7 @@ namespace BoardGameBrawl.Application.Contracts.Common
             return await Task.FromResult(entity.CreatedBy);
         }
 
-        public async Task<DateTime> GetLastModifiedDateAsync(T entity,
+        public async Task<DateTimeOffset> GetLastModifiedDateAsync(T entity,
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -45,7 +45,7 @@ namespace BoardGameBrawl.Application.Contracts.Common
         // setter methods //
 
         public Task SetCreatedDateAsync(T entity,
-          DateTime creationDateTime,
+          DateTimeOffset creationDateTime,
           CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();
@@ -69,7 +69,7 @@ namespace BoardGameBrawl.Application.Contracts.Common
         }
 
         public Task SetLastModifiedDateAsync(T entity,
-            DateTime modificationDateTime,
+            DateTimeOffset modificationDateTime,
             CancellationToken cancellationToken = default)
         {
             cancellationToken.ThrowIfCancellationRequested();

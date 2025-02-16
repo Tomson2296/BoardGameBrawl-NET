@@ -1,4 +1,5 @@
 ﻿using BoardGameBrawl.Domain.Common;
+using BoardGameBrawl.Domain.Common.BaseEntities;
 using BoardGameBrawl.Domain.Entities.Match_Related;
 using BoardGameBrawl.Domain.Entities.Player_Related;
 using BoardGameBrawl.Domain.Entities.Player_Related.Preference_Related;
@@ -6,7 +7,7 @@ using BoardGameBrawl.Domain.Entities.Tournament_Related;
 
 namespace BoardGameBrawl.Domain.Entities.Boardgame_Related
 {
-    public class Boardgame : BaseEntity
+    public class Boardgame : BaseAuditableEntity
     {
         public Guid Id { get; set; } = Guid.NewGuid();
 
@@ -41,11 +42,16 @@ namespace BoardGameBrawl.Domain.Entities.Boardgame_Related
         public required string Description { get; set; }
 
 
+        public MatchRuleSet? BoardgameRuleSet { get; set; }
+
+
+
         public ICollection<BoardgameDomainTag>? BoardgameDomainTags { get; set; }
 
         public ICollection<BoardgameCategoryTag>? BoardgameCategoryTags { get; set; }
 
         public ICollection<BoardgameMechanicTag>? BoardgameMechanicTags { get; set; }
+
 
 
         public ICollection<BoardgameModerator>? BoardgameModerators { get; set; }
@@ -54,14 +60,12 @@ namespace BoardGameBrawl.Domain.Entities.Boardgame_Related
 
         public ICollection<PlayerFavouriteBG>? PlayerFavouriteBGs { get; set; }
 
-        
-        
-        public ICollection<MatchRule>? BoardgameRules { get; set; }
+        public ICollection<PlayerRating>? PlayerEloRatingsInGame { get; set; }
 
-        public ICollection<Match>? Matches { get; set; }
 
+
+        public ICollection<BaseMatchEntity>? Matches { get; set; }
+       
         public ICollection<Tournament>? Tournaments { get; set; }
-
-        public ICollection<TournamentMatch>? TournamentMatches { get; set; }
     }
 }

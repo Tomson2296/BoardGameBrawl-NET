@@ -2,6 +2,7 @@
 using BoardGameBrawl.Application.Contracts.Entities.Group_Related;
 using BoardGameBrawl.Application.Contracts.Entities.Match_Related;
 using BoardGameBrawl.Application.Contracts.Entities.Player_Related;
+using BoardGameBrawl.Application.Contracts.Entities.Player_Related.Schedule_Related;
 
 namespace BoardGameBrawl.Application.Contracts.Common
 {
@@ -34,8 +35,7 @@ namespace BoardGameBrawl.Application.Contracts.Common
 
 
         // Match-related repositories 
-        IMatchRuleRepository MatchRuleRepository { get; }
-
+        IMatchRuleSetRepository MatchRuleSetRepository { get; }
 
         Task CommitChangesAsync();
     }

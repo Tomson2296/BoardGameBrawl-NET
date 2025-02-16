@@ -1,12 +1,14 @@
 ﻿using BoardGameBrawl.Domain.Common;
 using BoardGameBrawl.Domain.Entities.Boardgame_Related;
 using BoardGameBrawl.Domain.Entities.Group_Related;
+using BoardGameBrawl.Domain.Entities.Match_Related;
 using BoardGameBrawl.Domain.Entities.Player_Related.Preference_Related;
 using BoardGameBrawl.Domain.Entities.Player_Related.Schedule_Related;
+using BoardGameBrawl.Domain.Entities.Tournament_Related;
 
 namespace BoardGameBrawl.Domain.Entities.Player_Related
 {
-    public class Player : BaseEntity
+    public class Player : BaseAuditableEntity
     {
         public Guid Id { get; set; } = Guid.NewGuid();
 
@@ -36,7 +38,9 @@ namespace BoardGameBrawl.Domain.Entities.Player_Related
 
         public ICollection<PlayerFavouriteBG>? PlayerFavouriteBGs { get; set; }
 
-        public ICollection<PlayerPreference>? PlayerRatings { get; set; }
+        public ICollection<PlayerPreference>? PlayerPreferences { get; set; }
+
+        public ICollection<PlayerRating>? PlayerEloRatings { get; set; } 
 
 
         public ICollection<BoardgameModerator>? BoardgameModerators { get; set; }   
@@ -47,5 +51,14 @@ namespace BoardGameBrawl.Domain.Entities.Player_Related
         public ICollection<PlayerFriend>? Friendships { get; set; }  
 
         public ICollection<PlayerFriend>? FriendOfFriendships { get; set; } 
+
+        
+        public ICollection<MatchParticipant>? MatchesParticipating { get; set; }
+
+        public ICollection<MatchResult>? MatchesWinning { get; set; }
+
+        public ICollection<TournamentParticipant>? TournamentParticipating { get; set; }
+
+        public ICollection<TournamentMatchParticipant>? TournamentMatchesParticipating { get; set; }
     }
 }

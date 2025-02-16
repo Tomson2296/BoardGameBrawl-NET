@@ -43,7 +43,7 @@ namespace BoardGameBrawl.Application.Features.Player_Related.PlayerSchedule.Comm
             }
             else
             {
-                var schedule = mapper.Map<BoardGameBrawl.Domain.Entities.Player_Related.Schedule_Related.PlayerSchedule>(request.PlayerScheduleDTO);
+                var schedule = mapper.Map<Domain.Entities.Player_Related.Schedule_Related.PlayerSchedule>(request.PlayerScheduleDTO);
 
                 await unitOfWork.PlayerScheduleRepository.AddOrUpdateAsync(schedule, cancellationToken);
                 await unitOfWork.CommitChangesAsync();

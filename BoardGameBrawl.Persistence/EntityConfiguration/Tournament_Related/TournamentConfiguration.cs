@@ -18,36 +18,45 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Tournament_Related
             entity.HasKey(e => e.Id);
 
             entity.Property(e => e.TournamentName)
-                .HasMaxLength(256)
-                .IsRequired();
-
-            entity.Property(e => e.TournnamentProgress)
-                .HasConversion<TournamentProgressTypeConverter>()
-                .IsRequired();
+                .HasMaxLength(256); 
 
             entity.Property(e => e.Description)
-                .HasMaxLength(512)
-                .IsRequired(false);
+                .HasMaxLength(1024); 
 
-            entity.Property(e => e.TournamentParticipants)
-                .HasJsonConversion()
+            entity.Property(e => e.TournnamentProgress)
                 .IsRequired();
 
+            // Date properties
             entity.Property(e => e.TournamentDate_Created)
                 .ValueGeneratedOnAdd()
-                .HasDefaultValueSql("GETDATE()")
-                .IsRequired();
+                .HasDefaultValueSql("GETUTCDATE()")
+                .IsRequired(); 
+
+            entity.Property(e => e.TournamentDate_Started)
+                .IsRequired(false);
+
+            entity.Property(e => e.TournamentDate_Ended)
+                .IsRequired(false);
 
             entity.Property(e => e.MaxNumberOfPlayers)
                 .IsRequired();
 
-            // Relationships constrains 
+            entity.HasOne(e => e.Boardgame)
+                  .WithMany(b => b.Tournaments) 
+                  .HasForeignKey(e => e.BoardgameId)
+                  .IsRequired();
 
+            // One-to-many with TournamentParticipants
+            entity.HasMany(e => e.TournamentParticipants)
+                  .WithOne(tp => tp.Tournament)
+                  .HasForeignKey(tp => tp.TournamentId)
+                  .OnDelete(DeleteBehavior.Cascade);
+
+            // One-to-many with TournamentMatches
             entity.HasMany(e => e.TournamentMatches)
-                .WithOne()
-                .HasForeignKey(t => t.TournamentId)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.ClientCascade);
+                  .WithOne(tm => tm.Tournament)
+                  .HasForeignKey(tm => tm.TournamentId)
+                  .OnDelete(DeleteBehavior.Cascade);
 
             entity.ToTable("Tournaments");
         }

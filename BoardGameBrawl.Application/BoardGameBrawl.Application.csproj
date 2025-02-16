@@ -28,6 +28,11 @@
 
   <ItemGroup>
     <Folder Include="Features\Common\Concrete\Queries\GetEntity\" />
+    <Folder Include="Features\Match_Related\Matches\Commands\" />
+    <Folder Include="Features\Match_Related\Matches\Queries\" />
+    <Folder Include="Features\Match_Related\MatchRuleSets\Commands\" />
+    <Folder Include="Features\Match_Related\MatchRuleSets\Queries\" />
+    <Folder Include="Validators\Match_Related\" />
   </ItemGroup>
 
 </Project>

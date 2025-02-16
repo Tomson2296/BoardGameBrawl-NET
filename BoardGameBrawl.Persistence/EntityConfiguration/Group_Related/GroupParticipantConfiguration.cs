@@ -29,10 +29,6 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Group_Related
             entity.Property(e => e.IsAdmin)
                 .IsRequired();
 
-            //entity.Property(e => e.ParticipantRole)
-            //    .HasConversion<GroupParticipantRolxConverter>()
-            //    .IsRequired();
-
             //entity.HasQueryFilter(e => !e.IsSoftDeleted);
 
             entity.ToTable("GroupParticipants");

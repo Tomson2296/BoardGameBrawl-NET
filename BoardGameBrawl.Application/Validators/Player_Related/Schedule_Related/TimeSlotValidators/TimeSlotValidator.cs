@@ -22,7 +22,6 @@ namespace BoardGameBrawl.Application.Validators.Player_Related.Schedule_Related.
 
 
                 RuleFor(slot => slot.StartTime)
-                    .NotEmpty()
                     .NotNull()
                     .WithMessage("{PropertyName} cannot be empty");
 
@@ -33,7 +32,6 @@ namespace BoardGameBrawl.Application.Validators.Player_Related.Schedule_Related.
 
 
                 RuleFor(slot => slot.EndTime)
-                    .NotEmpty()
                     .NotNull()
                     .WithMessage("{PropertyName} cannot be empty");
             });

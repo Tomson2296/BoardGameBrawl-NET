@@ -1,4 +1,5 @@
-﻿using BoardGameBrawl.Infrastructure;
+﻿using BoardGameBrawl.App.Hubs;
+using BoardGameBrawl.Infrastructure;
 
 namespace BoardGameBrawl.App
 {
@@ -27,6 +28,10 @@ namespace BoardGameBrawl.App
             app.UseAuthorization();
 
             app.MapRazorPages();
+
+            // mapping SignalR Hubs 
+
+            app.MapHub<TimeSlotHub>("/timeSlotHub");
             
             //app.SeedSQLDatabases();
 

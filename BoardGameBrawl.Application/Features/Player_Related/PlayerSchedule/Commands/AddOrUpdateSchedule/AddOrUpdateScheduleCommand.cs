@@ -1,4 +1,5 @@
 ﻿#nullable disable
+using BoardGameBrawl;
 using BoardGameBrawl.Application.DTOs.Entities.Player_Related.Schedule_Related;
 using BoardGameBrawl.Application.Responses;
 using MediatR;

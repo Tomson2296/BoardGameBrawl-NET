@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BoardGameBrawl.Application.Features.Player_Related.PlayerSchedule.Commands.RemoveTimeSlot
 {
-    public class RemoveTimeSlotCommandHandler : IRequestHandler<RemoveTimeSlotCommand, Unit>
+    public class RemoveTimeSlotCommandHandler : IRequestHandler<RemoveTimeSlotCommand, BaseCommandResponse>
     {
         private readonly IUnitOfWork unitOfWork;
 
@@ -19,14 +19,32 @@ namespace BoardGameBrawl.Application.Features.Player_Related.PlayerSchedule.Comm
             this.unitOfWork = unitOfWork;
         }
 
-        public async Task<Unit> Handle(RemoveTimeSlotCommand request, CancellationToken cancellationToken)
+        public async Task<BaseCommandResponse> Handle(RemoveTimeSlotCommand request, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
-
+            
             var response = new BaseCommandResponse();
-            await unitOfWork.PlayerScheduleRepository.RemoveTimeSlotAsync(request.TimeSlotId, cancellationToken);
-            await unitOfWork.CommitChangesAsync();
-            return Unit.Value;
+
+            var timeSlot = await unitOfWork.PlayerScheduleRepository.GetTimeSlotAsync(request.TimeSlotId, cancellationToken);
+
+            if (timeSlot == null)
+            {
+                response.Success = false;
+                response.Message = "Removing Process Unsuccessful - Time slot not found";
+                response.Id = Guid.NewGuid();
+                return response;
+            }
+            else
+            {
+                await unitOfWork.PlayerScheduleRepository.RemoveTimeSlotAsync(request.TimeSlotId, cancellationToken);
+                await unitOfWork.CommitChangesAsync();
+
+                response.Success = true;
+                response.Message = "Removing Process Successful";
+                response.Id = Guid.NewGuid();
+            }
+
+            return response;
         }
     }
 }

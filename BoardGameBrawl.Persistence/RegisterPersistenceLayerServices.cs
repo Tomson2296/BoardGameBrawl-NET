@@ -4,12 +4,14 @@ using BoardGameBrawl.Application.Contracts.Entities.Group_Related;
 using BoardGameBrawl.Application.Contracts.Entities.Identity_Related;
 using BoardGameBrawl.Application.Contracts.Entities.Match_Related;
 using BoardGameBrawl.Application.Contracts.Entities.Player_Related;
+using BoardGameBrawl.Application.Contracts.Entities.Player_Related.Schedule_Related;
 using BoardGameBrawl.Domain.Entities;
 using BoardGameBrawl.Persistence.Repositories.Common;
 using BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related;
 using BoardGameBrawl.Persistence.Repositories.Entities.Group_Related;
 using BoardGameBrawl.Persistence.Repositories.Entities.Match_Related;
 using BoardGameBrawl.Persistence.Repositories.Entities.Player_Related;
+using BoardGameBrawl.Persistence.Repositories.Entities.Player_Related.Schedule_Related;
 using BoardGameBrawl.Persistence.Services;
 using BoardGameBrawl.Persistence.Stores;
 using Microsoft.Extensions.DependencyInjection;
@@ -52,8 +54,7 @@ namespace BoardGameBrawl.Persistence
             services.AddScoped<IGroupParticipantRepository, GroupParticipantRepository>();
 
             // Register Match-related repositories
-
-            services.AddScoped<IMatchRuleRepository, MatchRuleRepository>();
+            services.AddScoped<IMatchRuleSetRepository, MatchRuleSetRepository>();
 
             // Register Custom Identity Stores
 

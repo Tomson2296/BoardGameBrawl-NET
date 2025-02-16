@@ -40,7 +40,7 @@ namespace BoardGameBrawl.Infrastructure.DatabaseSeed
 
         public async Task SeedDatabaseAsync()
         {
-            if (await _context.Players.CountAsync() == 0)
+            if (await _context.Players.CountAsync() != 0)
             {
                 return;
             }
@@ -69,7 +69,7 @@ namespace BoardGameBrawl.Infrastructure.DatabaseSeed
                     {
                         var addPlayer = new AddPlayerCommand { PlayerDTO = entry };
                         await _mediator.Send(addPlayer);
-                        //await _context.SaveChangesAsync();
+                        await _context.SaveChangesAsync();
                     }
                 }
             }

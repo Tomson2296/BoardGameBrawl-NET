@@ -10,7 +10,7 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Player_Related
             entity.HasKey(e => new { e.PlayerId, e.BoardgameId });
 
             entity.HasOne(e => e.Player)
-               .WithMany(u => u.PlayerRatings)
+               .WithMany(u => u.PlayerPreferences)
                .HasForeignKey(e => e.PlayerId);
 
             entity.Property(e => e.PlayerName)

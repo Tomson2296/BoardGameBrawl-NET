@@ -1,0 +1,98 @@
+﻿@page
+@model BoardGameBrawl.App.Areas.Schedule.Pages.SetScheduleModel
+@{
+    ViewData["Ttile"] = "Set your schedule";
+}
+
+<partial name="_StatusMessage" for="StatusMessage" />
+
+<div class="container">
+    <h2>@ViewData["Title"]</h2>
+    <form method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Schedule.Id" />
+        <input type="hidden" asp-for="Schedule.PlayerId" />
+        @for (int i = 0; i < Model.Schedule.Days.Count; i++)
+        {
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h5>@Model.Schedule.Days[i].DayOfWeek</h5>
+                </div>
+                <div class="card-body">
+                    @for (int j = 0; j < Model.Schedule.Days[i].TimeSlots.Count; j++)
+                    {
+                        <input type="hidden" asp-for="Schedule.Days[i].Id" />
+                        <input type="hidden" asp-for="Schedule.Days[i].PlayerScheduleId" />
+                        <input type="hidden" asp-for="Schedule.Days[i].DayOfWeek" />
+                        <div class="row mb-2">
+                            <div class="col-md-3">
+                                <input type="hidden" asp-for="Schedule.Days[i].TimeSlots[j].Id" />
+                                <input type="hidden" asp-for="Schedule.Days[i].TimeSlots[j].DailyAvailabilityId" />
+                                <input type="time" step="1800" asp-for="Schedule.Days[i].TimeSlots[j].StartTime" class="form-control" />
+                                <span asp-validation-for="Schedule.Days[i].TimeSlots[j].StartTime" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-3">
+                                <input type="time" step="1800" asp-for="Schedule.Days[i].TimeSlots[j].EndTime" class="form-control" />
+                                <span asp-validation-for="Schedule.Days[i].TimeSlots[j].EndTime" class="text-danger"></span>
+                            </div>
+                            <div class="col-md-1">
+                                <button type="button" class="btn btn-danger" onclick="removeTimeSlot(this)">Remove</button>
+                            </div>
+                        </div>
+                    }
+                    <button asp-page-handler="AddNewTimeSlot" asp-route-dailyId="@Model.Schedule.Days[i].Id"
+                    asp-route-dayOfWeek="@Model.Schedule.Days[i].DayOfWeek" type="submit" class="btn btn-primary" onclick="addTimeSlot(@i)">Add Time Slot</button>
+                        
+                    <button asp-page-handler="SaveDaily" asp-route-dailyId="@Model.Schedule.Days[i].Id"
+                            asp-route-dayOfWeek="@Model.Schedule.Days[i].DayOfWeek" type="submit" class="btn btn-primary">
+                        Save Daily
+                    </button>
+                </div>
+            </div>
+        }
+        <button asp-page-handler="SaveSchedule" type="submit" class="btn btn-primary">Save Schedule</button>
+        <button asp-page-handler="BackToIndex" type="submit" class="btn btn-secondary"> Back </button>
+        <button asp-page-handler="RemoveSchedule" type="submit" class="btn btn-danger"> Remove Schedule </button>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/signalr/dist/browser/signalr.js"></script>
+    <script type="text/javascript">
+        // Build the SignalR connection
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("/timeSlotHub")
+            .build();
+
+        // Start the connection
+        connection.start().catch(err => console.error(err.toString()));
+
+        // Function that gets called when the remove button is clicked.
+        function removeTimeSlot(button) {
+            // Find the closest row and get the hidden input value (timeSlot Id)
+            var $row = $(button).closest('.row');
+            var timeSlotId = $row.find('input[type="hidden"]').first().val();
+
+            // Invoke the SignalR method
+            connection.invoke("RemoveTimeSlot", timeSlotId)
+                .catch(err => console.error(err.toString()));
+        }
+
+        // Listen for the "TimeSlotRemoved" message from the hub.
+        connection.on("TimeSlotRemoved", function (timeSlotId) {
+            // Find the row that contains the hidden input with the matching id and remove it.
+            $(".row").each(function(){
+                var id = $(this).find('input[type="hidden"]').first().val();
+                if(id === timeSlotId) {
+                    $(this).remove();
+                }
+            });
+        });
+
+        // Optionally, listen for error messages from the hub.
+        connection.on("Error", function (message) {
+            alert(message);
+        });
+    </script>
+}

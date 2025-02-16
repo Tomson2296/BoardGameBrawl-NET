@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BoardGameBrawl.Domain.Entities.Player_Related
 {
-    public class PlayerFavouriteBG : BaseEntity
+    public class PlayerFavouriteBG : BaseAuditableEntity
     {
         [ForeignKey(nameof(PlayerId))]
         public Player? Player { get; set; }

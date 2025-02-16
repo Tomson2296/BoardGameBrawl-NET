@@ -24,4 +24,8 @@
     <ProjectReference Include="..\BoardGameBrawl.Domain\BoardGameBrawl.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\MainApp\" />
+  </ItemGroup>
+
 </Project>

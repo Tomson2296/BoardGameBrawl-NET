@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BoardGameBrawl.Domain.Entities.Player_Related
 {
-    public class PlayerCollection : BaseEntity
+    public class PlayerCollection : BaseAuditableEntity
     {
         public Guid Id { get; set; } = Guid.NewGuid();
 

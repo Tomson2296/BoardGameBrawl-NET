@@ -1,4 +1,5 @@
-﻿using BoardGameBrawl.Domain.Entities.Tournament_Related;
+﻿using BoardGameBrawl.Domain.Entities.Match_Related;
+using BoardGameBrawl.Domain.Entities.Tournament_Related;
 using BoardGameBrawl.Persistence.Extensions;
 using BoardGameBrawl.Persistence.ValueConverters;
 using Microsoft.EntityFrameworkCore;
@@ -15,27 +16,19 @@ namespace BoardGameBrawl.Persistence.EntityConfiguration.Tournament_Related
     {
         public void Configure(EntityTypeBuilder<TournamentMatch> entity)
         {
-            entity.HasKey(e => e.Id);
-
-            entity.Property(e => e.MatchProgress)
-                .HasConversion<MatchProgressTypeConverter>()
-                .IsRequired();
-
-            entity.Property(e => e.Participants)
-                .HasJsonConversion()
-                .IsRequired();
-
-            // Property Constraints
-            entity.Property(e => e.MatchDate_Created)
-                .ValueGeneratedOnAdd()
-                .HasDefaultValueSql("GETDATE()")
-                .IsRequired();
-
-            entity.Property(e => e.NumberOfPlayers)
+            entity.HasMany(e => e.TournamentMatchParticipants)
+                .WithOne(p => p.Match)
                 .IsRequired();
 
             entity.Property(e => e.MatchNumber)
-                .IsRequired();
+                  .IsRequired();
+
+            // Relationship with Tournament (principal)
+            entity.HasOne(e => e.Tournament)
+                  .WithMany(t => t.TournamentMatches)
+                  .HasForeignKey(e => e.TournamentId)
+                  .IsRequired()
+                  .OnDelete(DeleteBehavior.Restrict);
 
             entity.ToTable("TournamentMatches");
         }

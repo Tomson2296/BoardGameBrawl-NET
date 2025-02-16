@@ -4,11 +4,11 @@ using Newtonsoft.Json;
 
 namespace BoardGameBrawl.Persistence.ValueConverters
 {
-    internal class TournamentProgressTypeConverter : ValueConverter<TournnamentProgress, string>
+    internal class TournamentProgressTypeConverter : ValueConverter<TournamentProgress, string>
     {
         public TournamentProgressTypeConverter() : base(
         v => JsonConvert.SerializeObject(v),
-        v => JsonConvert.DeserializeObject<TournnamentProgress>(v))
+        v => JsonConvert.DeserializeObject<TournamentProgress>(v))
         { }
     }
 }

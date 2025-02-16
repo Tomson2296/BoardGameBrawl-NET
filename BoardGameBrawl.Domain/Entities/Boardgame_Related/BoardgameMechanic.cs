@@ -2,7 +2,7 @@
 
 namespace BoardGameBrawl.Domain.Entities.Boardgame_Related
 {
-    public class BoardgameMechanic : BaseEntity
+    public class BoardgameMechanic : BaseAuditableEntity
     {
         public Guid Id { get; set; } = Guid.NewGuid(); 
 

@@ -1,17 +1,17 @@
 #nullable disable
 using BoardGameBrawl.Application.DTOs.Entities.Player_Related.Schedule_Related;
 using BoardGameBrawl.Application.DTOs.Entities.Player_Related;
-using BoardGameBrawl.Application.Features.Player_Related.Players.Queries.GetPlayerByAppUserId;
 using BoardGameBrawl.Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using BoardGameBrawl.Application.Features.Player_Related.PlayerSchedule.Queries.CheckIfPlayerScheduleExists;
+using BoardGameBrawl.Application.Features.Player_Related.Players.Queries.GetPlayerByAppUserId;
 using BoardGameBrawl.Application.Features.Player_Related.PlayerSchedule.Commands.AddOrUpdateSchedule;
+using BoardGameBrawl.Application.Features.Player_Related.PlayerSchedule.Queries.CheckIfPlayerScheduleExists;
 using BoardGameBrawl.Application.Features.Player_Related.PlayerSchedule.Queries.GetPlayerScheduleWithDetails;
-using System.ComponentModel.DataAnnotations;
 using BoardGameBrawl.Domain.Entities.Player_Related.Schedule_Related;
+using System.ComponentModel.DataAnnotations;
 
 namespace BoardGameBrawl.App.Areas.Schedule.Pages
 {
@@ -35,10 +35,10 @@ namespace BoardGameBrawl.App.Areas.Schedule.Pages
 
         public PlayerScheduleDTO PlayerSchedule { get; set; }
 
+
         [BindProperty]
         public ScheduleViewModel Schedule { get; set; }
 
-       
         public class ScheduleViewModel
         {
             public Guid PlayerId { get; set; }
@@ -53,7 +53,7 @@ namespace BoardGameBrawl.App.Areas.Schedule.Pages
 
         public class TimeSlotViewModel
         {
-            public int Id { get; set; } 
+            public int Id { get; set; }
 
             [Required]
             [DataType(DataType.Time)]
@@ -63,7 +63,6 @@ namespace BoardGameBrawl.App.Areas.Schedule.Pages
             [DataType(DataType.Time)]
             public TimeSpan EndTime { get; set; }
         }
-
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -89,7 +88,7 @@ namespace BoardGameBrawl.App.Areas.Schedule.Pages
                 for (DayOfWeek day = DayOfWeek.Sunday; day <= DayOfWeek.Saturday; day++)
                 {
                     // create daily for every day
-                        DailyAvailabilityDTO daily = new()
+                    DailyAvailabilityDTO daily = new()
                     {
                         PlayerScheduleId = newScheduleId,
                         DayOfWeek = day,
@@ -147,15 +146,6 @@ namespace BoardGameBrawl.App.Areas.Schedule.Pages
 
                 return Page();
             }
-        }
-
-        public async Task<IActionResult> OnPostAsync()
-        {
-            if (!ModelState.IsValid)
-                return Page();
-
-
-            return RedirectToPage("./Index");
         }
     }
 }

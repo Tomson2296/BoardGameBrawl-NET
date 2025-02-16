@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BoardGameBrawl.Domain.Entities.Player_Related.Schedule_Related
 {
-    public class PlayerSchedule : BaseEntity
+    public class PlayerSchedule : BaseAuditableEntity
     {
         public Guid Id { get; set; } = Guid.NewGuid();
 

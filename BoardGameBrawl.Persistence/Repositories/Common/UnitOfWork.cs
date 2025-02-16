@@ -6,10 +6,12 @@ using BoardGameBrawl.Application.Contracts.Entities.Boardgames_Related;
 using BoardGameBrawl.Application.Contracts.Entities.Group_Related;
 using BoardGameBrawl.Application.Contracts.Entities.Match_Related;
 using BoardGameBrawl.Application.Contracts.Entities.Player_Related;
+using BoardGameBrawl.Application.Contracts.Entities.Player_Related.Schedule_Related;
 using BoardGameBrawl.Persistence.Repositories.Entities.Boardgame_Related;
 using BoardGameBrawl.Persistence.Repositories.Entities.Group_Related;
 using BoardGameBrawl.Persistence.Repositories.Entities.Match_Related;
 using BoardGameBrawl.Persistence.Repositories.Entities.Player_Related;
+using BoardGameBrawl.Persistence.Repositories.Entities.Player_Related.Schedule_Related;
 using Microsoft.AspNetCore.Http;
 
 namespace BoardGameBrawl.Persistence.Repositories.Common
@@ -39,7 +41,7 @@ namespace BoardGameBrawl.Persistence.Repositories.Common
         private IGroupRepository _groupRepository;
         private IGroupParticipantRepository _groupParticipantRepository;
 
-        private IMatchRuleRepository _matchRuleRepository;
+        private IMatchRuleSetRepository _matchRuleSetRepository;
 
         public UnitOfWork(MainAppDBContext context, 
             IHttpContextAccessor contextAccessor,
@@ -111,8 +113,8 @@ namespace BoardGameBrawl.Persistence.Repositories.Common
 
         // Match-related repositories
 
-        public IMatchRuleRepository MatchRuleRepository =>
-            _matchRuleRepository ??= new MatchRuleRepository(_context, _mapper);
+        public IMatchRuleSetRepository MatchRuleSetRepository =>
+            _matchRuleSetRepository ??= new MatchRuleSetRepository(_context);
 
 
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BoardGameBrawl.Domain.Entities.Boardgame_Related
 {
-    public class BoardgameDomain : BaseEntity
+    public class BoardgameDomain : BaseAuditableEntity
     {
         public Guid Id { get; set; } = Guid.NewGuid();
 

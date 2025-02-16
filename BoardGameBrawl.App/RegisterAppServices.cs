@@ -22,6 +22,8 @@ namespace BoardGameBrawl.App
 
             builder.Services.AddHttpContextAccessor();
 
+            builder.Services.AddSignalR();
+
             // Add services to the container.
             builder.Services.AddRazorPages()
                 .AddRazorPagesOptions(options =>

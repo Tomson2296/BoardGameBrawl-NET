@@ -21,11 +21,11 @@ namespace BoardGameBrawl.Infrastructure
                     //var appUserSeed = serviceProvider.GetRequiredService<ApplicationUserDatabaseSeed>();
                     //await appUserSeed.SeedDatabaseAsync();
 
-                    //var playerDatabaseSeed = serviceProvider.GetRequiredService<PlayerDatabaseSeed>();
-                    //await playerDatabaseSeed.SeedDatabaseAsync();
+                    var playerDatabaseSeed = serviceProvider.GetRequiredService<PlayerDatabaseSeed>();
+                    await playerDatabaseSeed.SeedDatabaseAsync();
 
-                    var boardgameSeed = serviceProvider.GetRequiredService<BoardgamesDatabaseSeed>();
-                    await boardgameSeed.SeedDatabaseAsync();
+                    //var boardgameSeed = serviceProvider.GetRequiredService<BoardgamesDatabaseSeed>();
+                    //await boardgameSeed.SeedDatabaseAsync();
                 }
             }
             catch (Exception ex)

@@ -1,4 +1,5 @@
-﻿using BoardGameBrawl.Domain.Entities.Boardgame_Related;
+﻿using BoardGameBrawl.Domain.Common.BaseEntities;
+using BoardGameBrawl.Domain.Entities.Boardgame_Related;
 using BoardGameBrawl.Domain.Entities.Group_Related;
 using BoardGameBrawl.Domain.Entities.Match_Related;
 using BoardGameBrawl.Domain.Entities.Player_Related;
@@ -6,12 +7,15 @@ using BoardGameBrawl.Domain.Entities.Player_Related.Preference_Related;
 using BoardGameBrawl.Domain.Entities.Player_Related.Schedule_Related;
 using BoardGameBrawl.Domain.Entities.Tournament_Related;
 using BoardGameBrawl.Persistence.EntityConfiguration.Boardgame_Related;
+using BoardGameBrawl.Persistence.EntityConfiguration.Common;
 using BoardGameBrawl.Persistence.EntityConfiguration.Group_Related;
 using BoardGameBrawl.Persistence.EntityConfiguration.Match_Related;
 using BoardGameBrawl.Persistence.EntityConfiguration.Player_Related;
 using BoardGameBrawl.Persistence.EntityConfiguration.Player_Related.Schedule_Related;
 using BoardGameBrawl.Persistence.EntityConfiguration.Tournament_Related;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Identity.Client;
 
 namespace BoardGameBrawl.Persistence
 {
@@ -26,6 +30,9 @@ namespace BoardGameBrawl.Persistence
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.HasDefaultSchema("dbo");
+
+            //Common entities configuration
+            modelBuilder.ApplyConfiguration(new BaseMatchEntityConfiguration());
 
             //Boardgame-related entities configuration
             modelBuilder.ApplyConfiguration(new BoardgameConfiguration());
@@ -43,7 +50,9 @@ namespace BoardGameBrawl.Persistence
 
             //Match-related entities configuration
             modelBuilder.ApplyConfiguration(new MatchConfiguration());
-            modelBuilder.ApplyConfiguration(new MatchRuleConfiguration());
+            modelBuilder.ApplyConfiguration(new MatchParticipantConfiguration());
+            modelBuilder.ApplyConfiguration(new MatchRuleSetConfiguration());
+            modelBuilder.ApplyConfiguration(new MatchResultConfiguration());
 
             //Player-related entities configuration
             modelBuilder.ApplyConfiguration(new PlayerConfiguration());
@@ -51,6 +60,7 @@ namespace BoardGameBrawl.Persistence
             modelBuilder.ApplyConfiguration(new PlayerFriendConfiguration());
             modelBuilder.ApplyConfiguration(new PlayerCollectionConfiguration());
             modelBuilder.ApplyConfiguration(new PlayerFavouriteBGConfiguration());
+            modelBuilder.ApplyConfiguration(new PlayerRatingConfiguration());
 
             modelBuilder.ApplyConfiguration(new PlayerScheduleConfiguration());
             modelBuilder.ApplyConfiguration(new DailyAvailabilityConfiguration());
@@ -58,7 +68,9 @@ namespace BoardGameBrawl.Persistence
 
             //Tournament-related entities configuration
             modelBuilder.ApplyConfiguration(new TournamentConfiguration());
+            modelBuilder.ApplyConfiguration(new TournamentParticipantConfiguration());
             modelBuilder.ApplyConfiguration(new TournamentMatchConfiguration());
+            modelBuilder.ApplyConfiguration(new TournamentMatchParticipantConfiguration());
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -66,9 +78,9 @@ namespace BoardGameBrawl.Persistence
             base.OnConfiguring(optionsBuilder);
         }
 
-        public DbSet<Boardgame> Boardgames { get; set; }
 
-        public DbSet<MatchRule> MatchRules { get; set; }
+        // Boardgame DbSets
+        public DbSet<Boardgame> Boardgames { get; set; }
 
         public DbSet<BoardgameDomain> BoardgameDomains { get; set; }
 
@@ -86,6 +98,7 @@ namespace BoardGameBrawl.Persistence
 
 
 
+        // Player DBSets 
         public DbSet<Player> Players { get; set; }
 
         public DbSet<PlayerPreference> PlayerPreferences { get; set; }
@@ -96,6 +109,12 @@ namespace BoardGameBrawl.Persistence
 
         public DbSet<PlayerFavouriteBG> PlayerFavouriteBGs { get; set; }
 
+        public DbSet<PlayerRating> PlayerRatings { get; set; }
+
+
+
+        // PLayer - Schedule related DBSets
+
         public DbSet<PlayerSchedule> PlayerSchedules { get; set; }
 
         public DbSet<DailyAvailability> DailyAvailabilities { get; set; }
@@ -104,16 +123,31 @@ namespace BoardGameBrawl.Persistence
 
 
 
+        // Group DBSets
         public DbSet<Group> Groups { get; set; }
 
         public DbSet<GroupParticipant> GroupParticipants { get; set; }
 
 
 
-        public DbSet<Match> Matches { get; set; }
+        // Match DBSets 
+        public DbSet<Match> RegularMatches { get; set; }
 
+        public DbSet<MatchParticipant> RegularMatchParticipants { get; set; }
+
+        public DbSet<MatchRuleSet> MatchRuleSets { get; set; }
+
+        public DbSet<MatchResult> MatchResults { get; set; }
+
+
+
+        // Tournament DBSets
         public DbSet<Tournament> Tournaments { get; set; }
 
+        public DbSet<TournamentParticipant> TournamentParticipants { get; set; }
+
         public DbSet<TournamentMatch> TournamentMatches { get; set; }
+
+        public DbSet<TournamentMatchParticipant> TournamentMatchParticipants { get; set; }
     }
 }
